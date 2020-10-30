@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:instagram/screens/screens.dart';
 
 class HomeScreen extends StatefulWidget {
+  final String userId;
+
+  HomeScreen({this.userId});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -38,7 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
           SearchScreen(),
           CreatePostScreen(),
           ActivityScreen(),
-          ProfileScreen(),
+          ProfileScreen(
+            userId: widget.userId,
+          ),
         ],
         onPageChanged: (int index) {
           setState(() {
