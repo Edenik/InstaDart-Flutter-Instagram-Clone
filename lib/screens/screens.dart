@@ -6,3 +6,4 @@ export 'search_screen.dart';
 export 'activity_screen.dart';
 export 'create_post_screen.dart';
 export 'home_screen.dart';
+export 'edit_profile_screen.dart';

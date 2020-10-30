@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/models/user_model.dart';
+import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -101,7 +102,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Container(
                             width: 200.0,
                             child: FlatButton(
-                                onPressed: () {},
+                                onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => EditProfileScreen(
+                                          user: user,
+                                        ),
+                                      ),
+                                    ),
                                 color: Colors.blue,
                                 textColor: Colors.white,
                                 child: Text(
