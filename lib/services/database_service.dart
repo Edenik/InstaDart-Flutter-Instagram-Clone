@@ -18,7 +18,7 @@ class DatabaseService {
     return users;
   }
 
-  static void creatPost(Post post) {
+  static void createPost(Post post) {
     postsRef.document(post.authorId).collection('usersPosts').add({
       'imageUrl': post.imageUrl,
       'caption': post.caption,
@@ -26,5 +26,75 @@ class DatabaseService {
       'authorId': post.authorId,
       'timestamp': post.timestamp
     });
+  }
+
+  static void followUser({String currentUserId, String userId}) {
+    // Add user to current user's following collection
+    followingRef
+        .document(currentUserId)
+        .collection(userFollowing)
+        .document(userId)
+        .setData({'timestamp': Timestamp.fromDate(DateTime.now())});
+
+    // Add current user to user's followers collection
+    followersRef
+        .document(userId)
+        .collection(usersFollowers)
+        .document(currentUserId)
+        .setData({'timestamp': Timestamp.fromDate(DateTime.now())});
+  }
+
+  static void unfollowUser({String currentUserId, String userId}) {
+    // Remove user from current user's following collection
+    followingRef
+        .document(currentUserId)
+        .collection(userFollowing)
+        .document(userId)
+        .get()
+        .then((doc) {
+      if (doc.exists) {
+        doc.reference.delete();
+      }
+    });
+
+    // Remove current user from user's followers collection
+    followersRef
+        .document(userId)
+        .collection(usersFollowers)
+        .document(currentUserId)
+        .get()
+        .then((doc) {
+      if (doc.exists) {
+        doc.reference.delete();
+      }
+    });
+  }
+
+  static Future<bool> isFollowingUser(
+      {String currentUserId, String userId}) async {
+    DocumentSnapshot followingDoc = await followersRef
+        .document(userId)
+        .collection(usersFollowers)
+        .document(currentUserId)
+        .get();
+
+    return followingDoc.exists;
+  }
+
+  static Future<int> numFollowing(String userId) async {
+    QuerySnapshot followingSnapshot = await followingRef
+        .document(userId)
+        .collection(userFollowing)
+        .getDocuments();
+    return followingSnapshot.documents.length;
+  }
+
+  static Future<int> numFollowers(String userId) async {
+    QuerySnapshot followersSnapshot = await followersRef
+        .document(userId)
+        .collection(usersFollowers)
+        .getDocuments();
+
+    return followersSnapshot.documents.length;
   }
 }

@@ -119,7 +119,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         timestamp: Timestamp.fromDate(DateTime.now()),
       );
 
-      DatabaseService.creatPost(post);
+      DatabaseService.createPost(post);
 
       //Reset Data
       _captionController.clear();
