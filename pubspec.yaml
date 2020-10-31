@@ -33,6 +33,7 @@ dependencies:
   flutter_image_compress: ^0.7.0
   image_picker: ^0.6.7+12
   path_provider: ^1.6.22
+  provider: ^4.3.2+2
   uuid: ^2.2.2
 
 dev_dependencies:

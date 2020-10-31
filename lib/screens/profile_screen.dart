@@ -3,6 +3,7 @@ import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instagram/widgets/default_appBar_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String userId;
@@ -17,6 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: DefaultAppBar(),
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
