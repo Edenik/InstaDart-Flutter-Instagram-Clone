@@ -8,5 +8,6 @@ final postsRef = _firestore.collection('posts');
 final followersRef = _firestore.collection('followers');
 final followingRef = _firestore.collection('following');
 final feedsRef = _firestore.collection('feeds');
+final likesRef = _firestore.collection('likes');
 final String usersFollowers = 'userFollowers';
 final String userFollowing = 'userFollowing';

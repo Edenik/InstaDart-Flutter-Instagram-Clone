@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  animator: ^2.0.1
   cached_network_image: ^2.3.3
   cloud_firestore: ^0.12.9+4
   cupertino_icons: ^1.0.0

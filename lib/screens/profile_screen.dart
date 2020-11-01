@@ -3,6 +3,7 @@ import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/screens.dart';
+import 'package:instagram/services/auth_service.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -312,7 +313,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Instagram',
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Billabong',
+            fontSize: 35.0,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: AuthService.logout,
+          )
+        ],
+      ),
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
