@@ -46,7 +46,7 @@ exports.onUnfollowUser = functions.firestore
     });
 
 exports.onUploadPost = functions.firestore
-    .document('/posts/{userId}/userPosts/{postId}')
+    .document('/posts/{userId}/usersPosts/{postId}')
     .onCreate(async (snapshot, context) => {
         console.log(snapshot.data());
         const userId = context.params.userId;
@@ -70,7 +70,7 @@ exports.onUploadPost = functions.firestore
 
 
 exports.onUpdatePost = functions.firestore
-    .document('/posts/{userId}/userPosts/{postId}')
+    .document('/posts/{userId}/usersPosts/{postId}')
     .onUpdate(async (snapshot, context) => {
         const userId = context.params.userId;
         const postId = context.params.postId;
