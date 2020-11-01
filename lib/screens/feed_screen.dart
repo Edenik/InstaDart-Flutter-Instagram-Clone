@@ -26,9 +26,7 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   _setupFeed() async {
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
     List<Post> posts = await DatabaseService.getFeedPosts(widget.currentUserId);
     setState(() {
       _posts = posts;
@@ -36,19 +34,23 @@ class _FeedScreenState extends State<FeedScreen> {
     });
   }
 
+  _goToUserProfile(Post post) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProfileScreen(
+          currentUserId: widget.currentUserId,
+          userId: post.authorId,
+        ),
+      ),
+    );
+  }
+
   _buildPost(Post post, User author) {
     return Column(
       children: <Widget>[
         GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ProfileScreen(
-                currentUserId: widget.currentUserId,
-                userId: post.authorId,
-              ),
-            ),
-          ),
+          onTap: () => _goToUserProfile(post),
           child: Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
@@ -118,10 +120,13 @@ class _FeedScreenState extends State<FeedScreen> {
                       left: 12.0,
                       right: 6.0,
                     ),
-                    child: Text(
-                      author.name,
-                      style: TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    child: GestureDetector(
+                      onTap: () => _goToUserProfile(post),
+                      child: Text(
+                        author.name,
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                   Expanded(
