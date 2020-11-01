@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_data.dart';
@@ -65,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _setupPosts() async {
-    List<Post> posts = await DatabaseService.getFeedPosts(widget.userId);
+    List<Post> posts = await DatabaseService.getUserPosts(widget.userId);
     setState(() {
       _posts = posts;
     });
@@ -327,6 +326,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // print(user.name);
           // print(user.bio);
           // print(user.email);
+          // print(user.id);
+          // print(_posts.length);
           return ListView(
             physics: AlwaysScrollableScrollPhysics(),
             children: <Widget>[

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/utilities/constants.dart';
@@ -19,13 +20,17 @@ class DatabaseService {
   }
 
   static void createPost(Post post) {
-    postsRef.document(post.authorId).collection('usersPosts').add({
-      'imageUrl': post.imageUrl,
-      'caption': post.caption,
-      'likes': post.likes,
-      'authorId': post.authorId,
-      'timestamp': post.timestamp
-    });
+    try {
+      postsRef.document(post.authorId).collection('usersPosts').add({
+        'imageUrl': post.imageUrl,
+        'caption': post.caption,
+        'likes': post.likes,
+        'authorId': post.authorId,
+        'timestamp': post.timestamp
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   static void followUser({String currentUserId, String userId}) {
@@ -115,6 +120,8 @@ class DatabaseService {
         .collection('usersPosts')
         .orderBy('timestamp', descending: true)
         .getDocuments();
+    print(userId);
+    print(userPostsSnapshot.documents.length);
     List<Post> posts =
         userPostsSnapshot.documents.map((doc) => Post.fromDoc(doc)).toList();
     return posts;

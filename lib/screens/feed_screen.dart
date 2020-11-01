@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_model.dart';
-import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/widgets/default_appBar_widget.dart';
 import 'package:instagram/widgets/post_view.dart';
