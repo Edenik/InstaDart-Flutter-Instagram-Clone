@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/comment_model.dart';
+import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/services/database_service.dart';
@@ -9,10 +10,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CommentsScreen extends StatefulWidget {
-  final String postId;
+  final Post post;
   final int likeCount;
 
-  CommentsScreen({this.postId, this.likeCount});
+  CommentsScreen({this.post, this.likeCount});
 
   @override
   _CommentsScreenState createState() => _CommentsScreenState();
@@ -56,7 +57,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
   }
 
   _buildCommentTF() {
-    final currentUserId = Provider.of<UserData>(context).currentUserId;
+    final currentUserId =
+        Provider.of<UserData>(context, listen: false).currentUserId;
 
     return IconTheme(
       data: IconThemeData(
@@ -91,7 +93,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   if (_isCommenting) {
                     DatabaseService.commentOnPost(
                       currentUserId: currentUserId,
-                      postId: widget.postId,
+                      post: widget.post,
                       comment: _commentController.text,
                     );
                     _commentController.clear();
@@ -132,7 +134,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
           ),
           StreamBuilder(
             stream: commentsRef
-                .document(widget.postId)
+                .document(widget.post.id)
                 .collection('postComments')
                 .orderBy('timestamp', descending: true)
                 .snapshots(),

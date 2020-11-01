@@ -10,6 +10,7 @@ final followingRef = _firestore.collection('following');
 final feedsRef = _firestore.collection('feeds');
 final likesRef = _firestore.collection('likes');
 final commentsRef = _firestore.collection('comments');
+final activitiesRef = _firestore.collection('activities');
 final String usersFollowers = 'userFollowers';
 final String userFollowing = 'userFollowing';
 final String placeHolderImageRef = 'assets/images/user_placeholder.jpg';
