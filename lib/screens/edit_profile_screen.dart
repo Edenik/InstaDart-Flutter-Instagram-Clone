@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/services/services.dart';
+import 'package:instagram/utilities/constants.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
@@ -79,7 +80,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       // No existing profile image
       if (widget.user.profileImageUrl.isEmpty) {
         //display placeholder
-        return AssetImage('assets/images/user_placeholder.jpg');
+        return AssetImage(placeHolderImageRef);
       } else {
         //user profile image exist
         return CachedNetworkImageProvider(widget.user.profileImageUrl);

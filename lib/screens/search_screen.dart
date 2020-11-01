@@ -5,6 +5,7 @@ import 'package:instagram/models/user_data.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
+import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SearchScreenState extends State<SearchScreen> {
       leading: CircleAvatar(
         radius: 20.0,
         backgroundImage: user.profileImageUrl.isEmpty
-            ? AssetImage('assets/images/user_placeholder.jpg')
+            ? AssetImage(placeHolderImageRef)
             : CachedNetworkImageProvider(user.profileImageUrl),
       ),
       title: Text(user.name),

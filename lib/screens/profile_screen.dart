@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/models/user_model.dart';
+import 'package:instagram/screens/comments_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/auth_service.dart';
 import 'package:instagram/services/database_service.dart';
@@ -150,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: 50.0,
                 backgroundColor: Colors.grey,
                 backgroundImage: user.profileImageUrl.isEmpty
-                    ? AssetImage('assets/images/user_placeholder.jpg')
+                    ? AssetImage(placeHolderImageRef)
                     : CachedNetworkImageProvider(user.profileImageUrl),
               ),
               Expanded(
@@ -274,9 +275,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildTilePost(Post post) {
     return GridTile(
-        child: Image(
-      image: CachedNetworkImageProvider(post.imageUrl),
-      fit: BoxFit.cover,
+        child: GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CommentsScreen(
+            postId: post.id,
+            likeCount: post.likeCount,
+          ),
+        ),
+      ),
+      child: Image(
+        image: CachedNetworkImageProvider(post.imageUrl),
+        fit: BoxFit.cover,
+      ),
     ));
   }
 
