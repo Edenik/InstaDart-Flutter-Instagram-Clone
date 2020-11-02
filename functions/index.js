@@ -94,3 +94,33 @@ exports.onUpdatePost = functions.firestore
             }
         });
     });
+
+// exports.onDeletePost = functions.firestore
+//     .document('/posts/{userId}/userPosts/{postId}')
+//     .onDelete(async (snapshot, context) => {
+//         // const userId = context.params.userId;
+//         const postId = context.params.podtId;
+//         const usersRef = admin
+//             .firestore()
+//             .collection('feeds');
+
+//         let usersSnapshot = await usersRef.get().then(async (snapshot) => {
+//             snapshot.forEach(user => {
+//                 const usersFeedRef = admin
+//                     .firestore()
+//                     .collection('feeds')
+//                     .doc(user)
+//                     .collection('userFeed');
+//                 const userPostsSnapshot = await usersFeedRef.get();
+
+//                 userPostsSnapshot.forEach(doc => {
+//                     if (doc.exists && doc.id == postId) {
+//                         doc.ref.delete();
+//                     }
+//                 });
+//             })
+//         });
+//     });
+
+
+

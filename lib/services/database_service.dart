@@ -33,6 +33,14 @@ class DatabaseService {
     }
   }
 
+  static void deletePost(Post post) {
+    postsRef
+        .document(post.authorId)
+        .collection('userPosts')
+        .document(post.id)
+        .delete();
+  }
+
   static void followUser({String currentUserId, String userId}) {
     // Add user to current user's following collection
     followingRef

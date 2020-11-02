@@ -32,8 +32,6 @@ class _FollowersScreenState extends State<FollowersScreen> {
     _setupFollowing();
   }
 
-  // Future<
-
   _setupFollowers() async {
     setState(() {
       _isLoading = true;

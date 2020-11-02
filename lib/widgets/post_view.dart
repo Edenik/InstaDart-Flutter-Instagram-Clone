@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:animator/animator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_model.dart';
@@ -9,6 +11,7 @@ import 'package:instagram/screens/comments_screen.dart';
 import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:image_downloader/image_downloader.dart';
 
 class PostView extends StatefulWidget {
   final String currentUserId;
@@ -89,35 +92,111 @@ class _PostViewState extends State<PostView> {
     }
   }
 
+  _showMenuDialog() {
+    return Platform.isIOS ? _iosBottomSheet() : _androidDialog();
+  }
+
+  _iosBottomSheet() {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoActionSheet(
+            title: Text('Add Photo'),
+            actions: <Widget>[
+              CupertinoActionSheetAction(
+                onPressed: () {},
+                child: Text('Take Photo'),
+              ),
+              CupertinoActionSheetAction(
+                onPressed: () {},
+                child: Text('Choose From Gallery'),
+              )
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+          );
+        });
+  }
+
+  _androidDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            // title: Text('Add Photo'),
+            children: <Widget>[
+              widget.post.authorId == widget.currentUserId
+                  ? SimpleDialogOption(
+                      child: Text('Delete Post'),
+                      onPressed: () {
+                        DatabaseService.deletePost(widget.post);
+                        Navigator.pop(context);
+                      },
+                    )
+                  : SizedBox.shrink(),
+              SimpleDialogOption(
+                child: Text('Download Image'),
+                onPressed: () async {
+                  await ImageDownloader.downloadImage(
+                    widget.post.imageUrl,
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              // SimpleDialogOption(
+              //   child: Text(
+              //     'Download Image',
+              //     style: TextStyle(color: Colors.red),
+              //   ),
+              //   onPressed: () => Navigator.pop(context),
+              // ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         GestureDetector(
           onTap: () => _goToUserProfile(context, widget.post),
           child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-            child: Row(
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 25.0,
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: ListTile(
+                leading: CircleAvatar(
                   backgroundColor: Colors.grey,
                   backgroundImage: widget.author.profileImageUrl.isEmpty
                       ? AssetImage(placeHolderImageRef)
                       : CachedNetworkImageProvider(
                           widget.author.profileImageUrl),
                 ),
-                SizedBox(
-                  width: 8.0,
-                ),
-                Text(
+                title: Text(
                   widget.author.name,
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
-                )
-              ],
-            ),
-          ),
+                ),
+                trailing: IconButton(
+                    icon: Icon(Icons.more_vert), onPressed: _showMenuDialog),
+              )),
+          //    Row(
+          //   children: <Widget>[
+
+          //     SizedBox(
+          //       width: 8.0,
+          //     ),
+          //     Text(
+          //       widget.author.name,
+          //       style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
+          //     ),
+          //     IconButton(icon: Icon(Icons.menu), onPressed: null)
+          //   ],
+          // ),
         ),
         GestureDetector(
           onDoubleTap: _likePost,

@@ -38,6 +38,8 @@ dependencies:
   path_provider: ^1.6.22
   provider: ^4.3.2+2
   uuid: ^2.2.2
+  image_downloader: ^0.20.1
+
 
 dev_dependencies:
   flutter_test:

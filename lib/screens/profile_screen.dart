@@ -9,7 +9,6 @@ import 'package:instagram/services/auth_service.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:instagram/widgets/default_appBar_widget.dart';
 import 'package:instagram/widgets/post_view.dart';
 import 'package:provider/provider.dart';
 
