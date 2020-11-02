@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:instagram/models/activity_model.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_model.dart';
@@ -102,6 +101,30 @@ class DatabaseService {
         .getDocuments();
 
     return followersSnapshot.documents.length;
+  }
+
+  static Future<List<String>> getUserFollowingIds(String userId) async {
+    QuerySnapshot followingSnapshot = await followingRef
+        .document(userId)
+        .collection(userFollowing)
+        .getDocuments();
+
+    List<String> following =
+        followingSnapshot.documents.map((doc) => doc.documentID).toList();
+    // print(followers);
+    return following;
+  }
+
+  static Future<List<String>> getUserFollowersIds(String userId) async {
+    QuerySnapshot followersSnapshot = await followersRef
+        .document(userId)
+        .collection(usersFollowers)
+        .getDocuments();
+
+    List<String> followers =
+        followersSnapshot.documents.map((doc) => doc.documentID).toList();
+    // print(followers);
+    return followers;
   }
 
   static Future<List<Post>> getFeedPosts(String userId) async {

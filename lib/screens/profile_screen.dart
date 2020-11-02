@@ -3,6 +3,7 @@ import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/comments_screen.dart';
+import 'package:instagram/screens/followers_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/auth_service.dart';
 import 'package:instagram/services/database_service.dart';
@@ -26,6 +27,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isFollowing = false;
   int _followerCount = 0;
   int _followingCount = 0;
+  List<String> _userFollowers = [];
+  List<String> _userFollowing = [];
   List<Post> _posts = [];
   int _displayPosts = 0; // 0 - grid, 1 - column
   User _profileUser;
@@ -51,17 +54,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _setupFollowers() async {
-    int userFollowersCount = await DatabaseService.numFollowers(widget.userId);
-
+    // int userFollowersCount = await DatabaseService.numFollowers(widget.userId);
+    List<String> userFollowers =
+        await DatabaseService.getUserFollowersIds(widget.userId);
     setState(() {
-      _followerCount = userFollowersCount;
+      _userFollowers = userFollowers;
+      _followerCount = userFollowers.length;
     });
   }
 
   _setupFollowing() async {
-    int userFollowingCount = await DatabaseService.numFollowing(widget.userId);
+    // int userFollowingCount = await DatabaseService.numFollowing(widget.userId);
+    List<String> userFollowing =
+        await DatabaseService.getUserFollowingIds(widget.userId);
     setState(() {
-      _followingCount = userFollowingCount;
+      _userFollowing = userFollowing;
+      _followingCount = userFollowing.length;
     });
   }
 
@@ -177,39 +185,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                           ],
                         ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              _followerCount.toString(),
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => FollowersScreen(
+                                user: user,
+                                followers: _userFollowers,
+                                following: _userFollowing,
+                                selectedTab: 0,
                               ),
                             ),
-                            Text(
-                              'followers',
-                              style: TextStyle(
-                                color: Colors.black54,
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                _followerCount.toString(),
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            )
-                          ],
+                              Text(
+                                'followers',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              _followingCount.toString(),
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => FollowersScreen(
+                                user: user,
+                                followers: _userFollowers,
+                                following: _userFollowing,
+                                selectedTab: 1,
                               ),
                             ),
-                            Text(
-                              'following',
-                              style: TextStyle(
-                                color: Colors.black54,
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                _followingCount.toString(),
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            )
-                          ],
+                              Text(
+                                'following',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                ),
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),

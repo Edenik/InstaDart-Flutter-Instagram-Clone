@@ -177,6 +177,7 @@ class _PostViewState extends State<PostView> {
                         builder: (_) => CommentsScreen(
                           post: widget.post,
                           likeCount: _likeCount,
+                          author: widget.author,
                         ),
                       ),
                     ),
