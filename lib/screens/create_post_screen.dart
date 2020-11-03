@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/services/database_service.dart';
+import 'package:instagram/services/location_service.dart';
 import 'package:instagram/services/storage_service.dart';
+import 'package:instagram/widgets/post_form.dart';
 import 'package:provider/provider.dart';
 
 class CreatePostScreen extends StatefulWidget {
@@ -17,11 +20,33 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-  final picker = ImagePicker();
+  final _picker = ImagePicker();
   File _imageFile;
+  Address _address;
   TextEditingController _captionController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
+  Map<String, double> currentLocation = Map();
   String _caption = '';
   bool _isLoading = false;
+
+  @override
+  initState() {
+    super.initState();
+    //variables with location assigned as 0.0
+    currentLocation['latitude'] = 0.0;
+    currentLocation['longitude'] = 0.0;
+    initPlatformState(); //method to call location
+  }
+
+  //method to get Location and save into variables
+  initPlatformState() async {
+    if (mounted) {
+      Address first = await LocationService.getUserLocation();
+      setState(() {
+        _address = first;
+      });
+    }
+  }
 
   _showSelectImageDialog() {
     return Platform.isIOS ? _iosBottomSheet() : _androidDialog();
@@ -84,7 +109,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   _handleImage(ImageSource source) async {
     Navigator.pop(context);
     File image;
-    PickedFile pickedFile = await picker.getImage(source: source);
+    PickedFile pickedFile = await _picker.getImage(source: source);
     if (pickedFile != null) {
       image = await _cropImage(File(pickedFile.path));
       setState(() {
@@ -104,7 +129,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   _submit() async {
-    if (!_isLoading && _imageFile != null && _caption.isNotEmpty) {
+    if (!_isLoading &&
+        _imageFile != null &&
+        _captionController.text.isNotEmpty) {
       setState(() {
         _isLoading = true;
       });
@@ -113,7 +140,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       String imageUrl = await StroageService.uploadPost(_imageFile);
       Post post = Post(
         imageUrl: imageUrl,
-        caption: _caption,
+        caption: _captionController.text,
+        location: _locationController.text,
         likeCount: 0,
         authorId: Provider.of<UserData>(context, listen: false).currentUserId,
         timestamp: Timestamp.fromDate(DateTime.now()),
@@ -123,87 +151,164 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
       //Reset Data
       _captionController.clear();
+      _locationController.clear();
       setState(() {
-        _caption = '';
         _imageFile = null;
         _isLoading = false;
       });
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'Create Post',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: _submit,
-          ),
-        ],
-      ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
+  //method to build buttons with location.
+  _buildLocationButton(String locationName) {
+    if (locationName != null ?? locationName.isNotEmpty) {
+      return InkWell(
+        onTap: () {
+          _locationController.text = locationName;
+        },
+        child: Center(
           child: Container(
-            height: height,
-            child: Column(
-              children: <Widget>[
-                _isLoading
-                    ? Padding(
-                        padding: EdgeInsets.only(bottom: 10.0),
-                        child: LinearProgressIndicator(
-                          backgroundColor: Colors.blue[200],
-                          valueColor: AlwaysStoppedAnimation(Colors.blue),
-                        ),
-                      )
-                    : SizedBox.shrink(),
-                GestureDetector(
-                  onTap: _showSelectImageDialog,
-                  child: Container(
-                    height: width,
-                    width: width,
-                    color: Colors.grey[300],
-                    child: _imageFile == null
-                        ? Icon(
-                            Icons.add_a_photo,
-                            color: Colors.white70,
-                            size: 150.0,
-                          )
-                        : Image(
-                            image: FileImage(_imageFile),
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                ),
-                SizedBox(height: 20.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: TextField(
-                    controller: _captionController,
-                    style: TextStyle(fontSize: 18.0),
-                    decoration: InputDecoration(
-                      labelText: 'Caption',
-                    ),
-                    onChanged: (input) => _caption = input,
-                  ),
-                )
-              ],
+            //width: 100.0,
+            height: 30.0,
+            padding: EdgeInsets.only(left: 8.0, right: 8.0),
+            margin: EdgeInsets.only(right: 3.0, left: 3.0),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Center(
+              child: Text(
+                locationName,
+                style: TextStyle(color: Colors.grey),
+              ),
             ),
           ),
         ),
-      ),
+      );
+    } else {
+      return SizedBox.shrink();
+    }
+  }
+
+  _clearImage() {
+    setState(() {
+      _imageFile = null;
+    });
+  }
+
+  _buildForm() {
+    return Column(
+      children: <Widget>[
+        _isLoading ? LinearProgressIndicator() : SizedBox.shrink(),
+        Divider(),
+        Row(
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15.0),
+              height: 45.0,
+              width: 45.0,
+              child: AspectRatio(
+                aspectRatio: 487 / 451,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      alignment: FractionalOffset.topCenter,
+                      image: FileImage(_imageFile),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: 250.0,
+              child: TextField(
+                onChanged: (value) => {
+                  setState(() {
+                    _caption = value;
+                  })
+                },
+                controller: _captionController,
+                decoration: InputDecoration(
+                    hintText: 'Write a caption...', border: InputBorder.none),
+              ),
+            ),
+          ],
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.pin_drop),
+          title: Container(
+            width: 250.0,
+            child: TextField(
+              controller: _locationController,
+              decoration: InputDecoration(
+                  hintText: 'Where was this photo taken?',
+                  border: InputBorder.none),
+            ),
+          ),
+        )
+      ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _imageFile == null
+        ? IconButton(
+            icon: Icon(Icons.file_upload),
+            onPressed: () => _showSelectImageDialog(),
+          )
+        : Scaffold(
+            resizeToAvoidBottomPadding: false,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              leading: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: _clearImage),
+              title: Text(
+                'New Post',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: _caption.trim() != '' ? _submit : null,
+                    child: Text(
+                      'Share',
+                      style: TextStyle(
+                          color: _caption.trim() != ''
+                              ? Theme.of(context).primaryColor
+                              : Colors.grey[200],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0),
+                    ))
+              ],
+            ),
+            body: ListView(
+              children: <Widget>[
+                _buildForm(),
+                Divider(),
+                (_address == null)
+                    ? SizedBox.shrink()
+                    : SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.only(right: 5.0, left: 5.0),
+                        child: Row(
+                          children: <Widget>[
+                            _buildLocationButton(_address.featureName),
+                            _buildLocationButton(_address.subLocality),
+                            _buildLocationButton(_address.locality),
+                            _buildLocationButton(_address.subAdminArea),
+                            _buildLocationButton(_address.adminArea),
+                            _buildLocationButton(_address.countryName),
+                          ],
+                        ),
+                      ),
+                (_address == null) ? SizedBox.shrink() : Divider(),
+              ],
+            ));
   }
 }

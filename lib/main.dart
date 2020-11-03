@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
+        // if(snapshot.connectionState == Connections)
         if (snapshot.hasData) {
           Provider.of<UserData>(context, listen: false).currentUserId =
               snapshot.data.uid;

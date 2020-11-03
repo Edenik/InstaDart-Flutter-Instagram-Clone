@@ -144,6 +144,7 @@ class _PostViewState extends State<PostView> {
                 onPressed: () async {
                   await ImageDownloader.downloadImage(
                     widget.post.imageUrl,
+                    outputMimeType: "image/jpg",
                   );
                   Navigator.pop(context);
                 },
@@ -181,6 +182,9 @@ class _PostViewState extends State<PostView> {
                   widget.author.name,
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
                 ),
+                subtitle: widget.post.location.isNotEmpty
+                    ? Text(widget.post.location)
+                    : SizedBox.shrink(),
                 trailing: IconButton(
                     icon: Icon(Icons.more_vert), onPressed: _showMenuDialog),
               )),

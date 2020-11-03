@@ -212,6 +212,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  geocoder:
+    dependency: "direct main"
+    description:
+      name: geocoder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   http:
     dependency: transitive
     description:
@@ -268,6 +275,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.2"
+  location:
+    dependency: "direct main"
+    description:
+      name: location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
+  location_platform_interface:
+    dependency: transitive
+    description:
+      name: location_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  location_web:
+    dependency: transitive
+    description:
+      name: location_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   matcher:
     dependency: transitive
     description:

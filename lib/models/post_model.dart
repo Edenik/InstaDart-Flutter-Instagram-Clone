@@ -6,6 +6,7 @@ class Post {
   final String caption;
   final int likeCount;
   final String authorId;
+  final String location;
   final Timestamp timestamp;
 
   Post({
@@ -14,6 +15,7 @@ class Post {
     this.caption,
     this.likeCount,
     this.authorId,
+    this.location,
     this.timestamp,
   });
 
@@ -24,6 +26,7 @@ class Post {
       caption: doc['caption'],
       likeCount: doc['likeCount'],
       authorId: doc['authorId'],
+      location: doc['location'] ?? "",
       timestamp: doc['timestamp'],
     );
   }
