@@ -13,6 +13,7 @@ import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PostView extends StatefulWidget {
   final String currentUserId;
@@ -244,16 +245,16 @@ class _PostViewState extends State<PostView> {
                 children: <Widget>[
                   IconButton(
                     icon: _isLiked
-                        ? Icon(
-                            Icons.favorite,
+                        ? FaIcon(
+                            FontAwesomeIcons.solidHeart,
                             color: Colors.red,
                           )
-                        : Icon(Icons.favorite_border),
+                        : FaIcon(FontAwesomeIcons.heart),
                     iconSize: 30.0,
                     onPressed: _likePost,
                   ),
                   IconButton(
-                    icon: Icon(Icons.comment),
+                    icon: FaIcon(FontAwesomeIcons.comment),
                     iconSize: 30.0,
                     onPressed: () => Navigator.push(
                       context,
