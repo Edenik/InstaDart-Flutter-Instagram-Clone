@@ -324,6 +324,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (_) => CommentsScreen(
             post: post,
             likeCount: post.likeCount,
+            author: _profileUser,
           ),
         ),
       ),
