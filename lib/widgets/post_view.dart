@@ -242,31 +242,47 @@ class _PostViewState extends State<PostView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  IconButton(
-                    icon: _isLiked
-                        ? FaIcon(
-                            FontAwesomeIcons.solidHeart,
-                            color: Colors.red,
-                          )
-                        : FaIcon(FontAwesomeIcons.heart),
-                    iconSize: 30.0,
-                    onPressed: _likePost,
-                  ),
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.comment),
-                    iconSize: 30.0,
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CommentsScreen(
-                          post: widget.post,
-                          likeCount: _likeCount,
-                          author: widget.author,
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: _isLiked
+                            ? FaIcon(
+                                FontAwesomeIcons.solidHeart,
+                                color: Colors.red,
+                              )
+                            : FaIcon(FontAwesomeIcons.heart),
+                        iconSize: 30.0,
+                        onPressed: _likePost,
+                      ),
+                      IconButton(
+                        icon: FaIcon(FontAwesomeIcons.comment),
+                        iconSize: 30.0,
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CommentsScreen(
+                              post: widget.post,
+                              likeCount: _likeCount,
+                              author: widget.author,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  )
+                    ],
+                  ),
+                  // TODO: Favorire Post
+                  // IconButton(
+                  //   icon: _isLiked
+                  //       ? FaIcon(
+                  //           FontAwesomeIcons.solidHeart,
+                  //           color: Colors.red,
+                  //         )
+                  //       : FaIcon(FontAwesomeIcons.heart),
+                  //   iconSize: 30.0,
+                  //   onPressed: _likePost,
+                  // ),
                 ],
               ),
               Padding(

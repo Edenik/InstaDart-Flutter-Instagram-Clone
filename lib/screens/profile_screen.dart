@@ -122,8 +122,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (_) => EditProfileScreen(
-                          user: user,
-                        ),
+                            user: user,
+                            updateUser: (User updateUser) {
+                              User updatedUser = User(
+                                id: updateUser.id,
+                                name: updateUser.name,
+                                email: user.email,
+                                profileImageUrl: updateUser.profileImageUrl,
+                                bio: updateUser.bio,
+                              );
+                              setState(() => _profileUser = updatedUser);
+                            }),
                       ),
                     ),
                 color: Colors.blue,

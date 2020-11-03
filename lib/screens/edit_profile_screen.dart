@@ -9,8 +9,9 @@ import 'package:instagram/utilities/constants.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
+  final Function updateUser;
 
-  EditProfileScreen({this.user});
+  EditProfileScreen({this.user, this.updateUser});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -69,6 +70,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       //Database Update
       DatabaseService.updateUser(user);
+
+      widget.updateUser(user);
 
       Navigator.pop(context);
     }
