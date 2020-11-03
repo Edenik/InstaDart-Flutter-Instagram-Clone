@@ -58,12 +58,12 @@ class DatabaseService {
         .setData({'timestamp': Timestamp.fromDate(DateTime.now())});
 
     Post post = Post(
-      authorId: currentUserId,
+      authorId: userId,
     );
 
     addActivityItem(
       comment: null,
-      currentUserId: userId,
+      currentUserId: currentUserId,
       isFollowEvent: true,
       post: post,
     );
@@ -95,12 +95,12 @@ class DatabaseService {
     });
 
     Post post = Post(
-      authorId: currentUserId,
+      authorId: userId,
     );
 
     deleteActivityItem(
       comment: null,
-      currentUserId: userId,
+      currentUserId: currentUserId,
       isFollowEvent: true,
       post: post,
     );
