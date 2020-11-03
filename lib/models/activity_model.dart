@@ -6,6 +6,7 @@ class Activity {
   final String postId;
   final String postImageUrl;
   final String comment;
+  final bool isFollowEvent;
   final Timestamp timestamp;
 
   Activity({
@@ -15,6 +16,7 @@ class Activity {
     this.postImageUrl,
     this.comment,
     this.timestamp,
+    this.isFollowEvent,
   });
 
   factory Activity.fromDoc(DocumentSnapshot doc) {
@@ -25,6 +27,7 @@ class Activity {
       postImageUrl: doc['postImageUrl'],
       comment: doc['comment'],
       timestamp: doc['timestamp'],
+      isFollowEvent: doc['isFollowEvent'] ?? false,
     );
   }
 }

@@ -56,6 +56,17 @@ class DatabaseService {
         .collection(usersFollowers)
         .document(currentUserId)
         .setData({'timestamp': Timestamp.fromDate(DateTime.now())});
+
+    Post post = Post(
+      authorId: currentUserId,
+    );
+
+    addActivityItem(
+      comment: null,
+      currentUserId: userId,
+      isFollowEvent: true,
+      post: post,
+    );
   }
 
   static void unfollowUser({String currentUserId, String userId}) {
@@ -82,6 +93,17 @@ class DatabaseService {
         doc.reference.delete();
       }
     });
+
+    Post post = Post(
+      authorId: currentUserId,
+    );
+
+    deleteActivityItem(
+      comment: null,
+      currentUserId: userId,
+      isFollowEvent: true,
+      post: post,
+    );
   }
 
   static Future<bool> isFollowingUser(
@@ -182,7 +204,12 @@ class DatabaseService {
           .document(currentUserId)
           .setData({});
     });
-    addActivityItem(currentUserId: currentUserId, post: post, comment: null);
+
+    addActivityItem(
+        currentUserId: currentUserId,
+        post: post,
+        comment: null,
+        isFollowEvent: false);
   }
 
   static void unlikePost({String currentUserId, Post post}) {
@@ -221,11 +248,15 @@ class DatabaseService {
       'authorId': currentUserId,
       'timestamp': Timestamp.fromDate(DateTime.now())
     });
-    addActivityItem(currentUserId: currentUserId, post: post, comment: comment);
+    addActivityItem(
+        currentUserId: currentUserId,
+        post: post,
+        comment: comment,
+        isFollowEvent: false);
   }
 
   static void addActivityItem(
-      {String currentUserId, Post post, String comment}) {
+      {String currentUserId, Post post, String comment, bool isFollowEvent}) {
     if (currentUserId != post.authorId) {
       activitiesRef.document(post.authorId).collection('userActivities').add({
         'fromUserId': currentUserId,
@@ -233,8 +264,30 @@ class DatabaseService {
         'postImageUrl': post.imageUrl,
         'comment': comment,
         'timestamp': Timestamp.fromDate(DateTime.now()),
+        'isFollowEvent': isFollowEvent
       });
     }
+  }
+
+  static void deleteActivityItem(
+      {String currentUserId,
+      Post post,
+      String comment,
+      bool isFollowEvent}) async {
+    QuerySnapshot activities = await activitiesRef
+        .document(post.authorId)
+        .collection('userActivities')
+        .where('fromUserId', isEqualTo: currentUserId)
+        .where('isFollowEvent', isEqualTo: true)
+        .getDocuments();
+
+    activities.documents.forEach((element) {
+      activitiesRef
+          .document(post.authorId)
+          .collection('userActivities')
+          .document(element.documentID)
+          .delete();
+    });
   }
 
   static Future<List<Activity>> getActivities(String userId) async {
