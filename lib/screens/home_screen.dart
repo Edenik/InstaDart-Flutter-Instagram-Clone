@@ -95,10 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           if (_currentUser == null)
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.account_circle,
-                size: 32.0,
-              ),
+              icon: SizedBox.shrink(),
             ),
           if (_currentUser != null)
             BottomNavigationBarItem(
@@ -107,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   shape: BoxShape.circle,
                   border: Border.all(
                     width: 2.0,
-                    color: Colors.black54,
+                    color: Colors.black,
                   ),
                 ),
                 child: CircleAvatar(
