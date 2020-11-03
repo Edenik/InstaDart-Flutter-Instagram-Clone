@@ -20,6 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   _buildUserTile(User user) {
     return ListTile(
       leading: CircleAvatar(
+        backgroundColor: Colors.grey,
         radius: 20.0,
         backgroundImage: user.profileImageUrl.isEmpty
             ? AssetImage(placeHolderImageRef)

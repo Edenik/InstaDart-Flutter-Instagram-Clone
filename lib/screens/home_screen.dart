@@ -111,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 child: CircleAvatar(
+                  backgroundColor: Colors.grey,
                   radius: 15.0,
                   backgroundImage: _currentUser.profileImageUrl.isEmpty
                       ? AssetImage(placeHolderImageRef)
@@ -119,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               icon: CircleAvatar(
+                backgroundColor: Colors.grey,
                 radius: 15.0,
                 backgroundImage: _currentUser.profileImageUrl.isEmpty
                     ? AssetImage(placeHolderImageRef)
