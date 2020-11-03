@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -260,7 +261,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     return _imageFile == null
         ? IconButton(
-            icon: Icon(Icons.file_upload),
+            icon: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.cameraRetro,
+                  size: 50.0,
+                ),
+                Text('Click'),
+              ],
+            ),
             onPressed: () => _showSelectImageDialog(),
           )
         : Scaffold(
