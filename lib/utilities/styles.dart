@@ -11,4 +11,4 @@ const kFontColorWhiteSize18TextStyle =
 const kFontSize18FontWeight600TextStyle =
     TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600);
 const kBillabongFamilyTextStyle =
-    TextStyle(fontSize: 35.0, fontFamily: 'Billabong');
+    TextStyle(fontSize: 35.0, fontFamily: 'Billabong', color: Colors.black);
