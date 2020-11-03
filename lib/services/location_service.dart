@@ -25,7 +25,6 @@ class LocationService {
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
-    print(first);
     return first;
   }
 }

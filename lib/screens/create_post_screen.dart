@@ -39,8 +39,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   //method to get Location and save into variables
   initPlatformState() async {
+    Address first = await LocationService.getUserLocation();
     if (mounted) {
-      Address first = await LocationService.getUserLocation();
       setState(() {
         _address = first;
       });
@@ -131,9 +131,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (!_isLoading &&
         _imageFile != null &&
         _captionController.text.isNotEmpty) {
-      setState(() {
-        _isLoading = true;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
 
       //Create Post
       String imageUrl = await StroageService.uploadPost(_imageFile);
@@ -151,10 +153,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       //Reset Data
       _captionController.clear();
       _locationController.clear();
-      setState(() {
-        _imageFile = null;
-        _isLoading = false;
-      });
+
+      if (mounted) {
+        setState(() {
+          _imageFile = null;
+          _isLoading = false;
+        });
+      }
     }
   }
 

@@ -57,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
             border: InputBorder.none,
-            hintText: 'Search',
+            hintText: 'Search for a user...',
             prefixIcon: Icon(
               Icons.search,
               size: 30.0,
@@ -66,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
               icon: Icon(Icons.clear),
               onPressed: _clearSearch,
             ),
-            filled: true,
+            // filled: true,
           ),
           onSubmitted: (input) {
             print(input);
