@@ -12,6 +12,7 @@ import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:image_downloader/image_downloader.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostView extends StatefulWidget {
   final String currentUserId;
@@ -299,8 +300,19 @@ class _PostViewState extends State<PostView> {
                     widget.post.caption,
                     style: TextStyle(fontSize: 16.0),
                     overflow: TextOverflow.ellipsis,
-                  ))
+                  )),
                 ],
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                child: Text(
+                  timeago.format(widget.post.timestamp.toDate()),
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12.0,
+                  ),
+                ),
               ),
               SizedBox(height: 12.0)
             ],

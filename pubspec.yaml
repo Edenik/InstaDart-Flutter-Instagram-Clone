@@ -41,6 +41,7 @@ dependencies:
   provider: ^4.3.2+2
   uuid: ^2.2.2
   location: ^3.0.2
+  timeago: ^2.0.28
 
 
 dev_dependencies:

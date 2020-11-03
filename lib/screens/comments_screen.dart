@@ -9,6 +9,7 @@ import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CommentsScreen extends StatefulWidget {
   final Post post;
@@ -80,7 +81,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
           SizedBox(
             height: 6.0,
           ),
-          Text(DateFormat.yMd().add_jm().format(comment.timestamp.toDate())),
+          Text(timeago.format(comment.timestamp.toDate())),
         ],
       ),
     );
@@ -89,7 +90,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
   _buildCommentTF() {
     final currentUserId =
         Provider.of<UserData>(context, listen: false).currentUserId;
-
     return IconTheme(
       data: IconThemeData(
         color: _isCommenting
