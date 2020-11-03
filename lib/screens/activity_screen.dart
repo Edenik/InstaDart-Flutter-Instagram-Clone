@@ -8,8 +8,8 @@ import 'package:instagram/screens/comments_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/widgets/default_appBar_widget.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ActivityScreen extends StatefulWidget {
   final String currentUserId;
@@ -59,7 +59,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ? Text('${user.name} commented: "${activity.comment}"')
               : Text('${user.name} liked your post'),
           subtitle: Text(
-            DateFormat.yMd().add_jm().format(activity.timestamp.toDate()),
+            timeago.format(activity.timestamp.toDate()),
           ),
           trailing: CachedNetworkImage(
             imageUrl: activity.postImageUrl,
