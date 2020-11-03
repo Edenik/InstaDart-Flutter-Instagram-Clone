@@ -48,16 +48,19 @@ exports.onUnfollowUser = functions.firestore
 exports.onUploadPost = functions.firestore
     .document('/posts/{userId}/userPosts/{postId}')
     .onCreate(async (snapshot, context) => {
-        console.log(snapshot.data());
         const userId = context.params.userId;
         const postId = context.params.postId;
+
         const userFollowersRef = admin
             .firestore()
             .collection('followers')
             .doc(userId)
             .collection('userFollowers');
+
         const userFollowersSnapshot = await userFollowersRef.get();
+
         userFollowersSnapshot.forEach(doc => {
+            //Uploading post to followers feed
             admin
                 .firestore()
                 .collection('feeds')
@@ -65,7 +68,16 @@ exports.onUploadPost = functions.firestore
                 .collection('userFeed')
                 .doc(postId)
                 .set(snapshot.data());
-        });
+        })
+        
+        //Uploading post to author feed
+        admin
+            .firestore()
+            .collection('feeds')
+            .doc(userId)
+            .collection('userFeed')
+            .doc(postId)
+            .set(snapshot.data());
     });
 
 
@@ -81,8 +93,11 @@ exports.onUpdatePost = functions.firestore
             .collection('followers')
             .doc(userId)
             .collection('userFollowers');
+
+
         const userFollowersSnapshot = await userFollowersRef.get();
         userFollowersSnapshot.forEach(async userDoc => {
+            //Updating post to followers feed
             const postRef = admin
                 .firestore()
                 .collection('feeds')
@@ -93,6 +108,19 @@ exports.onUpdatePost = functions.firestore
                 postDoc.ref.update(newPostData);
             }
         });
+
+
+        //Updating post to author feed
+        const postRef = admin
+            .firestore()
+            .collection('feeds')
+            .doc(userId)
+            .collection('userFeed');
+        const postDoc = await postRef.doc(postId).get();
+        if (postDoc.exists) {
+            postDoc.ref.update(newPostData);
+        }
+
     });
 
 // exports.onDeletePost = functions.firestore

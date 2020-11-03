@@ -29,29 +29,10 @@ class DatabaseService {
         'location': post.location,
         'timestamp': post.timestamp
       });
-      feedsRef.document(post.authorId).collection('userFeed').add({
-        'imageUrl': post.imageUrl,
-        'caption': post.caption,
-        'likeCount': post.likeCount,
-        'authorId': post.authorId,
-        'location': post.location,
-        'timestamp': post.timestamp
-      });
     } catch (e) {
       print(e);
     }
   }
-
-  // static void addPostToAuthorFeed(Post post) {
-  //   feedsRef.document(post.authorId).collection('userFeed').add({
-  //     'imageUrl': post.imageUrl,
-  //     'caption': post.caption,
-  //     'likeCount': post.likeCount,
-  //     'authorId': post.authorId,
-  //     'location': post.location,
-  //     'timestamp': post.timestamp
-  //   });
-  // }
 
   static void deletePost(Post post) {
     postsRef
