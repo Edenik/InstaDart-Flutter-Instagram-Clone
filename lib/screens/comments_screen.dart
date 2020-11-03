@@ -7,6 +7,7 @@ import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -68,7 +69,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
           onTap: () => _goToUserProfile(context, widget.post, currentUserId),
           child: Text(
             author.name,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: kFontWeightBoldTextStyle,
           )),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

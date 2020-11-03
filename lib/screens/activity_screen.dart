@@ -7,6 +7,7 @@ import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/comments_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/styles.dart';
 import 'package:instagram/widgets/default_appBar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -55,18 +56,37 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 ? AssetImage(placeHolderImageRef)
                 : CachedNetworkImageProvider(user.profileImageUrl),
           ),
-          title: activity.comment != null
-              ? Text('${user.name} commented: "${activity.comment}"')
-              : Text('${user.name} liked your post'),
+          title: activity.isFollowEvent
+              ? Row(
+                  children: <Widget>[
+                    Text('${user.name} ', style: kFontWeightBoldTextStyle),
+                    Text('started following you'),
+                  ],
+                )
+              : activity.comment != null
+                  ? Row(
+                      children: <Widget>[
+                        Text('${user.name} ', style: kFontWeightBoldTextStyle),
+                        Text('commented: "${activity.comment}'),
+                      ],
+                    )
+                  : Row(
+                      children: <Widget>[
+                        Text('${user.name} ', style: kFontWeightBoldTextStyle),
+                        Text('liked your post'),
+                      ],
+                    ),
           subtitle: Text(
             timeago.format(activity.timestamp.toDate()),
           ),
-          trailing: CachedNetworkImage(
-            imageUrl: activity.postImageUrl,
-            height: 40.0,
-            width: 40.0,
-            fit: BoxFit.cover,
-          ),
+          trailing: activity.isFollowEvent
+              ? SizedBox.shrink()
+              : CachedNetworkImage(
+                  imageUrl: activity.postImageUrl,
+                  height: 40.0,
+                  width: 40.0,
+                  fit: BoxFit.cover,
+                ),
           onTap: () async {
             String currentUserId =
                 Provider.of<UserData>(context, listen: false).currentUserId;
