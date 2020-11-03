@@ -80,6 +80,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 builder: (_) => CommentsScreen(
                   post: post,
                   likeCount: post.likeCount,
+                  author: snapshot.data,
                 ),
               ),
             );

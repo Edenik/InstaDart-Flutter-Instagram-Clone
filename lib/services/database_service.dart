@@ -255,7 +255,6 @@ class DatabaseService {
         .collection('userPosts')
         .document(postId)
         .get();
-
     return Post.fromDoc(postDocSnapshot);
   }
 }
