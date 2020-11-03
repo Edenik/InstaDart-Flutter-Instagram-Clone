@@ -9,6 +9,7 @@ import 'package:instagram/services/auth_service.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instagram/utilities/styles.dart';
 import 'package:instagram/widgets/post_view.dart';
 import 'package:provider/provider.dart';
 
@@ -139,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 textColor: Colors.white,
                 child: Text(
                   'Edit Profile',
-                  style: TextStyle(fontSize: 18.0),
+                  style: kFontSize18TextStyle,
                 )),
           )
         : Container(
@@ -150,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               textColor: _isFollowing ? Colors.black : Colors.white,
               child: Text(
                 _isFollowing ? 'Unfollow' : 'Follow',
-                style: TextStyle(fontSize: 18.0),
+                style: kFontSize18TextStyle,
               ),
             ),
           );
@@ -180,16 +181,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: <Widget>[
                             Text(
                               _posts.length.toString(),
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: kFontSize18FontWeight600TextStyle,
                             ),
                             Text(
                               'posts',
-                              style: TextStyle(
-                                color: Colors.black54,
-                              ),
+                              style: kFontColorBlack54TextStyle,
                             )
                           ],
                         ),
@@ -209,16 +205,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: <Widget>[
                               Text(
                                 _followerCount.toString(),
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: kFontSize18FontWeight600TextStyle,
                               ),
                               Text(
                                 'followers',
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                ),
+                                style: kFontColorBlack54TextStyle,
                               )
                             ],
                           ),
@@ -239,16 +230,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: <Widget>[
                               Text(
                                 _followingCount.toString(),
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: kFontSize18FontWeight600TextStyle,
                               ),
                               Text(
                                 'following',
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                ),
+                                style: kFontColorBlack54TextStyle,
                               )
                             ],
                           ),
@@ -269,7 +255,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: <Widget>[
               Text(
                 user.name,
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                style: kFontSize18FontWeight600TextStyle.copyWith(
+                    fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5.0),
               Container(
@@ -373,11 +360,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         title: Text(
           'Instagram',
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Billabong',
-            fontSize: 35.0,
-          ),
+          style: kBillabongFamilyTextStyle,
         ),
         actions: <Widget>[
           IconButton(

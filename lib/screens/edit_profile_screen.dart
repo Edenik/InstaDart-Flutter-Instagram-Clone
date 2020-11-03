@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/styles.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
@@ -102,7 +103,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         backgroundColor: Colors.white,
         title: Text(
           'Edit Profile',
-          style: TextStyle(color: Colors.black),
+          style: kFontColorBlackTextStyle,
         ),
       ),
       body: GestureDetector(
@@ -137,7 +138,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     TextFormField(
                       initialValue: _name,
-                      style: TextStyle(fontSize: 18.0),
+                      style: kFontSize18TextStyle,
                       decoration: InputDecoration(
                           icon: Icon(
                             Icons.person,
@@ -151,7 +152,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     TextFormField(
                       initialValue: _bio,
-                      style: TextStyle(fontSize: 18.0),
+                      style: kFontSize18TextStyle,
                       decoration: InputDecoration(
                           icon: Icon(
                             Icons.book,
@@ -173,7 +174,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         textColor: Colors.white,
                         child: Text(
                           'Save Profile',
-                          style: TextStyle(fontSize: 18.0),
+                          style: kFontSize18TextStyle,
                         ),
                       ),
                     )

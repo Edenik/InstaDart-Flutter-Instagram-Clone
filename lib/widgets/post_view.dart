@@ -12,6 +12,7 @@ import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:image_downloader/image_downloader.dart';
+import 'package:instagram/utilities/styles.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -117,7 +118,7 @@ class _PostViewState extends State<PostView> {
             cancelButton: CupertinoActionSheetAction(
               child: Text(
                 'Cancel',
-                style: TextStyle(color: Colors.red),
+                style: kFontColorRedTextStyle,
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -182,7 +183,7 @@ class _PostViewState extends State<PostView> {
                 ),
                 title: Text(
                   widget.author.name,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
+                  style: kFontSize18FontWeight600TextStyle,
                 ),
                 subtitle: widget.post.location.isNotEmpty
                     ? Text(widget.post.location)

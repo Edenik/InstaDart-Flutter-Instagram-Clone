@@ -165,7 +165,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
           backgroundColor: Colors.white,
           title: Text(
             'Comments',
-            style: TextStyle(color: Colors.black),
+            style: kFontColorBlackTextStyle,
           ),
         ),
         body: Column(

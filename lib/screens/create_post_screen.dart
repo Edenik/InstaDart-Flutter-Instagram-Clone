@@ -12,6 +12,7 @@ import 'package:instagram/models/user_data.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/services/location_service.dart';
 import 'package:instagram/services/storage_service.dart';
+import 'package:instagram/utilities/styles.dart';
 import 'package:provider/provider.dart';
 
 class CreatePostScreen extends StatefulWidget {
@@ -71,7 +72,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             cancelButton: CupertinoActionSheetAction(
               child: Text(
                 'Cancel',
-                style: TextStyle(color: Colors.red),
+                style: kFontColorRedTextStyle,
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -97,7 +98,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               SimpleDialogOption(
                 child: Text(
                   'Cancel',
-                  style: TextStyle(color: Colors.red),
+                  style: kFontColorRedTextStyle,
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
@@ -184,7 +185,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             child: Center(
               child: Text(
                 locationName,
-                style: TextStyle(color: Colors.grey),
+                style: kFontColorGreyTextStyle,
               ),
             ),
           ),
@@ -281,12 +282,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: _clearImage),
-              title: Text(
-                'New Post',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
+              title: Text('New Post', style: kFontColorBlackTextStyle),
               actions: <Widget>[
                 FlatButton(
                     onPressed: _caption.trim() != '' ? _submit : null,

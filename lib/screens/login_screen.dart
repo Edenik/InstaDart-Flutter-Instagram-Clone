@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
+import 'package:instagram/utilities/styles.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = 'login_screen';
@@ -32,10 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               Text(
                 'Instagram',
-                style: TextStyle(
-                  fontSize: 50.0,
-                  fontFamily: 'Billabong',
-                ),
+                style: kBillabongFamilyTextStyle.copyWith(fontSize: 50.0),
               ),
               Form(
                 key: _formKey,
@@ -74,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
                           'Login',
-                          style: TextStyle(color: Colors.white, fontSize: 18.0),
+                          style: kFontColorWhiteSize18TextStyle,
                         ),
                       ),
                     ),
@@ -88,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
                           'Go to Signup',
-                          style: TextStyle(color: Colors.white, fontSize: 18.0),
+                          style: kFontColorWhiteSize18TextStyle,
                         ),
                       ),
                     )

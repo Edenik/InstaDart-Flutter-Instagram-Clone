@@ -5,6 +5,7 @@ import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/styles.dart';
 import 'package:provider/provider.dart';
 
 class FollowersScreen extends StatefulWidget {
@@ -103,7 +104,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
             backgroundColor: Colors.white,
             title: Text(
               widget.user.name,
-              style: TextStyle(color: Colors.black),
+              style: kFontColorBlackTextStyle,
             ),
             bottom: TabBar(
               labelColor: Colors.black,

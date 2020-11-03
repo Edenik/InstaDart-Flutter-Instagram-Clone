@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/utilities/styles.dart';
 
 class DefaultAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
@@ -11,11 +12,7 @@ class DefaultAppBar extends StatelessWidget with PreferredSizeWidget {
       centerTitle: true,
       title: Text(
         'Instagram',
-        style: TextStyle(
-          color: Colors.black,
-          fontFamily: 'Billabong',
-          fontSize: 35.0,
-        ),
+        style: kBillabongFamilyTextStyle,
       ),
     );
   }
