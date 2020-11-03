@@ -4,6 +4,7 @@ import 'package:instagram/models/comment_model.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/models/user_model.dart';
+import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:intl/intl.dart';
@@ -20,11 +21,23 @@ class CommentsScreen extends StatefulWidget {
   _CommentsScreenState createState() => _CommentsScreenState();
 }
 
+_goToUserProfile(BuildContext context, Post post, String currentUserId) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => ProfileScreen(
+        currentUserId: currentUserId,
+        userId: post.authorId,
+      ),
+    ),
+  );
+}
+
 class _CommentsScreenState extends State<CommentsScreen> {
   final TextEditingController _commentController = TextEditingController();
   bool _isCommenting = false;
 
-  _buildComment(Comment comment) {
+  _buildComment(Comment comment, String currentUserId) {
     return FutureBuilder(
       future: DatabaseService.getUserWithId(comment.authorId),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -33,33 +46,43 @@ class _CommentsScreenState extends State<CommentsScreen> {
         }
         User author = snapshot.data;
 
-        return Column(
-          children: <Widget>[
-            ListTile(
-              leading: CircleAvatar(
-                radius: 25.0,
-                backgroundColor: Colors.grey,
-                backgroundImage: author.profileImageUrl.isEmpty
-                    ? AssetImage(placeHolderImageRef)
-                    : CachedNetworkImageProvider(author.profileImageUrl),
-              ),
-              title: Text(author.name),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(comment.content),
-                  SizedBox(
-                    height: 6.0,
-                  ),
-                  Text(DateFormat.yMd()
-                      .add_jm()
-                      .format(comment.timestamp.toDate())),
-                ],
-              ),
-            ),
-          ],
-        );
+        return _buildListTile(context, author, comment, currentUserId);
       },
+    );
+  }
+
+  _buildListTile(BuildContext context, User author, Comment comment,
+      String currentUserId) {
+    return ListTile(
+      leading: GestureDetector(
+        onTap: () => _goToUserProfile(context, widget.post, currentUserId),
+        child: CircleAvatar(
+          radius: 25.0,
+          backgroundColor: Colors.grey,
+          backgroundImage: author.profileImageUrl.isEmpty
+              ? AssetImage(placeHolderImageRef)
+              : CachedNetworkImageProvider(author.profileImageUrl),
+        ),
+      ),
+      title: GestureDetector(
+          onTap: () => _goToUserProfile(context, widget.post, currentUserId),
+          child: Text(
+            author.name,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: 6.0,
+          ),
+          Text(comment.content),
+          SizedBox(
+            height: 6.0,
+          ),
+          Text(DateFormat.yMd().add_jm().format(comment.timestamp.toDate())),
+        ],
+      ),
     );
   }
 
@@ -78,7 +101,14 @@ class _CommentsScreenState extends State<CommentsScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(width: 10.0),
+            CircleAvatar(
+              radius: 18.0,
+              backgroundColor: Colors.grey,
+              backgroundImage: widget.author.profileImageUrl.isEmpty
+                  ? AssetImage(placeHolderImageRef)
+                  : CachedNetworkImageProvider(widget.author.profileImageUrl),
+            ),
+            SizedBox(width: 20.0),
             Expanded(
               child: TextField(
                 controller: _commentController,
@@ -89,7 +119,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   });
                 },
                 decoration:
-                    InputDecoration.collapsed(hintText: 'Write a comment...'),
+                    InputDecoration.collapsed(hintText: 'Add a comment...'),
               ),
             ),
             Container(
@@ -119,6 +149,14 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String currentUserId =
+        Provider.of<UserData>(context, listen: false).currentUserId;
+
+    Comment postDescription = Comment(
+        authorId: widget.author.id,
+        content: widget.post.caption,
+        id: widget.post.id,
+        timestamp: widget.post.timestamp);
     // final String currentUserId =
     //     Provider.of<UserData>(context, listen: false).currentUserId;
 
@@ -132,21 +170,20 @@ class _CommentsScreenState extends State<CommentsScreen> {
         ),
         body: Column(
           children: <Widget>[
-            // PostView(
-            //   author: widget.author,
-            //   currentUserId: currentUserId,
-            //   post: widget.post,
+            SizedBox(height: 10.0),
+            _buildListTile(
+                context, widget.author, postDescription, currentUserId),
+            Divider(),
+            // Padding(
+            //   padding: const EdgeInsets.all(12.0),
+            //   child: Text(
+            //     '${widget.likeCount} likes',
+            //     style: TextStyle(
+            //       fontSize: 20.0,
+            //       fontWeight: FontWeight.w600,
+            //     ),
+            //   ),
             // ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                '${widget.likeCount} likes',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
             StreamBuilder(
               stream: commentsRef
                   .document(widget.post.id)
@@ -165,7 +202,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       Comment comment =
                           Comment.fromDoc(snapshot.data.documents[index]);
-                      return _buildComment(comment);
+                      return _buildComment(comment, currentUserId);
                     },
                   ),
                 );

@@ -11,7 +11,6 @@ import 'package:instagram/models/user_data.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/services/location_service.dart';
 import 'package:instagram/services/storage_service.dart';
-import 'package:instagram/widgets/post_form.dart';
 import 'package:provider/provider.dart';
 
 class CreatePostScreen extends StatefulWidget {

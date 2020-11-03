@@ -184,7 +184,7 @@ class _PostViewState extends State<PostView> {
                 ),
                 subtitle: widget.post.location.isNotEmpty
                     ? Text(widget.post.location)
-                    : SizedBox.shrink(),
+                    : null,
                 trailing: IconButton(
                     icon: Icon(Icons.more_vert), onPressed: _showMenuDialog),
               )),
