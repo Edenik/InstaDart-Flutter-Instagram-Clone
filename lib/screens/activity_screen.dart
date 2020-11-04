@@ -20,6 +20,7 @@ class ActivityScreen extends StatefulWidget {
 
 class _ActivityScreenState extends State<ActivityScreen> {
   List<Activity> _activities = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -28,11 +29,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
   }
 
   _setupActivities() async {
+    setState(() => _isLoading = true);
     List<Activity> activities =
         await DatabaseService.getActivities(widget.currentUserId);
     if (mounted) {
       setState(() {
         _activities = activities;
+        _isLoading = false;
       });
     }
   }
@@ -123,13 +126,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () => _setupActivities(),
-        child: ListView.builder(
-          itemCount: _activities.length,
-          itemBuilder: (BuildContext context, int index) {
-            Activity activity = _activities[index];
-            return _buildActivity(activity);
-          },
-        ),
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemCount: _activities.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Activity activity = _activities[index];
+                  return _buildActivity(activity);
+                },
+              ),
       ),
     );
   }
