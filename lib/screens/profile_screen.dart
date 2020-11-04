@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instagram/widgets/custom_drawer.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';
@@ -382,6 +383,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading:
+            widget.userId == widget.currentUserId ? false : true,
         backgroundColor: Colors.white,
         title: _profileUser != null
             ? Text(
@@ -389,13 +392,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(color: Colors.black),
               )
             : SizedBox.shrink(),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: AuthService.logout,
-          )
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.exit_to_app),
+        //     onPressed: AuthService.logout,
+        //   )
+        // ],
       ),
+      endDrawer: _profileUser != null && widget.userId == widget.currentUserId
+          ? CustomDrawer(
+              name: _profileUser.name,
+            )
+          : null,
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
