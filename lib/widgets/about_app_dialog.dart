@@ -121,7 +121,7 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
             ],
           ),
           onPressed: () async {
-            const url = 'https://Edenik.com';
+            const url = 'https://github.com/Edenik/Flutter-Instagram-Clone';
             if (await canLaunch(url)) {
               await launch(url);
             } else {
