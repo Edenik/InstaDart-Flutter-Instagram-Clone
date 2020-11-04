@@ -16,9 +16,9 @@ import 'package:provider/provider.dart';
 class ProfileScreen extends StatefulWidget {
   final String userId;
   final String currentUserId;
-  final Function onUpdate;
+  final Function onProfileEdited;
 
-  ProfileScreen({this.userId, this.currentUserId, this.onUpdate});
+  ProfileScreen({this.userId, this.currentUserId, this.onProfileEdited});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -140,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     updatedUser.profileImageUrl;
                                 _profileUser = updatedUser;
                               });
-                              widget.onUpdate();
+                              widget.onProfileEdited();
                             }),
                       ),
                     ),
