@@ -15,8 +15,9 @@ class CommentsScreen extends StatefulWidget {
   final Post post;
   final int likeCount;
   final User author;
+  final String currentUserId;
 
-  CommentsScreen({this.post, this.likeCount, this.author});
+  CommentsScreen({this.post, this.likeCount, this.author, this.currentUserId});
 
   @override
   _CommentsScreenState createState() => _CommentsScreenState();
@@ -37,6 +38,20 @@ _goToUserProfile(BuildContext context, Post post, String currentUserId) {
 class _CommentsScreenState extends State<CommentsScreen> {
   final TextEditingController _commentController = TextEditingController();
   bool _isCommenting = false;
+  User _currentUser;
+
+  @override
+  initState() {
+    super.initState();
+    _getCurrenUser(widget.currentUserId);
+  }
+
+  _getCurrenUser(String userId) async {
+    User user = await DatabaseService.getUserWithId(userId);
+    setState(() {
+      _currentUser = user;
+    });
+  }
 
   _buildComment(Comment comment, String currentUserId) {
     return FutureBuilder(
@@ -101,13 +116,16 @@ class _CommentsScreenState extends State<CommentsScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            CircleAvatar(
-              radius: 18.0,
-              backgroundColor: Colors.grey,
-              backgroundImage: widget.author.profileImageUrl.isEmpty
-                  ? AssetImage(placeHolderImageRef)
-                  : CachedNetworkImageProvider(widget.author.profileImageUrl),
-            ),
+            _currentUser != null
+                ? CircleAvatar(
+                    radius: 18.0,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: _currentUser.profileImageUrl.isEmpty
+                        ? AssetImage(placeHolderImageRef)
+                        : CachedNetworkImageProvider(
+                            _currentUser.profileImageUrl),
+                  )
+                : SizedBox.shrink(),
             SizedBox(width: 20.0),
             Expanded(
               child: TextField(

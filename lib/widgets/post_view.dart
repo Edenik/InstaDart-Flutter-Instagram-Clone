@@ -267,6 +267,7 @@ class _PostViewState extends State<PostView> {
                               post: widget.post,
                               likeCount: _likeCount,
                               author: widget.author,
+                              currentUserId: widget.currentUserId,
                             ),
                           ),
                         ),

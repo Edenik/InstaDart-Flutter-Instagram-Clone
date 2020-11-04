@@ -312,6 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             post: post,
             likeCount: post.likeCount,
             author: _profileUser,
+            currentUserId: widget.currentUserId,
           ),
         ),
       ),
