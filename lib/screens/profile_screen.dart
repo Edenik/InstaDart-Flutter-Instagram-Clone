@@ -26,10 +26,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isFollowing = false;
-  int _followerCount = 0;
+  int _followersCount = 0;
   int _followingCount = 0;
-  List<String> _userFollowers = [];
-  List<String> _userFollowing = [];
   List<Post> _posts = [];
   int _displayPosts = 0; // 0 - grid, 1 - column
   User _profileUser;
@@ -55,22 +53,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _setupFollowers() async {
-    // int userFollowersCount = await DatabaseService.numFollowers(widget.userId);
-    List<String> userFollowers =
-        await DatabaseService.getUserFollowersIds(widget.userId);
+    int userFollowersCount = await DatabaseService.numFollowers(widget.userId);
     setState(() {
-      _userFollowers = userFollowers;
-      _followerCount = userFollowers.length;
+      _followersCount = userFollowersCount;
     });
   }
 
   _setupFollowing() async {
-    // int userFollowingCount = await DatabaseService.numFollowing(widget.userId);
-    List<String> userFollowing =
-        await DatabaseService.getUserFollowingIds(widget.userId);
+    int userFollowingCount = await DatabaseService.numFollowing(widget.userId);
     setState(() {
-      _userFollowing = userFollowing;
-      _followingCount = userFollowing.length;
+      _followingCount = userFollowingCount;
     });
   }
 
@@ -101,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         currentUserId: widget.currentUserId, userId: widget.userId);
     setState(() {
       _isFollowing = false;
-      _followerCount--;
+      _followersCount--;
     });
   }
 
@@ -110,13 +102,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         currentUserId: widget.currentUserId, userId: widget.userId);
     setState(() {
       _isFollowing = true;
-      _followerCount++;
+      _followersCount++;
     });
   }
 
   _displayButton(User user) {
-    return user.id ==
-            Provider.of<UserData>(context, listen: false).currentUserId
+    return user.id == widget.currentUserId
         ? Container(
             width: 200.0,
             child: FlatButton(
@@ -202,17 +193,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (_) => FollowersScreen(
+                                currenUserId: widget.currentUserId,
                                 user: user,
-                                followers: _userFollowers,
-                                following: _userFollowing,
+                                followersCount: _followersCount,
+                                followingCount: _followingCount,
                                 selectedTab: 0,
+                                updateFollowersCount: (count) {
+                                  setState(() => _followersCount = count);
+                                },
+                                updateFollowingCount: (count) {
+                                  setState(() => _followingCount = count);
+                                },
                               ),
                             ),
                           ),
                           child: Column(
                             children: <Widget>[
                               Text(
-                                _followerCount.toString(),
+                                _followersCount.toString(),
                                 style: kFontSize18FontWeight600TextStyle,
                               ),
                               Text(
@@ -227,10 +225,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (_) => FollowersScreen(
+                                currenUserId: widget.currentUserId,
                                 user: user,
-                                followers: _userFollowers,
-                                following: _userFollowing,
+                                followersCount: _followersCount,
+                                followingCount: _followingCount,
                                 selectedTab: 1,
+                                updateFollowersCount: (count) {
+                                  setState(() => _followersCount = count);
+                                },
+                                updateFollowingCount: (count) {
+                                  setState(() => _followingCount = count);
+                                },
                               ),
                             ),
                           ),
