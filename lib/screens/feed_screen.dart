@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instagram/models/post_model.dart';
-import 'package:instagram/models/user_model.dart';
+
+import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/styles.dart';
 import 'package:instagram/widgets/post_view.dart';

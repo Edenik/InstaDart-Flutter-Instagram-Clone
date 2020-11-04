@@ -7,13 +7,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram/models/post_model.dart';
-import 'package:instagram/models/user_data.dart';
-import 'package:instagram/services/database_service.dart';
-import 'package:instagram/services/location_service.dart';
-import 'package:instagram/services/storage_service.dart';
-import 'package:instagram/utilities/styles.dart';
 import 'package:provider/provider.dart';
+
+import 'package:instagram/models/models.dart';
+import 'package:instagram/services/services.dart';
+
+import 'package:instagram/utilities/styles.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override

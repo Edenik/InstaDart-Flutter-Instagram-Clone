@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:instagram/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+
+import 'package:instagram/utilities/constants.dart';
 
 class StroageService {
   static Future<String> uploadUserProfileImage(

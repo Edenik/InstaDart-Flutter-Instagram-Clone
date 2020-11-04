@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:instagram/models/activity_model.dart';
-import 'package:instagram/models/post_model.dart';
-import 'package:instagram/models/user_model.dart';
+import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
 
 class DatabaseService {

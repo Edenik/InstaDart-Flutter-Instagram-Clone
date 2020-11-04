@@ -1,12 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram/models/user_data.dart';
-import 'package:instagram/models/user_model.dart';
-import 'package:instagram/screens/screens.dart';
-import 'package:instagram/services/database_service.dart';
-import 'package:instagram/utilities/constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
+
+import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/screens.dart';
+import 'package:instagram/services/services.dart';
+import 'package:instagram/utilities/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   final String currentUserId;
