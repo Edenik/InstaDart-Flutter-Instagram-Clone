@@ -101,7 +101,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   post: post,
                   likeCount: post.likeCount,
                   author: snapshot.data,
-                  currentUserId: widget.currentUserId,
                 ),
               ),
             );

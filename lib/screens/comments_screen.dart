@@ -15,9 +15,8 @@ class CommentsScreen extends StatefulWidget {
   final Post post;
   final int likeCount;
   final User author;
-  final String currentUserId;
 
-  CommentsScreen({this.post, this.likeCount, this.author, this.currentUserId});
+  CommentsScreen({this.post, this.likeCount, this.author});
 
   @override
   _CommentsScreenState createState() => _CommentsScreenState();
@@ -38,20 +37,6 @@ _goToUserProfile(BuildContext context, Post post, String currentUserId) {
 class _CommentsScreenState extends State<CommentsScreen> {
   final TextEditingController _commentController = TextEditingController();
   bool _isCommenting = false;
-  User _currentUser;
-
-  @override
-  initState() {
-    super.initState();
-    _getCurrenUser(widget.currentUserId);
-  }
-
-  _getCurrenUser(String userId) async {
-    User user = await DatabaseService.getUserWithId(userId);
-    setState(() {
-      _currentUser = user;
-    });
-  }
 
   _buildComment(Comment comment, String currentUserId) {
     return FutureBuilder(
@@ -105,6 +90,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
   _buildCommentTF() {
     final currentUserId =
         Provider.of<UserData>(context, listen: false).currentUserId;
+    final profileImageUrl =
+        Provider.of<UserData>(context, listen: false).profileImageUrl;
     return IconTheme(
       data: IconThemeData(
         color: _isCommenting
@@ -116,14 +103,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _currentUser != null
+            profileImageUrl != null
                 ? CircleAvatar(
                     radius: 18.0,
                     backgroundColor: Colors.grey,
-                    backgroundImage: _currentUser.profileImageUrl.isEmpty
+                    backgroundImage: profileImageUrl.isEmpty
                         ? AssetImage(placeHolderImageRef)
-                        : CachedNetworkImageProvider(
-                            _currentUser.profileImageUrl),
+                        : CachedNetworkImageProvider(profileImageUrl),
                   )
                 : SizedBox.shrink(),
             SizedBox(width: 20.0),
@@ -175,8 +161,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
         content: widget.post.caption,
         id: widget.post.id,
         timestamp: widget.post.timestamp);
-    // final String currentUserId =
-    //     Provider.of<UserData>(context, listen: false).currentUserId;
 
     return Scaffold(
         appBar: AppBar(
