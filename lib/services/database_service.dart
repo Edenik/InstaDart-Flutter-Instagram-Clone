@@ -142,7 +142,6 @@ class DatabaseService {
 
     List<String> following =
         followingSnapshot.documents.map((doc) => doc.documentID).toList();
-    // print(followers);
     return following;
   }
 
@@ -154,7 +153,6 @@ class DatabaseService {
 
     List<String> followers =
         followersSnapshot.documents.map((doc) => doc.documentID).toList();
-    // print(followers);
     return followers;
   }
 
@@ -175,8 +173,6 @@ class DatabaseService {
         .collection('userPosts')
         .orderBy('timestamp', descending: true)
         .getDocuments();
-    print(userId);
-    print(userPostsSnapshot.documents.length);
     List<Post> posts =
         userPostsSnapshot.documents.map((doc) => Post.fromDoc(doc)).toList();
     return posts;

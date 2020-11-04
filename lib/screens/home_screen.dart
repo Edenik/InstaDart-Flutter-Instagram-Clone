@@ -103,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (_currentUser != null)
             BottomNavigationBarItem(
               activeIcon: Container(
+                padding: const EdgeInsets.all(1.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(

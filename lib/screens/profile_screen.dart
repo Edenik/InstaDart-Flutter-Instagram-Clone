@@ -320,12 +320,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => CommentsScreen(
-            post: post,
-            likeCount: post.likeCount,
-            author: _profileUser,
-          ),
+        MaterialPageRoute<bool>(
+          builder: (BuildContext context) {
+            return Center(
+              child: Scaffold(
+                  appBar: AppBar(
+                    title: Text('Photo',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold)),
+                    backgroundColor: Colors.white,
+                  ),
+                  body: ListView(
+                    children: <Widget>[
+                      Container(
+                        child: PostView(
+                          currentUserId: widget.currentUserId,
+                          post: post,
+                          author: _profileUser,
+                        ),
+                      ),
+                    ],
+                  )),
+            );
+          },
         ),
       ),
       child: Image(
@@ -370,11 +387,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'Instagram',
-          style: kBillabongFamilyTextStyle,
-        ),
+        title: _profileUser != null
+            ? Text(
+                _profileUser.name,
+                style: TextStyle(color: Colors.black),
+              )
+            : SizedBox.shrink(),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),
@@ -392,11 +410,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           }
           User user = User.fromDoc(snapshot.data);
-          // print(user.name);
-          // print(user.bio);
-          // print(user.email);
-          // print(user.id);
-          // print(_posts.length);
           return ListView(
             physics: AlwaysScrollableScrollPhysics(),
             children: <Widget>[

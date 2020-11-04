@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/services/services.dart';
-import 'package:instagram/widgets/default_appBar_widget.dart';
+import 'package:instagram/utilities/styles.dart';
 import 'package:instagram/widgets/post_view.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -36,7 +36,14 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Instagram',
+          style: kBillabongFamilyTextStyle,
+        ),
+      ),
       body: !_isLoading
           ? RefreshIndicator(
               // If posts finished loading

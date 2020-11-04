@@ -152,13 +152,6 @@ class _PostViewState extends State<PostView> {
                   Navigator.pop(context);
                 },
               ),
-              // SimpleDialogOption(
-              //   child: Text(
-              //     'Download Image',
-              //     style: TextStyle(color: Colors.red),
-              //   ),
-              //   onPressed: () => Navigator.pop(context),
-              // ),
             ],
           );
         });
@@ -172,38 +165,25 @@ class _PostViewState extends State<PostView> {
         GestureDetector(
           onTap: () => _goToUserProfile(context, widget.post),
           child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage: widget.author.profileImageUrl.isEmpty
-                      ? AssetImage(placeHolderImageRef)
-                      : CachedNetworkImageProvider(
-                          widget.author.profileImageUrl),
-                ),
-                title: Text(
-                  widget.author.name,
-                  style: kFontSize18FontWeight600TextStyle,
-                ),
-                subtitle: widget.post.location.isNotEmpty
-                    ? Text(widget.post.location)
-                    : null,
-                trailing: IconButton(
-                    icon: Icon(Icons.more_vert), onPressed: _showMenuDialog),
-              )),
-          //    Row(
-          //   children: <Widget>[
-
-          //     SizedBox(
-          //       width: 8.0,
-          //     ),
-          //     Text(
-          //       widget.author.name,
-          //       style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
-          //     ),
-          //     IconButton(icon: Icon(Icons.menu), onPressed: null)
-          //   ],
-          // ),
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.grey,
+                backgroundImage: widget.author.profileImageUrl.isEmpty
+                    ? AssetImage(placeHolderImageRef)
+                    : CachedNetworkImageProvider(widget.author.profileImageUrl),
+              ),
+              title: Text(
+                widget.author.name,
+                style: kFontSize18FontWeight600TextStyle,
+              ),
+              subtitle: widget.post.location.isNotEmpty
+                  ? Text(widget.post.location)
+                  : null,
+              trailing: IconButton(
+                  icon: Icon(Icons.more_vert), onPressed: _showMenuDialog),
+            ),
+          ),
         ),
         GestureDetector(
           onDoubleTap: _likePost,
@@ -332,7 +312,7 @@ class _PostViewState extends State<PostView> {
                   ),
                 ),
               ),
-              SizedBox(height: 12.0)
+              SizedBox(height: 12.0),
             ],
           ),
         )
