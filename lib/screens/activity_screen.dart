@@ -67,7 +67,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   ? Row(
                       children: <Widget>[
                         Text('${user.name} ', style: kFontWeightBoldTextStyle),
-                        Text('commented: "${activity.comment}'),
+                        Expanded(
+                            child: Text(
+                          'commented: "${activity.comment}',
+                          overflow: TextOverflow.ellipsis,
+                        )),
                       ],
                     )
                   : Row(

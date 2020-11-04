@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _currentUser = currentUser;
     });
-    print(_currentUser.name);
   }
 
   @override
@@ -51,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           CreatePostScreen(),
           ActivityScreen(currentUserId: widget.currentUserId),
           ProfileScreen(
+            onUpdate: _getCurrentUser,
             userId: widget.currentUserId,
             currentUserId: widget.currentUserId,
           ),
