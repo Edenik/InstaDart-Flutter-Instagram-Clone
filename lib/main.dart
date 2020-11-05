@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/models/models.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,9 @@ class MyApp extends StatelessWidget {
     return StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
-        // if(snapshot.connectionState == Connections)
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SplashScreen();
+        }
         if (snapshot.hasData) {
           Provider.of<UserData>(context, listen: false).currentUserId =
               snapshot.data.uid;
