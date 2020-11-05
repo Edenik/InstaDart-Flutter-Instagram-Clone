@@ -101,7 +101,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.color,
         title: Text(
@@ -133,9 +132,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       onPressed: _handleImageFromGallery,
                       child: Text(
                         'Change Profile Image',
-                        style: TextStyle(
-                            color: Theme.of(context).accentColor,
-                            fontSize: 16.0),
+                        style: TextStyle(color: Colors.blue, fontSize: 16.0),
                       ),
                     ),
                     TextFormField(

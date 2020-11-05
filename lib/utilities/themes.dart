@@ -27,7 +27,7 @@ final lightTheme = ThemeData(
   accentColor: Colors.black,
   hintColor: Colors.black54,
   accentIconTheme: IconThemeData(color: Colors.white),
-  dividerColor: Colors.white54,
+  dividerColor: Colors.black54,
   iconTheme: IconThemeData(color: Colors.black),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,

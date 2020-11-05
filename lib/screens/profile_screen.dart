@@ -276,7 +276,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 15.0),
                 ),
               ),
-              Divider(),
+              Divider(
+                color: Theme.of(context).dividerColor,
+                height: 1,
+              ),
             ],
           ),
         )
@@ -414,7 +417,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: <Widget>[
               _buildProfileInfo(user),
               _buildToggleButtons(),
-              Divider(),
+              Divider(color: Theme.of(context).dividerColor),
               _buildDisplayPosts(),
             ],
           );
