@@ -63,7 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: CupertinoTabBar(
         currentIndex: _currentTab,
-        activeColor: Colors.black,
+        backgroundColor:
+            Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedIconTheme.color,
+        inactiveColor: Theme.of(context)
+            .bottomNavigationBarTheme
+            .unselectedIconTheme
+            .color,
         onTap: (int index) {
           setState(() {
             _currentTab = index;
@@ -108,7 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   shape: BoxShape.circle,
                   border: Border.all(
                     width: 2.0,
-                    color: Colors.black,
+                    color: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .selectedIconTheme
+                        .color,
                   ),
                 ),
                 child: CircleAvatar(

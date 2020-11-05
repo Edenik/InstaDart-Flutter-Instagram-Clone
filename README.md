@@ -4,7 +4,7 @@ A working Instagram clone written in Flutter using Firebase / Firestore
 # Demo
 [Download the release APK to try out Instagram Clone](https://github.com/Edenik/Flutter-Instagram-Clone/raw/main/media/app-release.apk) 
 
-Latest Update : 05/11/20
+Latest Update : 06/11/20
 
 
 
@@ -19,7 +19,8 @@ Latest Update : 05/11/20
  - [ ] Direct Messaging
  - [ ] Stories
  - [ ] Clean up code
- - [ ] Dark / Light Theme Mode
+ - [X] Dark / Light Theme Mode
+ - [X] Splash Screen
 
 
 This app based of tutorial by -

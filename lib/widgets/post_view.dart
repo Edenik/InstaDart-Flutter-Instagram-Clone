@@ -12,7 +12,7 @@ import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:image_downloader/image_downloader.dart';
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

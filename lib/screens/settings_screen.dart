@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/theme_screen.dart';
 import 'package:instagram/services/services.dart';
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/widgets/about_app_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -33,10 +34,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           'Settings',
-          style: kFontColorBlackTextStyle,
         ),
       ),
       body: Column(
@@ -50,7 +49,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               () => showDialog(
                   context: context,
                   builder: (_) => AboutAppDialog(_currentUserId))),
-          _buildOptionTile(FaIcon(FontAwesomeIcons.palette), 'Theme', null),
+          _buildOptionTile(
+              FaIcon(FontAwesomeIcons.palette),
+              'Theme',
+              () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ThemeScreen(),
+                    ),
+                  )),
           Expanded(
               child: Align(
             alignment: FractionalOffset.bottomCenter,
@@ -59,7 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: Text(
                   'Log Out',
                   style: kFontSize18FontWeight600TextStyle.copyWith(
-                      color: Theme.of(context).primaryColor),
+                      color: Colors.blue),
                 ),
                 onTap: () {
                   AuthService.logout();

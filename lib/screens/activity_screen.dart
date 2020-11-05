@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -7,7 +8,6 @@ import 'package:instagram/services/services.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/utilities/styles.dart';
 
 class ActivityScreen extends StatefulWidget {
   final String currentUserId;
@@ -118,10 +118,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.color,
         title: Text(
           'Activity',
-          style: TextStyle(color: Colors.black),
         ),
       ),
       body: RefreshIndicator(

@@ -5,7 +5,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 
 class FollowersScreen extends StatefulWidget {
   final User user;
@@ -131,6 +131,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
                   child: Text(
                     'Instagram won\'t tell ${user.name} they were removed from your followers.',
                     textAlign: TextAlign.center,
+                    style: kHintColorStyle(context),
                   ),
                 ),
                 SizedBox(
@@ -145,7 +146,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
                     child: Text(
                   'Remove',
                   style: kFontSize18TextStyle.copyWith(
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.blue,
                     fontWeight: FontWeight.bold,
                   ),
                 )),
@@ -240,7 +241,9 @@ class _FollowersScreenState extends State<FollowersScreen> {
       child: Text(
         _userFollowingState[index] ? 'Unfollow' : 'Follow',
         style: TextStyle(
-            color: _userFollowingState[index] ? Colors.black : Colors.white),
+            color: _userFollowingState[index]
+                ? Theme.of(context).accentColor
+                : Theme.of(context).primaryColor),
       ),
     );
   }
@@ -280,13 +283,9 @@ class _FollowersScreenState extends State<FollowersScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text(
-              widget.user.name,
-              style: kFontColorBlackTextStyle,
-            ),
+            backgroundColor: Theme.of(context).appBarTheme.color,
+            title: Text(widget.user.name),
             bottom: TabBar(
-              labelColor: Colors.black,
               tabs: [
                 Tab(
                   text: '$_followersCount Followers',

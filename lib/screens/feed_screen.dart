@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/widgets/post_view.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -37,7 +37,7 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.color,
         centerTitle: true,
         title: Text(
           'Instagram',

@@ -7,7 +7,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 
 class CommentsScreen extends StatefulWidget {
   final Post post;
@@ -162,7 +162,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).appBarTheme.color,
           title: Text(
             'Comments',
             style: kFontColorBlackTextStyle,

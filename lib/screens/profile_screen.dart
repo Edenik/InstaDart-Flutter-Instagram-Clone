@@ -7,7 +7,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/widgets/post_view.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -181,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Text(
                               'posts',
-                              style: kFontColorBlack54TextStyle,
+                              style: kHintColorStyle(context),
                             )
                           ],
                         ),
@@ -212,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               Text(
                                 'followers',
-                                style: kFontColorBlack54TextStyle,
+                                style: kHintColorStyle(context),
                               )
                             ],
                           ),
@@ -244,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               Text(
                                 'following',
-                                style: kFontColorBlack54TextStyle,
+                                style: kHintColorStyle(context),
                               )
                             ],
                           ),
@@ -292,8 +292,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icon(Icons.grid_on),
           iconSize: 30.0,
           color: _displayPosts == 0
-              ? Theme.of(context).primaryColor
-              : Colors.grey[300],
+              ? Theme.of(context).accentColor
+              : Theme.of(context).hintColor,
           onPressed: () => setState(() {
             _displayPosts = 0;
           }),
@@ -302,8 +302,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icon(Icons.list),
           iconSize: 30.0,
           color: _displayPosts == 1
-              ? Theme.of(context).primaryColor
-              : Colors.grey[300],
+              ? Theme.of(context).accentColor
+              : Theme.of(context).hintColor,
           onPressed: () => setState(() {
             _displayPosts = 1;
           }),
@@ -325,7 +325,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: Text('Photo',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold)),
-                    backgroundColor: Colors.white,
                   ),
                   body: ListView(
                     children: <Widget>[
@@ -383,15 +382,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).appBarTheme.color,
+
         automaticallyImplyLeading:
             widget.userId == widget.currentUserId ? false : true,
-        backgroundColor: Colors.white,
-        title: _profileUser != null
-            ? Text(
-                _profileUser.name,
-                style: TextStyle(color: Colors.black),
-              )
-            : SizedBox.shrink(),
+        title:
+            _profileUser != null ? Text(_profileUser.name) : SizedBox.shrink(),
         // actions: <Widget>[
         //   IconButton(
         //     icon: Icon(Icons.exit_to_app),
@@ -404,7 +400,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               name: _profileUser.name,
             )
           : null,
-      backgroundColor: Colors.white,
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

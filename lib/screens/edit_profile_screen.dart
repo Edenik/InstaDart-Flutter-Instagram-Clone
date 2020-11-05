@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
@@ -103,10 +103,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.color,
         title: Text(
           'Edit Profile',
-          style: kFontColorBlackTextStyle,
         ),
       ),
       body: GestureDetector(

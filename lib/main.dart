@@ -1,12 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/screens/screens.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.getInstance().then((prefs) {
+    var darkModeOn = prefs.getBool('darkMode') ?? false;
+
+    //Set Navigation bar color
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: darkModeOn ? Colors.black : Colors.white,
+        systemNavigationBarIconBrightness:
+            darkModeOn ? Brightness.light : Brightness.dark));
+
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<UserData>(create: (context) => UserData()),
+          ChangeNotifierProvider<ThemeNotifier>(
+              create: (context) =>
+                  ThemeNotifier(darkModeOn ? darkTheme : lightTheme))
+        ],
+        child: MyApp(),
+      ),
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -31,22 +55,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => UserData(),
-      child: MaterialApp(
-        title: 'Instagram',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryIconTheme:
-              Theme.of(context).primaryIconTheme.copyWith(color: Colors.black),
-        ),
-        home: _getScreenId(),
-        routes: {
-          LoginScreen.id: (context) => LoginScreen(),
-          SignupScreen.id: (context) => SignupScreen(),
-          FeedScreen.id: (context) => FeedScreen(),
-        },
-      ),
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
+    return MaterialApp(
+      title: 'Instagram',
+      debugShowCheckedModeBanner: false,
+      theme: themeNotifier.getTheme(),
+      home: _getScreenId(),
+      routes: {
+        LoginScreen.id: (context) => LoginScreen(),
+        SignupScreen.id: (context) => SignupScreen(),
+        FeedScreen.id: (context) => FeedScreen(),
+      },
     );
   }
 }

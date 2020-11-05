@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override
@@ -178,7 +178,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             padding: EdgeInsets.only(left: 8.0, right: 8.0),
             margin: EdgeInsets.only(right: 3.0, left: 3.0),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: Theme.of(context).appBarTheme.color,
               borderRadius: BorderRadius.circular(5.0),
             ),
             child: Center(
@@ -276,12 +276,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         : Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).appBarTheme.color,
               centerTitle: true,
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  icon: Icon(Icons.arrow_back,
+                      color: Theme.of(context).accentColor),
                   onPressed: _clearImage),
-              title: Text('New Post', style: kFontColorBlackTextStyle),
+              title: Text('New Post'),
               actions: <Widget>[
                 FlatButton(
                     onPressed: _caption.trim() != '' ? _submit : null,
@@ -289,8 +290,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       'Share',
                       style: TextStyle(
                           color: _caption.trim() != ''
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey[200],
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).hintColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0),
                     ))

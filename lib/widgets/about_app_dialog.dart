@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/repo_const.dart';
-import 'package:instagram/utilities/styles.dart';
+import 'package:instagram/utilities/themes.dart';
 
 class AboutAppDialog extends StatefulWidget {
   final String currentUserId;
