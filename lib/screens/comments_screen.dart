@@ -165,7 +165,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
           backgroundColor: Theme.of(context).appBarTheme.color,
           title: Text(
             'Comments',
-            style: kFontColorBlackTextStyle,
           ),
         ),
         body: Column(
@@ -174,16 +173,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
             _buildListTile(
                 context, widget.author, postDescription, currentUserId),
             Divider(),
-            // Padding(
-            //   padding: const EdgeInsets.all(12.0),
-            //   child: Text(
-            //     '${widget.likeCount} likes',
-            //     style: TextStyle(
-            //       fontSize: 20.0,
-            //       fontWeight: FontWeight.w600,
-            //     ),
-            //   ),
-            // ),
             StreamBuilder(
               stream: commentsRef
                   .document(widget.post.id)

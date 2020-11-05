@@ -322,9 +322,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Center(
               child: Scaffold(
                   appBar: AppBar(
-                    title: Text('Photo',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold)),
+                    title: Text(
+                      'Photo',
+                    ),
                   ),
                   body: ListView(
                     children: <Widget>[
