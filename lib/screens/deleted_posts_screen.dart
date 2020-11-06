@@ -92,7 +92,7 @@ class _DeletedPostsScreenState extends State<DeletedPostsScreen> {
       body: FutureBuilder(
         future: usersRef.document(widget.currentUserId).get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData || _posts.isEmpty) {
+          if (!snapshot.hasData || _posts == null) {
             return Center(
               child: CircularProgressIndicator(),
             );

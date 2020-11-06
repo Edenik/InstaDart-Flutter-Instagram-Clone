@@ -38,7 +38,7 @@ class DatabaseService {
           .document(post.authorId)
           .collection('userPosts')
           .document(post.id)
-          .setData({
+          .updateData({
         'commentsAllowed': commentsAllowed,
       });
     } catch (e) {
