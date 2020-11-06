@@ -32,6 +32,20 @@ class DatabaseService {
     }
   }
 
+  static void allowDisAllowPostComments(Post post, bool commentsAllowed) {
+    try {
+      postsRef
+          .document(post.authorId)
+          .collection('userPosts')
+          .document(post.id)
+          .setData({
+        'commentsAllowed': commentsAllowed,
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static void deletePost(Post post, PostStatus postStatus) {
     postsRef
         .document(post.authorId)
@@ -81,7 +95,7 @@ class DatabaseService {
         .delete();
   }
 
-  static void recreatePost(Post post) {
+  static void recreatePost(Post post, PostStatus postStatus) {
     try {
       postsRef
           .document(post.authorId)
@@ -95,6 +109,17 @@ class DatabaseService {
         'location': post.location,
         'timestamp': post.timestamp
       });
+
+      String collection;
+      postStatus == PostStatus.archivedPost
+          ? collection = 'archivedPosts'
+          : collection = 'deletedPosts';
+
+      postsRef
+          .document(post.authorId)
+          .collection(collection)
+          .document(post.id)
+          .delete();
     } catch (e) {
       print(e);
     }

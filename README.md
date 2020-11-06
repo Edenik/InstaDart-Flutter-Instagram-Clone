@@ -22,6 +22,7 @@ Latest Update : 06/11/20
  - [X] Dark / Light Theme Mode
  - [X] Splash Screen
  - [X] Delete / Archive Posts
+ - [X] Turn on / off Comments on Posts
 
 
 This app based of tutorial by -

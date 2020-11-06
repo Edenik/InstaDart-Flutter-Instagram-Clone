@@ -147,6 +147,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         likeCount: 0,
         authorId: Provider.of<UserData>(context, listen: false).currentUserId,
         timestamp: Timestamp.fromDate(DateTime.now()),
+        commentsAllowed: true,
       );
 
       DatabaseService.createPost(post);

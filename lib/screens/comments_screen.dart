@@ -90,7 +90,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
   _buildCommentTF() {
     String hintText;
     if (widget.postStatus == PostStatus.feedPost) {
-      hintText = 'Add a comment...';
+      if (widget.post.commentsAllowed) {
+        hintText = 'Add a comment...';
+      } else {
+        hintText = 'Comment aren\'t allowed here...';
+      }
     } else if (widget.postStatus == PostStatus.archivedPost) {
       hintText = 'This post was archived...';
     } else {
@@ -123,6 +127,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
             SizedBox(width: 20.0),
             Expanded(
               child: TextField(
+                enabled: widget.post.commentsAllowed &&
+                    widget.postStatus == PostStatus.feedPost,
                 controller: _commentController,
                 textCapitalization: TextCapitalization.sentences,
                 onChanged: (comment) {
@@ -137,7 +143,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                 icon: Icon(Icons.send),
-                onPressed: widget.postStatus != PostStatus.feedPost
+                onPressed: widget.postStatus != PostStatus.feedPost ||
+                        !widget.post.commentsAllowed
                     ? null
                     : () {
                         if (_isCommenting) {

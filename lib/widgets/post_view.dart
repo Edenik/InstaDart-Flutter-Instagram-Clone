@@ -35,18 +35,20 @@ class _PostViewState extends State<PostView> {
   int _likeCount = 0;
   bool _isLiked = false;
   bool _heartAnim = false;
+  Post _post;
 
   @override
   void initState() {
     super.initState();
     _likeCount = widget.post.likeCount;
+    _post = widget.post;
     _initPostLiked();
   }
 
   @override
   didUpdateWidget(PostView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.post.likeCount != widget.post.likeCount) {
+    if (oldWidget.post.likeCount != _post.likeCount) {
       _likeCount = widget.post.likeCount;
     }
   }
@@ -65,7 +67,7 @@ class _PostViewState extends State<PostView> {
 
   _initPostLiked() async {
     bool isLiked = await DatabaseService.didLikePost(
-        currentUserId: widget.currentUserId, post: widget.post);
+        currentUserId: widget.currentUserId, post: _post);
     if (mounted) {
       setState(() {
         _isLiked = isLiked;
@@ -77,7 +79,7 @@ class _PostViewState extends State<PostView> {
     if (_isLiked) {
       // Unlike Post
       DatabaseService.unlikePost(
-          currentUserId: widget.currentUserId, post: widget.post);
+          currentUserId: widget.currentUserId, post: _post);
       setState(() {
         _isLiked = false;
         _likeCount--;
@@ -85,7 +87,7 @@ class _PostViewState extends State<PostView> {
     } else {
       // Like Post
       DatabaseService.likePost(
-          currentUserId: widget.currentUserId, post: widget.post);
+          currentUserId: widget.currentUserId, post: _post);
       setState(() {
         _heartAnim = true;
         _isLiked = true;
@@ -97,6 +99,14 @@ class _PostViewState extends State<PostView> {
         });
       });
     }
+  }
+
+  _goToHomeScreen(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => HomeScreen(widget.currentUserId)),
+      (Route<dynamic> route) => false,
+    );
   }
 
   _showMenuDialog() {
@@ -137,48 +147,58 @@ class _PostViewState extends State<PostView> {
           return SimpleDialog(
             // title: Text('Add Photo'),
             children: <Widget>[
-              widget.post.authorId == widget.currentUserId &&
+              _post.authorId == widget.currentUserId &&
                       widget.postStatus != PostStatus.deletedPost
                   ? SimpleDialogOption(
                       child: Text('Delete Post'),
                       onPressed: () {
-                        DatabaseService.deletePost(
-                            widget.post, widget.postStatus);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    HomeScreen(widget.currentUserId)));
+                        DatabaseService.deletePost(_post, widget.postStatus);
+                        _goToHomeScreen(context);
                       },
                     )
                   : SizedBox.shrink(),
-              widget.post.authorId == widget.currentUserId &&
+              _post.authorId == widget.currentUserId &&
                       widget.postStatus != PostStatus.archivedPost
                   ? SimpleDialogOption(
                       child: Text('Archive Post'),
                       onPressed: () {
                         DatabaseService.archivePost(
                             widget.post, widget.postStatus);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    HomeScreen(widget.currentUserId)));
+                        _goToHomeScreen(context);
                       },
                     )
                   : SizedBox.shrink(),
-              widget.post.authorId == widget.currentUserId &&
+              _post.authorId == widget.currentUserId &&
                       widget.postStatus != PostStatus.feedPost
                   ? SimpleDialogOption(
                       child: Text('Show on profile'),
                       onPressed: () {
-                        DatabaseService.recreatePost(widget.post);
+                        DatabaseService.recreatePost(_post, widget.postStatus);
+                        _goToHomeScreen(context);
+                      },
+                    )
+                  : SizedBox.shrink(),
+              _post.authorId == widget.currentUserId &&
+                      widget.postStatus == PostStatus.feedPost
+                  ? SimpleDialogOption(
+                      child: Text(_post.commentsAllowed
+                          ? 'Turn off commenting'
+                          : 'Allow comments'),
+                      onPressed: () {
+                        DatabaseService.allowDisAllowPostComments(
+                            _post, !_post.commentsAllowed);
                         Navigator.pop(context);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    HomeScreen(widget.currentUserId)));
+                        setState(() {
+                          _post = new Post(
+                              authorId: widget.post.authorId,
+                              caption: widget.post.caption,
+                              commentsAllowed: !_post.commentsAllowed,
+                              id: _post.id,
+                              imageUrl: _post.imageUrl,
+                              likeCount: _post.likeCount,
+                              location: _post.location,
+                              timestamp: _post.timestamp);
+                        });
                       },
                     )
                   : SizedBox.shrink(),
@@ -186,7 +206,7 @@ class _PostViewState extends State<PostView> {
                 child: Text('Download Image'),
                 onPressed: () async {
                   await ImageDownloader.downloadImage(
-                    widget.post.imageUrl,
+                    _post.imageUrl,
                     outputMimeType: "image/jpg",
                   );
                   Navigator.pop(context);
@@ -203,7 +223,7 @@ class _PostViewState extends State<PostView> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         GestureDetector(
-          onTap: () => _goToUserProfile(context, widget.post),
+          onTap: () => _goToUserProfile(context, _post),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: ListTile(
@@ -217,9 +237,7 @@ class _PostViewState extends State<PostView> {
                 widget.author.name,
                 style: kFontSize18FontWeight600TextStyle,
               ),
-              subtitle: widget.post.location.isNotEmpty
-                  ? Text(widget.post.location)
-                  : null,
+              subtitle: _post.location.isNotEmpty ? Text(_post.location) : null,
               trailing: IconButton(
                   icon: Icon(Icons.more_vert), onPressed: _showMenuDialog),
             ),
@@ -235,7 +253,7 @@ class _PostViewState extends State<PostView> {
                 height: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(widget.post.imageUrl),
+                    image: CachedNetworkImageProvider(_post.imageUrl),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -288,7 +306,7 @@ class _PostViewState extends State<PostView> {
                           MaterialPageRoute(
                             builder: (_) => CommentsScreen(
                               postStatus: widget.postStatus,
-                              post: widget.post,
+                              post: _post,
                               likeCount: _likeCount,
                               author: widget.author,
                             ),
@@ -329,7 +347,7 @@ class _PostViewState extends State<PostView> {
                       right: 6.0,
                     ),
                     child: GestureDetector(
-                      onTap: () => _goToUserProfile(context, widget.post),
+                      onTap: () => _goToUserProfile(context, _post),
                       child: Text(
                         widget.author.name,
                         style: TextStyle(
@@ -339,7 +357,7 @@ class _PostViewState extends State<PostView> {
                   ),
                   Expanded(
                       child: Text(
-                    widget.post.caption,
+                    _post.caption,
                     style: TextStyle(fontSize: 16.0),
                     overflow: TextOverflow.ellipsis,
                   )),
@@ -349,7 +367,7 @@ class _PostViewState extends State<PostView> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 child: Text(
-                  timeago.format(widget.post.timestamp.toDate()),
+                  timeago.format(_post.timestamp.toDate()),
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 12.0,

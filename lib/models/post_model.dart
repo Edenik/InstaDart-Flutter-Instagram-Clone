@@ -8,6 +8,7 @@ class Post {
   final String authorId;
   final String location;
   final Timestamp timestamp;
+  final bool commentsAllowed;
 
   Post({
     this.id,
@@ -17,6 +18,7 @@ class Post {
     this.authorId,
     this.location,
     this.timestamp,
+    this.commentsAllowed,
   });
 
   factory Post.fromDoc(DocumentSnapshot doc) {
@@ -28,6 +30,7 @@ class Post {
       authorId: doc['authorId'],
       location: doc['location'] ?? "",
       timestamp: doc['timestamp'],
+      commentsAllowed: doc['commentsAllowed'] ?? true,
     );
   }
 }
