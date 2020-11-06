@@ -334,6 +334,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: <Widget>[
                       Container(
                         child: PostView(
+                          postStatus: PostStatus.feedPost,
                           currentUserId: widget.currentUserId,
                           post: post,
                           author: _profileUser,
@@ -371,6 +372,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       List<PostView> postViews = [];
       _posts.forEach((post) {
         postViews.add(PostView(
+          postStatus: PostStatus.feedPost,
           currentUserId: widget.currentUserId,
           post: post,
           author: _profileUser,

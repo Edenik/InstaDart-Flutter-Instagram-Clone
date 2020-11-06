@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/comments_screen.dart';
+import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
@@ -21,8 +22,10 @@ class PostView extends StatefulWidget {
   final String currentUserId;
   final Post post;
   final User author;
+  final PostStatus postStatus;
 
-  PostView({this.currentUserId, this.post, this.author});
+  PostView(
+      {this.currentUserId, this.post, this.author, @required this.postStatus});
 
   @override
   _PostViewState createState() => _PostViewState();
@@ -134,12 +137,48 @@ class _PostViewState extends State<PostView> {
           return SimpleDialog(
             // title: Text('Add Photo'),
             children: <Widget>[
-              widget.post.authorId == widget.currentUserId
+              widget.post.authorId == widget.currentUserId &&
+                      widget.postStatus != PostStatus.deletedPost
                   ? SimpleDialogOption(
                       child: Text('Delete Post'),
                       onPressed: () {
-                        DatabaseService.deletePost(widget.post);
+                        DatabaseService.deletePost(
+                            widget.post, widget.postStatus);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    HomeScreen(widget.currentUserId)));
+                      },
+                    )
+                  : SizedBox.shrink(),
+              widget.post.authorId == widget.currentUserId &&
+                      widget.postStatus != PostStatus.archivedPost
+                  ? SimpleDialogOption(
+                      child: Text('Archive Post'),
+                      onPressed: () {
+                        DatabaseService.archivePost(
+                            widget.post, widget.postStatus);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    HomeScreen(widget.currentUserId)));
+                      },
+                    )
+                  : SizedBox.shrink(),
+              widget.post.authorId == widget.currentUserId &&
+                      widget.postStatus != PostStatus.feedPost
+                  ? SimpleDialogOption(
+                      child: Text('Show on profile'),
+                      onPressed: () {
+                        DatabaseService.recreatePost(widget.post);
                         Navigator.pop(context);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    HomeScreen(widget.currentUserId)));
                       },
                     )
                   : SizedBox.shrink(),
@@ -187,7 +226,8 @@ class _PostViewState extends State<PostView> {
           ),
         ),
         GestureDetector(
-          onDoubleTap: _likePost,
+          onDoubleTap:
+              widget.postStatus == PostStatus.feedPost ? _likePost : () {},
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -236,7 +276,9 @@ class _PostViewState extends State<PostView> {
                               )
                             : FaIcon(FontAwesomeIcons.heart),
                         iconSize: 30.0,
-                        onPressed: _likePost,
+                        onPressed: widget.postStatus == PostStatus.feedPost
+                            ? _likePost
+                            : () {},
                       ),
                       IconButton(
                         icon: FaIcon(FontAwesomeIcons.comment),
@@ -245,6 +287,7 @@ class _PostViewState extends State<PostView> {
                           context,
                           MaterialPageRoute(
                             builder: (_) => CommentsScreen(
+                              postStatus: widget.postStatus,
                               post: widget.post,
                               likeCount: _likeCount,
                               author: widget.author,

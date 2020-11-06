@@ -32,12 +32,72 @@ class DatabaseService {
     }
   }
 
-  static void deletePost(Post post) {
+  static void deletePost(Post post, PostStatus postStatus) {
     postsRef
         .document(post.authorId)
-        .collection('userPosts')
+        .collection('deletedPosts')
+        .document(post.id)
+        .setData({
+      'imageUrl': post.imageUrl,
+      'caption': post.caption,
+      'likeCount': post.likeCount,
+      'authorId': post.authorId,
+      'location': post.location,
+      'timestamp': post.timestamp
+    });
+    String collection;
+    postStatus == PostStatus.feedPost
+        ? collection = 'userPosts'
+        : collection = 'archivedPosts';
+    postsRef
+        .document(post.authorId)
+        .collection(collection)
         .document(post.id)
         .delete();
+  }
+
+  static void archivePost(Post post, PostStatus postStatus) {
+    postsRef
+        .document(post.authorId)
+        .collection('archivedPosts')
+        .document(post.id)
+        .setData({
+      'imageUrl': post.imageUrl,
+      'caption': post.caption,
+      'likeCount': post.likeCount,
+      'authorId': post.authorId,
+      'location': post.location,
+      'timestamp': post.timestamp
+    });
+    String collection;
+    postStatus == PostStatus.feedPost
+        ? collection = 'userPosts'
+        : collection = 'deletedPosts';
+
+    postsRef
+        .document(post.authorId)
+        .collection(collection)
+        .document(post.id)
+        .delete();
+  }
+
+  static void recreatePost(Post post) {
+    try {
+      postsRef
+          .document(post.authorId)
+          .collection('userPosts')
+          .document(post.id)
+          .setData({
+        'imageUrl': post.imageUrl,
+        'caption': post.caption,
+        'likeCount': post.likeCount,
+        'authorId': post.authorId,
+        'location': post.location,
+        'timestamp': post.timestamp
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   static void followUser({String currentUserId, String userId}) {
@@ -158,6 +218,23 @@ class DatabaseService {
     QuerySnapshot feedSnapshot = await feedsRef
         .document(userId)
         .collection('userFeed')
+        .orderBy('timestamp', descending: true)
+        .getDocuments();
+    List<Post> posts =
+        feedSnapshot.documents.map((doc) => Post.fromDoc(doc)).toList();
+    return posts;
+  }
+
+  static Future<List<Post>> getDeletedPosts(
+      String userId, PostStatus postStatus) async {
+    String collection;
+    postStatus == PostStatus.archivedPost
+        ? collection = 'archivedPosts'
+        : collection = 'deletedPosts';
+
+    QuerySnapshot feedSnapshot = await postsRef
+        .document(userId)
+        .collection(collection)
         .orderBy('timestamp', descending: true)
         .getDocuments();
     List<Post> posts =

@@ -13,8 +13,10 @@ class CommentsScreen extends StatefulWidget {
   final Post post;
   final int likeCount;
   final User author;
+  final PostStatus postStatus;
 
-  CommentsScreen({this.post, this.likeCount, this.author});
+  CommentsScreen(
+      {this.post, this.likeCount, this.author, @required this.postStatus});
 
   @override
   _CommentsScreenState createState() => _CommentsScreenState();
@@ -86,6 +88,14 @@ class _CommentsScreenState extends State<CommentsScreen> {
   }
 
   _buildCommentTF() {
+    String hintText;
+    if (widget.postStatus == PostStatus.feedPost) {
+      hintText = 'Add a comment...';
+    } else if (widget.postStatus == PostStatus.archivedPost) {
+      hintText = 'This post was archived...';
+    } else {
+      hintText = 'This post was deleted...';
+    }
     final currentUserId =
         Provider.of<UserData>(context, listen: false).currentUserId;
     final profileImageUrl =
@@ -120,27 +130,28 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     _isCommenting = comment.length > 0;
                   });
                 },
-                decoration:
-                    InputDecoration.collapsed(hintText: 'Add a comment...'),
+                decoration: InputDecoration.collapsed(hintText: hintText),
               ),
             ),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                 icon: Icon(Icons.send),
-                onPressed: () {
-                  if (_isCommenting) {
-                    DatabaseService.commentOnPost(
-                      currentUserId: currentUserId,
-                      post: widget.post,
-                      comment: _commentController.text,
-                    );
-                    _commentController.clear();
-                    setState(() {
-                      _isCommenting = false;
-                    });
-                  }
-                },
+                onPressed: widget.postStatus != PostStatus.feedPost
+                    ? null
+                    : () {
+                        if (_isCommenting) {
+                          DatabaseService.commentOnPost(
+                            currentUserId: currentUserId,
+                            post: widget.post,
+                            comment: _commentController.text,
+                          );
+                          _commentController.clear();
+                          setState(() {
+                            _isCommenting = false;
+                          });
+                        }
+                      },
               ),
             )
           ],

@@ -102,6 +102,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               context,
               MaterialPageRoute(
                 builder: (_) => CommentsScreen(
+                  postStatus: PostStatus.feedPost,
                   post: post,
                   likeCount: post.likeCount,
                   author: snapshot.data,

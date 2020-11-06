@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
+import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/widgets/post_view.dart';
 
@@ -26,7 +27,9 @@ class _FeedScreenState extends State<FeedScreen> {
 
   _setupFeed() async {
     setState(() => _isLoading = true);
-    List<Post> posts = await DatabaseService.getFeedPosts(widget.currentUserId);
+    List<Post> posts = await DatabaseService.getFeedPosts(
+      widget.currentUserId,
+    );
     setState(() {
       _posts = posts;
       _isLoading = false;
@@ -73,6 +76,7 @@ class _FeedScreenState extends State<FeedScreen> {
                       User author = snapshot.data;
 
                       return PostView(
+                        postStatus: PostStatus.feedPost,
                         currentUserId: widget.currentUserId,
                         author: author,
                         post: post,

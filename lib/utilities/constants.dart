@@ -11,6 +11,11 @@ final feedsRef = _firestore.collection('feeds');
 final likesRef = _firestore.collection('likes');
 final commentsRef = _firestore.collection('comments');
 final activitiesRef = _firestore.collection('activities');
+final archivedPostsRef = _firestore.collection('archivedPosts');
+final deletedPostsRef = _firestore.collection('deletedPosts');
+final String user = 'userFeed';
 final String usersFollowers = 'userFollowers';
 final String userFollowing = 'userFollowing';
 final String placeHolderImageRef = 'assets/images/user_placeholder.jpg';
+
+enum PostStatus { feedPost, deletedPost, archivedPost }

@@ -15,12 +15,13 @@ Latest Update : 06/11/20
  - [ ] Improve Caching of Profiles, Images, Etc.
  - [ ] Better post creation, add filters to your image
  - [ ] Firebase Security Rules
- - [ ] Delete Posts Firebase Function
+ - [X] Delete Posts Firebase Function
  - [ ] Direct Messaging
  - [ ] Stories
  - [ ] Clean up code
  - [X] Dark / Light Theme Mode
  - [X] Splash Screen
+ - [X] Delete / Archive Posts
 
 
 This app based of tutorial by -

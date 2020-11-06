@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/models/user_data.dart';
+import 'package:instagram/screens/deleted_posts_screen.dart';
 import 'package:instagram/screens/screens.dart';
-import 'package:instagram/screens/theme_screen.dart';
+import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String name;
@@ -37,7 +40,35 @@ class CustomDrawer extends StatelessWidget {
                 )),
               ),
               Divider(height: 3),
-              _buildDrawerOption(Icon(Icons.history), 'Archive', null),
+              _buildDrawerOption(
+                Icon(Icons.history),
+                'Archive',
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DeletedPostsScreen(
+                        currentUserId:
+                            Provider.of<UserData>(context, listen: false)
+                                .currentUserId,
+                        postStatus: PostStatus.archivedPost),
+                  ),
+                ),
+              ),
+              _buildDrawerOption(
+                Icon(Icons.delete),
+                'Deleted Posts',
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DeletedPostsScreen(
+                      currentUserId:
+                          Provider.of<UserData>(context, listen: false)
+                              .currentUserId,
+                      postStatus: PostStatus.deletedPost,
+                    ),
+                  ),
+                ),
+              ),
               _buildDrawerOption(
                   Icon(Icons.history_toggle_off), 'Your Activity', null),
               _buildDrawerOption(Icon(Icons.bookmark), 'Saved', null),
