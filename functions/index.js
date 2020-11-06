@@ -69,7 +69,7 @@ exports.onUploadPost = functions.firestore
                 .doc(postId)
                 .set(snapshot.data());
         })
-        
+
         //Uploading post to author feed
         admin
             .firestore()
@@ -123,32 +123,41 @@ exports.onUpdatePost = functions.firestore
 
     });
 
-// exports.onDeletePost = functions.firestore
-//     .document('/posts/{userId}/userPosts/{postId}')
-//     .onDelete(async (snapshot, context) => {
-//         // const userId = context.params.userId;
-//         const postId = context.params.podtId;
-//         const usersRef = admin
-//             .firestore()
-//             .collection('feeds');
+exports.onDeletePost = functions.firestore
+    .document('/posts/{authorId}/userPosts/{postId}')
+    .onDelete(async (snapshot, context) => {
+        const postId = context.params.postId;
+        const authorId = context.params.authorId;
 
-//         let usersSnapshot = await usersRef.get().then(async (snapshot) => {
-//             snapshot.forEach(user => {
-//                 const usersFeedRef = admin
-//                     .firestore()
-//                     .collection('feeds')
-//                     .doc(user)
-//                     .collection('userFeed');
-//                 const userPostsSnapshot = await usersFeedRef.get();
+        /* Deleting post from followers feeds*/
+        const authorFollowersRef = admin.firestore()
+            .collection('followers')
+            .doc(authorId)
+            .collection('userFollowers');
 
-//                 userPostsSnapshot.forEach(doc => {
-//                     if (doc.exists && doc.id == postId) {
-//                         doc.ref.delete();
-//                     }
-//                 });
-//             })
-//         });
-//     });
+        // get author followers
+        const authorFollowersSnapshot = await authorFollowersRef.get();
 
+        authorFollowersSnapshot.docs.forEach(async userDoc => {
+            const postRef = admin
+                .firestore()
+                .collection('feeds')
+                .doc(userDoc.id)
+                .collection('userFeed');
 
+            await postRef.doc(postId).delete();
+        });
+        /* End of Deleting post from followers feeds */
+
+        /* Deleting post from author feed */
+        const authorFeedRef = admin
+            .firestore()
+            .collection('feeds')
+            .doc(authorId)
+            .collection('userFeed');
+
+        authorFeedRef.doc(postId).delete();
+        /* End of Deleting post from author feed */
+
+    });
 
