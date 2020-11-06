@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instagram/widgets/custom_drawer.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';
@@ -176,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Column(
                           children: <Widget>[
                             Text(
-                              _posts.length.toString(),
+                              NumberFormat.compact().format(_posts.length),
                               style: kFontSize18FontWeight600TextStyle,
                             ),
                             Text(
@@ -207,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                _followersCount.toString(),
+                                NumberFormat.compact().format(_followersCount),
                                 style: kFontSize18FontWeight600TextStyle,
                               ),
                               Text(
@@ -239,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                _followingCount.toString(),
+                                NumberFormat.compact().format(_followingCount),
                                 style: kFontSize18FontWeight600TextStyle,
                               ),
                               Text(

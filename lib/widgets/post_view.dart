@@ -13,6 +13,7 @@ import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -269,7 +270,7 @@ class _PostViewState extends State<PostView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
-                  '${_likeCount.toString()} Likes',
+                  '${NumberFormat.compact().format(_likeCount)} Likes',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,

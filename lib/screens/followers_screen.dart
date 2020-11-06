@@ -6,6 +6,7 @@ import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:intl/intl.dart';
 
 class FollowersScreen extends StatefulWidget {
   final User user;
@@ -288,10 +289,12 @@ class _FollowersScreenState extends State<FollowersScreen> {
             bottom: TabBar(
               tabs: [
                 Tab(
-                  text: '$_followersCount Followers',
+                  text:
+                      '${NumberFormat.compact().format(_followersCount)} Followers',
                 ),
                 Tab(
-                  text: '$_followingCount Following',
+                  text:
+                      '${NumberFormat.compact().format(_followingCount)} Following',
                 ),
               ],
             )),
