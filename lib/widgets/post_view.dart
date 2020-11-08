@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:animator/animator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,11 +15,14 @@ import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:image_downloader/image_downloader.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:http/http.dart';
+import 'package:share/share.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PostView extends StatefulWidget {
   final String currentUserId;
@@ -115,7 +120,22 @@ class _PostViewState extends State<PostView> {
     return Platform.isIOS ? _iosBottomSheet() : _androidDialog();
   }
 
+  _saveAndShareFile() async {
+    final RenderBox box = context.findRenderObject();
+
+    var response = await get(widget.post.imageUrl);
+    final documentDirectory = (await getExternalStorageDirectory()).path;
+    File imgFile = new File('$documentDirectory/${widget.post.id}.png');
+    imgFile.writeAsBytesSync(response.bodyBytes);
+
+    Share.shareFiles([imgFile.path],
+        subject: 'Have a look at ${widget.author.name} post!',
+        text: '${widget.author.name} : ${widget.post.caption}',
+        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+  }
+
   _iosBottomSheet() {
+    // TODO: Update this bottom sheet
     showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
@@ -149,16 +169,13 @@ class _PostViewState extends State<PostView> {
           return SimpleDialog(
             // title: Text('Add Photo'),
             children: <Widget>[
-              _post.authorId == widget.currentUserId &&
-                      widget.postStatus != PostStatus.deletedPost
-                  ? SimpleDialogOption(
-                      child: Text('Delete Post'),
-                      onPressed: () {
-                        DatabaseService.deletePost(_post, widget.postStatus);
-                        _goToHomeScreen(context);
-                      },
-                    )
-                  : SizedBox.shrink(),
+              SimpleDialogOption(
+                child: Text('Share Post'),
+                onPressed: () {
+                  _saveAndShareFile();
+                  Navigator.pop(context);
+                },
+              ),
               _post.authorId == widget.currentUserId &&
                       widget.postStatus != PostStatus.archivedPost
                   ? SimpleDialogOption(
@@ -171,12 +188,39 @@ class _PostViewState extends State<PostView> {
                     )
                   : SizedBox.shrink(),
               _post.authorId == widget.currentUserId &&
+                      widget.postStatus != PostStatus.deletedPost
+                  ? SimpleDialogOption(
+                      child: Text('Delete Post'),
+                      onPressed: () {
+                        DatabaseService.deletePost(_post, widget.postStatus);
+                        _goToHomeScreen(context);
+                      },
+                    )
+                  : SizedBox.shrink(),
+              _post.authorId == widget.currentUserId &&
                       widget.postStatus != PostStatus.feedPost
                   ? SimpleDialogOption(
                       child: Text('Show on profile'),
                       onPressed: () {
                         DatabaseService.recreatePost(_post, widget.postStatus);
                         _goToHomeScreen(context);
+                      },
+                    )
+                  : SizedBox.shrink(),
+
+              _post.authorId == widget.currentUserId
+                  ? SimpleDialogOption(
+                      child: Text('Edit Post'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CreatePostScreen(
+                              post: _post,
+                              postStatus: widget.postStatus,
+                            ),
+                          ),
+                        );
                       },
                     )
                   : SizedBox.shrink(),
@@ -204,32 +248,16 @@ class _PostViewState extends State<PostView> {
                       },
                     )
                   : SizedBox.shrink(),
-              _post.authorId == widget.currentUserId
-                  ? SimpleDialogOption(
-                      child: Text('Edit Post'),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => CreatePostScreen(
-                                      post: _post,
-                                      postStatus: widget.postStatus,
-                                    )));
-                        // DatabaseService.recreatePost(_post, widget.postStatus);
-                        // _goToHomeScreen(context);
-                      },
-                    )
-                  : SizedBox.shrink(),
-              SimpleDialogOption(
-                child: Text('Download Image'),
-                onPressed: () async {
-                  await ImageDownloader.downloadImage(
-                    _post.imageUrl,
-                    outputMimeType: "image/jpg",
-                  );
-                  Navigator.pop(context);
-                },
-              ),
+              // SimpleDialogOption(
+              //   child: Text('Download Image'),
+              //   onPressed: () async {
+              //     await ImageDownloader.downloadImage(
+              //       _post.imageUrl,
+              //       outputMimeType: "image/jpg",
+              //     );
+              //     Navigator.pop(context);
+              //   },
+              // ),
             ],
           );
         });

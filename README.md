@@ -25,6 +25,7 @@ Latest Update : 08/11/20
  - [X] Delete / Archive Posts
  - [X] Turn on / off Comments on Posts
  - [X] Login + Signup - Show Auth indication + Error Handling
+ - [X] Share Posts to external Apps
  - [ ] Save Favorite Posts
 
 
