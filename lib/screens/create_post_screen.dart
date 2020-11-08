@@ -221,13 +221,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             padding: EdgeInsets.only(left: 8.0, right: 8.0),
             margin: EdgeInsets.only(right: 3.0, left: 3.0),
             decoration: BoxDecoration(
-              color: Theme.of(context).appBarTheme.color,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(5.0),
             ),
             child: Center(
               child: Text(
                 locationName,
-                style: kFontColorGreyTextStyle,
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
               ),
             ),
           ),

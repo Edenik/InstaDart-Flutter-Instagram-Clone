@@ -20,12 +20,13 @@ final darkTheme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.white),
     enabledBorder: UnderlineInputBorder(
-      borderSide: new BorderSide(color: Colors.white54),
+      borderSide: new BorderSide(color: Colors.white38),
     ),
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(color: Colors.white),
     ),
   ),
+  cardColor: Colors.grey[800],
 );
 
 final lightTheme = ThemeData(
@@ -41,19 +42,20 @@ final lightTheme = ThemeData(
   iconTheme: IconThemeData(color: Colors.black),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
-    unselectedIconTheme: IconThemeData(color: Colors.black54),
+    unselectedIconTheme: IconThemeData(color: Colors.black38),
     selectedIconTheme: IconThemeData(color: Colors.black),
   ),
-  textSelectionColor: Colors.black54,
+  textSelectionColor: Colors.black38,
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.black),
     enabledBorder: UnderlineInputBorder(
-      borderSide: new BorderSide(color: Colors.black54),
+      borderSide: new BorderSide(color: Colors.black45),
     ),
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(color: Colors.black),
     ),
   ),
+  cardColor: Colors.grey[300],
 );
 
 const kFontWeightBoldTextStyle = TextStyle(fontWeight: FontWeight.bold);

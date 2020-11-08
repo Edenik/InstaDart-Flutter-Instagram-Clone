@@ -137,7 +137,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     _isCommenting = comment.length > 0;
                   });
                 },
-                decoration: InputDecoration.collapsed(hintText: hintText),
+                decoration: InputDecoration(
+                  isCollapsed: true,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  hintText: hintText,
+                ),
               ),
             ),
             Container(

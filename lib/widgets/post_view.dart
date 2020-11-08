@@ -241,7 +241,6 @@ class _PostViewState extends State<PostView> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: ListTile(
             leading: GestureDetector(
               onTap: () => _goToUserProfile(context, _post),
