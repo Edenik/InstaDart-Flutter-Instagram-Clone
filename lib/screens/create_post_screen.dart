@@ -294,6 +294,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   })
                 },
                 controller: _captionController,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                     hintText: 'Write a caption...', border: InputBorder.none),
               ),
@@ -307,6 +308,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             width: 250.0,
             child: TextField(
               controller: _locationController,
+              textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                   hintText: 'Where was this photo taken?',
                   border: InputBorder.none),

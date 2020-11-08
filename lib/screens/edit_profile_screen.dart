@@ -151,6 +151,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     TextFormField(
                       initialValue: _bio,
+                      textCapitalization: TextCapitalization.sentences,
                       style: kFontSize18TextStyle,
                       decoration: InputDecoration(
                           icon: Icon(
