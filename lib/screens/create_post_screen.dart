@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,6 +37,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Map<String, double> currentLocation = Map();
   String _caption = '';
   bool _isLoading = false;
+  bool _isEdited = false;
   Post _post;
   @override
   initState() {
@@ -168,8 +170,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         );
 
         DatabaseService.editPost(post, widget.postStatus);
+        setState(() {
+          _isEdited = true;
+        });
 
-        _goToHomeScreen();
+        Timer(Duration(seconds: 1), () {
+          _goToHomeScreen();
+        });
       } else {
         //Create new Post
         String imageUrl = await StroageService.uploadPost(_imageFile);
@@ -316,17 +323,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ? Scaffold(
             body: Center(
               child: GestureDetector(
-                onTap: () => _showSelectImageDialog(),
+                onTap: () => _isEdited ? null : _showSelectImageDialog(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     FaIcon(
-                      FontAwesomeIcons.cameraRetro,
+                      _isEdited
+                          ? FontAwesomeIcons.check
+                          : FontAwesomeIcons.cameraRetro,
                       size: 50.0,
                     ),
                     SizedBox(height: 5.0),
-                    Text('Click')
+                    Text(_isEdited ? 'Edited Successfully' : 'Click')
                   ],
                 ),
               ),
