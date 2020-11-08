@@ -2,9 +2,9 @@
 A working Instagram clone written in Flutter using Firebase / Firestore
 
 # Demo
-[Download the release APK to try out Instagram Clone](https://github.com/Edenik/Flutter-Instagram-Clone/raw/main/media/app-release.apk) 
+[Download the latest release APK to try out Instagram Clone](https://github.com/Edenik/Flutter-Instagram-Clone/raw/main/media/app-release.apk) 
 
-Latest Update : 06/11/20
+Latest Update : 08/11/20
 
 
 
@@ -24,6 +24,7 @@ Latest Update : 06/11/20
  - [X] Splash Screen
  - [X] Delete / Archive Posts
  - [X] Turn on / off Comments on Posts
+ - [ ] Login + Signup - Show Auth indication + Error Handling
 
 
 This app based of tutorial by -
