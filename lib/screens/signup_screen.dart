@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/themes.dart';
 
@@ -12,13 +13,43 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   String _email, _password, _name;
+  bool _isLoading = false;
 
-  _submit() {
+  _submit() async {
     if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       _formKey.currentState.save();
       //Signup user with Firebase
-      AuthService.signUpUser(context, _name, _email, _password);
+      try {
+        await AuthService.signUpUser(
+            context, _name.trim(), _email.trim(), _password.trim());
+      } on PlatformException catch (err) {
+        _showErrorDialog(err.message);
+        setState(() {
+          _isLoading = false;
+        });
+        throw (err);
+      }
     }
+  }
+
+  _showErrorDialog(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(errorMessage),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -53,7 +84,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30.0, vertical: 10.0),
                       child: TextFormField(
-                        decoration: InputDecoration(labelText: 'Email'),
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                        ),
                         validator: (input) => !input.contains('@')
                             ? 'Please enter a valid email'
                             : null,
@@ -73,31 +106,34 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    Container(
-                      width: 250.0,
-                      child: FlatButton(
-                        onPressed: _submit,
-                        color: Colors.blue,
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          'Signup',
-                          style: kFontColorWhiteSize18TextStyle,
+                    if (_isLoading) CircularProgressIndicator(),
+                    if (!_isLoading)
+                      Container(
+                        width: 250.0,
+                        child: FlatButton(
+                          onPressed: _submit,
+                          color: Colors.blue,
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            'Signup',
+                            style: kFontColorWhiteSize18TextStyle,
+                          ),
                         ),
                       ),
-                    ),
                     SizedBox(height: 20.0),
-                    Container(
-                      width: 250.0,
-                      child: FlatButton(
-                        onPressed: () => Navigator.pop(context),
-                        color: Colors.blue,
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          'Back to Login',
-                          style: kFontColorWhiteSize18TextStyle,
+                    if (!_isLoading)
+                      Container(
+                        width: 250.0,
+                        child: FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          color: Colors.blue,
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            'Back to Login',
+                            style: kFontColorWhiteSize18TextStyle,
+                          ),
                         ),
-                      ),
-                    )
+                      )
                   ],
                 ),
               )

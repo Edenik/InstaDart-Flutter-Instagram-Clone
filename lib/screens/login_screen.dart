@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/themes.dart';
@@ -12,13 +13,42 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String _email, _password;
+  bool _isLoading = false;
 
-  _submit() {
+  _submit() async {
     if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       _formKey.currentState.save();
       //Logging the user
-      AuthService.loginUser(_email, _password);
+      try {
+        await AuthService.loginUser(_email.trim(), _password.trim());
+      } on PlatformException catch (err) {
+        _showErrorDialog(err.message);
+        setState(() {
+          _isLoading = false;
+        });
+        throw (err);
+      }
     }
+  }
+
+  _showErrorDialog(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(errorMessage),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -64,32 +94,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    Container(
-                      width: 250.0,
-                      child: FlatButton(
-                        onPressed: _submit,
-                        color: Colors.blue,
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          'Login',
-                          style: kFontColorWhiteSize18TextStyle,
+                    if (_isLoading) CircularProgressIndicator(),
+                    if (!_isLoading)
+                      Container(
+                        width: 250.0,
+                        child: FlatButton(
+                          onPressed: _submit,
+                          color: Colors.blue,
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            'Login',
+                            style: kFontColorWhiteSize18TextStyle,
+                          ),
                         ),
                       ),
-                    ),
                     SizedBox(height: 20.0),
-                    Container(
-                      width: 250.0,
-                      child: FlatButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, SignupScreen.id),
-                        color: Colors.blue,
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          'Go to Signup',
-                          style: kFontColorWhiteSize18TextStyle,
+                    if (!_isLoading)
+                      Container(
+                        width: 250.0,
+                        child: FlatButton(
+                          onPressed: () =>
+                              Navigator.pushNamed(context, SignupScreen.id),
+                          color: Colors.blue,
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            'Go to Signup',
+                            style: kFontColorWhiteSize18TextStyle,
+                          ),
                         ),
-                      ),
-                    )
+                      )
                   ],
                 ),
               )

@@ -16,6 +16,16 @@ final darkTheme = ThemeData(
     unselectedIconTheme: IconThemeData(color: Colors.white54),
     selectedIconTheme: IconThemeData(color: Colors.white),
   ),
+  textSelectionColor: Colors.white54,
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: TextStyle(color: Colors.white),
+    enabledBorder: UnderlineInputBorder(
+      borderSide: new BorderSide(color: Colors.white54),
+    ),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.white),
+    ),
+  ),
 );
 
 final lightTheme = ThemeData(
@@ -33,6 +43,16 @@ final lightTheme = ThemeData(
     backgroundColor: Colors.white,
     unselectedIconTheme: IconThemeData(color: Colors.black54),
     selectedIconTheme: IconThemeData(color: Colors.black),
+  ),
+  textSelectionColor: Colors.black54,
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: TextStyle(color: Colors.black),
+    enabledBorder: UnderlineInputBorder(
+      borderSide: new BorderSide(color: Colors.black54),
+    ),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.black),
+    ),
   ),
 );
 

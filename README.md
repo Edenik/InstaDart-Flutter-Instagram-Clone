@@ -24,7 +24,7 @@ Latest Update : 08/11/20
  - [X] Splash Screen
  - [X] Delete / Archive Posts
  - [X] Turn on / off Comments on Posts
- - [ ] Login + Signup - Show Auth indication + Error Handling
+ - [X] Login + Signup - Show Auth indication + Error Handling
 
 
 This app based of tutorial by -
