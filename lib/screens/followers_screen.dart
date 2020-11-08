@@ -206,6 +206,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
           context,
           MaterialPageRoute(
             builder: (_) => ProfileScreen(
+              isCameFromBottomNavigation: false,
               currentUserId: widget.currenUserId,
               userId: user.id,
             ),
@@ -268,6 +269,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
           context,
           MaterialPageRoute(
             builder: (_) => ProfileScreen(
+              isCameFromBottomNavigation: false,
               currentUserId: widget.currenUserId,
               userId: user.id,
             ),

@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           CreatePostScreen(),
           ActivityScreen(currentUserId: widget.currentUserId),
           ProfileScreen(
+            isCameFromBottomNavigation: true,
             onProfileEdited: _getCurrentUser,
             userId: widget.currentUserId,
             currentUserId: widget.currentUserId,

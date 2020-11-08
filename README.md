@@ -19,6 +19,7 @@ Latest Update : 06/11/20
  - [ ] Direct Messaging
  - [ ] Stories
  - [ ] Clean up code
+ - [X] Edit Posts
  - [X] Dark / Light Theme Mode
  - [X] Splash Screen
  - [X] Delete / Archive Posts

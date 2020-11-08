@@ -15,8 +15,14 @@ class ProfileScreen extends StatefulWidget {
   final String userId;
   final String currentUserId;
   final Function onProfileEdited;
+  final bool isCameFromBottomNavigation;
 
-  ProfileScreen({this.userId, this.currentUserId, this.onProfileEdited});
+  ProfileScreen({
+    this.userId,
+    this.currentUserId,
+    this.onProfileEdited,
+    @required this.isCameFromBottomNavigation,
+  });
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -390,10 +396,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.color,
 
+        // automaticallyImplyLeading:
+        //     widget.userId == widget.currentUserId ? false : true,
         automaticallyImplyLeading:
-            widget.userId == widget.currentUserId ? false : true,
+            widget.isCameFromBottomNavigation ? false : true,
+
         title:
             _profileUser != null ? Text(_profileUser.name) : SizedBox.shrink(),
+
         // actions: <Widget>[
         //   IconButton(
         //     icon: Icon(Icons.exit_to_app),

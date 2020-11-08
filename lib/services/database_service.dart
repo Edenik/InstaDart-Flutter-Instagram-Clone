@@ -32,6 +32,29 @@ class DatabaseService {
     }
   }
 
+  static void editPost(
+    Post post,
+    PostStatus postStatus,
+  ) {
+    String collection;
+    if (postStatus == PostStatus.archivedPost) {
+      collection = 'archivedPosts';
+    } else if (postStatus == PostStatus.feedPost) {
+      collection = 'userPosts';
+    } else {
+      collection = 'deletedPosts';
+    }
+
+    postsRef
+        .document(post.authorId)
+        .collection(collection)
+        .document(post.id)
+        .updateData({
+      'caption': post.caption,
+      'location': post.location,
+    });
+  }
+
   static void allowDisAllowPostComments(Post post, bool commentsAllowed) {
     try {
       postsRef

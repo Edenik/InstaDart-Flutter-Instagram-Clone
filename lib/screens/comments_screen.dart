@@ -27,6 +27,7 @@ _goToUserProfile(BuildContext context, Post post, String currentUserId) {
     context,
     MaterialPageRoute(
       builder: (_) => ProfileScreen(
+        isCameFromBottomNavigation: false,
         currentUserId: currentUserId,
         userId: post.authorId,
       ),

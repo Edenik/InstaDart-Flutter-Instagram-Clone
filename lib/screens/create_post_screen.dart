@@ -7,14 +7,22 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram/screens/screens.dart';
+import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 
 import 'package:instagram/utilities/themes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CreatePostScreen extends StatefulWidget {
+  final Post post;
+  final PostStatus postStatus;
+
+  CreatePostScreen({this.post, this.postStatus});
+
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
 }
@@ -28,7 +36,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Map<String, double> currentLocation = Map();
   String _caption = '';
   bool _isLoading = false;
-
+  Post _post;
   @override
   initState() {
     super.initState();
@@ -36,6 +44,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     currentLocation['latitude'] = 0.0;
     currentLocation['longitude'] = 0.0;
     initPlatformState(); //method to call location
+    if (widget.post != null) {
+      setState(() {
+        _captionController.value = TextEditingValue(text: widget.post.caption);
+        _locationController.value =
+            TextEditingValue(text: widget.post.location);
+        _post = widget.post;
+      });
+    }
   }
 
   //method to get Location and save into variables
@@ -130,7 +146,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   _submit() async {
     if (!_isLoading &&
-        _imageFile != null &&
+        (_imageFile != null || _post.imageUrl != null) &&
         _captionController.text.isNotEmpty) {
       if (mounted) {
         setState(() {
@@ -138,19 +154,37 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         });
       }
 
-      //Create Post
-      String imageUrl = await StroageService.uploadPost(_imageFile);
-      Post post = Post(
-        imageUrl: imageUrl,
-        caption: _captionController.text,
-        location: _locationController.text,
-        likeCount: 0,
-        authorId: Provider.of<UserData>(context, listen: false).currentUserId,
-        timestamp: Timestamp.fromDate(DateTime.now()),
-        commentsAllowed: true,
-      );
+      if (_post != null) {
+        // Edit existing Post
+        Post post = Post(
+          id: _post.id,
+          imageUrl: _post.imageUrl,
+          caption: _captionController.text,
+          location: _locationController.text,
+          likeCount: _post.likeCount,
+          authorId: _post.authorId,
+          timestamp: _post.timestamp,
+          commentsAllowed: _post.commentsAllowed,
+        );
 
-      DatabaseService.createPost(post);
+        DatabaseService.editPost(post, widget.postStatus);
+
+        _goToHomeScreen();
+      } else {
+        //Create new Post
+        String imageUrl = await StroageService.uploadPost(_imageFile);
+        Post post = Post(
+          imageUrl: imageUrl,
+          caption: _captionController.text,
+          location: _locationController.text,
+          likeCount: 0,
+          authorId: Provider.of<UserData>(context, listen: false).currentUserId,
+          timestamp: Timestamp.fromDate(DateTime.now()),
+          commentsAllowed: true,
+        );
+
+        DatabaseService.createPost(post);
+      }
 
       //Reset Data
       _captionController.clear();
@@ -159,6 +193,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       if (mounted) {
         setState(() {
           _imageFile = null;
+          _post = null;
           _isLoading = false;
         });
       }
@@ -196,10 +231,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 
-  _clearImage() {
-    setState(() {
-      _imageFile = null;
-    });
+  _backButton() {
+    if (_post == null) {
+      setState(() {
+        _imageFile = null;
+      });
+    } else {
+      _goToHomeScreen();
+    }
+  }
+
+  _goToHomeScreen() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => HomeScreen(
+            Provider.of<UserData>(context, listen: false).currentUserId),
+      ),
+      (Route<dynamic> route) => false,
+    );
   }
 
   _buildForm() {
@@ -220,7 +270,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       alignment: FractionalOffset.topCenter,
-                      image: FileImage(_imageFile),
+                      image: _imageFile == null
+                          ? CachedNetworkImageProvider(_post.imageUrl)
+                          : FileImage(_imageFile),
                     ),
                   ),
                 ),
@@ -260,19 +312,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _imageFile == null
-        ? IconButton(
-            icon: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FaIcon(
-                  FontAwesomeIcons.cameraRetro,
-                  size: 50.0,
+    return _imageFile == null && _post == null
+        ? Scaffold(
+            body: Center(
+              child: GestureDetector(
+                onTap: () => _showSelectImageDialog(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    FaIcon(
+                      FontAwesomeIcons.cameraRetro,
+                      size: 50.0,
+                    ),
+                    SizedBox(height: 5.0),
+                    Text('Click')
+                  ],
                 ),
-                Text('Click'),
-              ],
+              ),
             ),
-            onPressed: () => _showSelectImageDialog(),
           )
         : Scaffold(
             resizeToAvoidBottomPadding: false,
@@ -282,15 +340,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               leading: IconButton(
                   icon: Icon(Icons.arrow_back,
                       color: Theme.of(context).accentColor),
-                  onPressed: _clearImage),
-              title: Text('New Post'),
+                  onPressed: _backButton),
+              title: Text(_imageFile == null ? 'Edit Post' : 'New Post'),
               actions: <Widget>[
                 FlatButton(
-                    onPressed: _caption.trim() != '' ? _submit : null,
+                    onPressed:
+                        _captionController.text.trim() != '' ? _submit : null,
                     child: Text(
-                      'Share',
+                      _imageFile == null ? 'Save' : 'Share',
                       style: TextStyle(
-                          color: _caption.trim() != ''
+                          color: _captionController.text.trim() != ''
                               ? Theme.of(context).accentColor
                               : Theme.of(context).hintColor,
                           fontWeight: FontWeight.bold,

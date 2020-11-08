@@ -31,6 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
         context,
         MaterialPageRoute(
           builder: (_) => ProfileScreen(
+            isCameFromBottomNavigation: false,
             userId: user.id,
             currentUserId:
                 Provider.of<UserData>(context, listen: false).currentUserId,

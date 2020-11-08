@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/post_model.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/comments_screen.dart';
+import 'package:instagram/screens/create_post_screen.dart';
 import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
@@ -58,6 +59,7 @@ class _PostViewState extends State<PostView> {
       context,
       MaterialPageRoute(
         builder: (_) => ProfileScreen(
+          isCameFromBottomNavigation: false,
           currentUserId: widget.currentUserId,
           userId: post.authorId,
         ),
@@ -199,6 +201,22 @@ class _PostViewState extends State<PostView> {
                               location: _post.location,
                               timestamp: _post.timestamp);
                         });
+                      },
+                    )
+                  : SizedBox.shrink(),
+              _post.authorId == widget.currentUserId
+                  ? SimpleDialogOption(
+                      child: Text('Edit Post'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => CreatePostScreen(
+                                      post: _post,
+                                      postStatus: widget.postStatus,
+                                    )));
+                        // DatabaseService.recreatePost(_post, widget.postStatus);
+                        // _goToHomeScreen(context);
                       },
                     )
                   : SizedBox.shrink(),
