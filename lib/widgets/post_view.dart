@@ -240,25 +240,28 @@ class _PostViewState extends State<PostView> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        GestureDetector(
-          onTap: () => _goToUserProfile(context, _post),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: ListTile(
-              leading: CircleAvatar(
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: ListTile(
+            leading: GestureDetector(
+              onTap: () => _goToUserProfile(context, _post),
+              child: CircleAvatar(
                 backgroundColor: Colors.grey,
                 backgroundImage: widget.author.profileImageUrl.isEmpty
                     ? AssetImage(placeHolderImageRef)
                     : CachedNetworkImageProvider(widget.author.profileImageUrl),
               ),
-              title: Text(
+            ),
+            title: GestureDetector(
+              onTap: () => _goToUserProfile(context, _post),
+              child: Text(
                 widget.author.name,
                 style: kFontSize18FontWeight600TextStyle,
               ),
-              subtitle: _post.location.isNotEmpty ? Text(_post.location) : null,
-              trailing: IconButton(
-                  icon: Icon(Icons.more_vert), onPressed: _showMenuDialog),
             ),
+            subtitle: _post.location.isNotEmpty ? Text(_post.location) : null,
+            trailing: IconButton(
+                icon: Icon(Icons.more_vert), onPressed: _showMenuDialog),
           ),
         ),
         GestureDetector(
