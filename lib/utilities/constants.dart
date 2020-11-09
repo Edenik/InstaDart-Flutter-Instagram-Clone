@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 
 final _firestore = Firestore.instance;
 final storageRef = FirebaseStorage.instance.ref();
@@ -13,9 +14,21 @@ final commentsRef = _firestore.collection('comments');
 final activitiesRef = _firestore.collection('activities');
 final archivedPostsRef = _firestore.collection('archivedPosts');
 final deletedPostsRef = _firestore.collection('deletedPosts');
+final chatsRef = _firestore.collection('chats');
 final String user = 'userFeed';
 final String usersFollowers = 'userFollowers';
 final String userFollowing = 'userFollowing';
 final String placeHolderImageRef = 'assets/images/user_placeholder.jpg';
 
-enum PostStatus { feedPost, deletedPost, archivedPost }
+final DateFormat timeFormat = DateFormat('E, h:mm a');
+
+enum PostStatus {
+  feedPost,
+  deletedPost,
+  archivedPost,
+}
+
+enum SearchFrom {
+  messagesScreen,
+  homeScreen,
+}

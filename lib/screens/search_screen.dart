@@ -9,6 +9,9 @@ import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 
 class SearchScreen extends StatefulWidget {
+  final SearchFrom searchFrom;
+  SearchScreen({@required this.searchFrom});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
