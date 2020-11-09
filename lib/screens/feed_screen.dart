@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/chat_screen.dart';
 import 'package:instagram/screens/direct_messages_screen.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
@@ -52,7 +53,7 @@ class _FeedScreenState extends State<FeedScreen> {
           IconButton(
               icon: FaIcon(FontAwesomeIcons.paperPlane),
               onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => DirectMessagesScreen())))
+                  MaterialPageRoute(builder: (_) => ChatScreen(Chat()))))
         ],
       ),
       body: !_isLoading

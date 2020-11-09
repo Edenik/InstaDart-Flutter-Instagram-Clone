@@ -29,7 +29,7 @@ class ChatService {
     return true;
   }
 
-  void sendChatMessage(Chat chat, Message message) {
+  static void sendChatMessage(Chat chat, Message message) {
     chatsRef.document(chat.id).collection('messages').add({
       'senderId': message.senderId,
       'text': message.text,
@@ -38,7 +38,7 @@ class ChatService {
     });
   }
 
-  void setChatRead(BuildContext context, Chat chat, bool read) async {
+  static void setChatRead(BuildContext context, Chat chat, bool read) async {
     String currentUserId =
         Provider.of<UserData>(context, listen: false).currentUserId;
     chatsRef.document(chat.id).updateData({
