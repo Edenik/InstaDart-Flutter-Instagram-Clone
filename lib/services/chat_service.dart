@@ -45,4 +45,14 @@ class ChatService {
       'readStatus.$currentUserId': read,
     });
   }
+
+  static Future<bool> checkIfChatExist(List<String> users) async {
+    print(users);
+    QuerySnapshot snapshot =
+        await chatsRef.where('memberIds', isEqualTo: users).getDocuments();
+
+    // print(snapshot.documents);
+    // print(snapshot.documents.isNotEmpty);
+    return snapshot.documents.isNotEmpty;
+  }
 }

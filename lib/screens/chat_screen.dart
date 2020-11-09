@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/models/models.dart';
-import 'package:instagram/services/chat_service.dart';
 import 'package:instagram/services/services.dart';
+import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -21,14 +21,25 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   bool _isComposingMessage = false;
   Chat _chat;
+  bool _isChatExist = false;
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
+    List<String> users = [];
+    users.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
+    users.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
+    bool isChatExist = await ChatService.checkIfChatExist(users);
+    setState(() {
+      _isChatExist = isChatExist;
+    });
+
+    if (isChatExist) {
+      ChatService.setChatRead(context, widget.chat, true);
+    }
     if (widget.chat != null) {
       setState(() => _chat = widget.chat);
     }
-    ChatService.setChatRead(context, widget.chat, true);
   }
 
   Container _buildMessageTF() {
@@ -41,16 +52,21 @@ class _ChatScreenState extends State<ChatScreen> {
             child: IconButton(
               icon: Icon(Icons.photo),
               onPressed: () async {
-                PickedFile pickedFile = await ImagePicker().getImage(
-                  source: ImageSource.camera,
-                );
-                File imageFile = File(pickedFile.path);
+                // List<String> users = [];
+                // users.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
+                // users.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
 
-                if (imageFile != null) {
-                  // StroageService
-                  //         .uploadMessageImage(imageFile);
-                  // _sendMessage(null, imageUrl);
-                }
+                // ChatService.checkIfChatExist(users);
+                // PickedFile pickedFile = await ImagePicker().getImage(
+                //   source: ImageSource.camera,
+                // );
+                // File imageFile = File(pickedFile.path);
+
+                // if (imageFile != null) {
+                //   // StroageService
+                //   //         .uploadMessageImage(imageFile);
+                //   // _sendMessage(null, imageUrl);
+                // }
               },
             ),
           ),
@@ -94,6 +110,28 @@ class _ChatScreenState extends State<ChatScreen> {
 
       ChatService.sendChatMessage(_chat, message);
     }
+  }
+
+  _buildMessagesStream() {
+    return StreamBuilder(
+      stream: chatsRef
+          .document(_chat.id)
+          .collection('messages')
+          .orderBy('timestamp', descending: true)
+          .limit(20)
+          .snapshots(),
+      builder: (BuildContext contex, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return SizedBox.shrink();
+        }
+        return Expanded(
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: ListView(),
+          ),
+        );
+      },
+    );
   }
 
   @override
