@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:provider/provider.dart';
 
 class ChatService {
   Future<bool> createChat(
@@ -28,5 +29,20 @@ class ChatService {
     return true;
   }
 
-  void sendChatMessage(Chat chat, Message message) {}
+  void sendChatMessage(Chat chat, Message message) {
+    chatsRef.document(chat.id).collection('messages').add({
+      'senderId': message.senderId,
+      'text': message.text,
+      'imageUrl': message.imageUrl,
+      'timeStamp': message.timestamp,
+    });
+  }
+
+  void setChatRead(BuildContext context, Chat chat, bool read) async {
+    String currentUserId =
+        Provider.of<UserData>(context, listen: false).currentUserId;
+    chatsRef.document(chat.id).updateData({
+      'readStatus.$currentUserId': read,
+    });
+  }
 }
