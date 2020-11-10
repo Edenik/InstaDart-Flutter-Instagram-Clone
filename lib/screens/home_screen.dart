@@ -32,8 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     User currentUser =
         await DatabaseService.getUserWithId(widget.currentUserId);
 
-    Provider.of<UserData>(context, listen: false).profileImageUrl =
-        currentUser.profileImageUrl;
+    Provider.of<UserData>(context, listen: false).currentUser = currentUser;
     setState(() {
       _currentUser = currentUser;
     });

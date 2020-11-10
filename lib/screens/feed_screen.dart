@@ -53,7 +53,7 @@ class _FeedScreenState extends State<FeedScreen> {
           IconButton(
               icon: FaIcon(FontAwesomeIcons.paperPlane),
               onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => ChatScreen(Chat()))))
+                  MaterialPageRoute(builder: (_) => DirectMessagesScreen())))
         ],
       ),
       body: !_isLoading

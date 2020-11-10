@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instagram/models/models.dart';
@@ -7,15 +5,12 @@ import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
 class ChatService {
-  Future<bool> createChat(
-    BuildContext context,
-    String name,
-    File file,
-    List<String> users,
+  static Future<bool> createChat(
+    List<String> userIds,
   ) async {
     Map<String, dynamic> readStatus = {};
 
-    for (String userId in users) {
+    for (String userId in userIds) {
       readStatus[userId] = false;
     }
 
@@ -23,7 +18,7 @@ class ChatService {
       'recentMessage': 'Chat Created',
       'recentSender': '',
       'recentTimestamp': Timestamp.now(),
-      'memberIds': users,
+      'memberIds': userIds,
       'readStatus': readStatus,
     });
     return true;

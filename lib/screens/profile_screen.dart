@@ -131,8 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                               setState(() {
                                 Provider.of<UserData>(context, listen: false)
-                                        .profileImageUrl =
-                                    updatedUser.profileImageUrl;
+                                    .currentUser = updatedUser;
                                 _profileUser = updatedUser;
                               });
                               widget.onProfileEdited();

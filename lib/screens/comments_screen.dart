@@ -103,8 +103,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
     }
     final currentUserId =
         Provider.of<UserData>(context, listen: false).currentUserId;
-    final profileImageUrl =
-        Provider.of<UserData>(context, listen: false).profileImageUrl;
+    final profileImageUrl = Provider.of<UserData>(context, listen: false)
+        .currentUser
+        .profileImageUrl;
     return IconTheme(
       data: IconThemeData(
         color: _isCommenting

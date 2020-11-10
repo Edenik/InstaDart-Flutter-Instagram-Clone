@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
@@ -11,8 +9,9 @@ import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   final Chat chat;
+  final User receiverUser;
 
-  const ChatScreen(this.chat);
+  const ChatScreen(this.chat, this.receiverUser);
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -22,15 +21,25 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _isComposingMessage = false;
   Chat _chat;
   bool _isChatExist = false;
+  User _currentUser;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
+    _setup();
+  }
+
+  _setup() async {
     List<String> users = [];
     users.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
     users.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
     bool isChatExist = await ChatService.checkIfChatExist(users);
+
+    User currentUser =
+        Provider.of<UserData>(context, listen: false).currentUser;
+
     setState(() {
+      _currentUser = currentUser;
       _isChatExist = isChatExist;
     });
 
@@ -39,6 +48,18 @@ class _ChatScreenState extends State<ChatScreen> {
     }
     if (widget.chat != null) {
       setState(() => _chat = widget.chat);
+    }
+  }
+
+  submit() async {
+    if (!_isChatExist) {
+      List<String> userIds = [];
+      // userIds.add(_currentUser.id);
+      // userIds.add(widget.receiverUser.id);
+      userIds.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
+      userIds.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
+      bool res = await ChatService.createChat(userIds);
+      if (!res) return;
     }
   }
 
@@ -51,7 +72,8 @@ class _ChatScreenState extends State<ChatScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 4.0),
             child: IconButton(
               icon: Icon(Icons.photo),
-              onPressed: () async {
+              onPressed: () {
+                submit();
                 // List<String> users = [];
                 // users.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
                 // users.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
