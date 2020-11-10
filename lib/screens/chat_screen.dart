@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
@@ -30,13 +31,14 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _setup() async {
-    List<String> users = [];
-    users.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
-    users.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
-    bool isChatExist = await ChatService.checkIfChatExist(users);
-
     User currentUser =
         Provider.of<UserData>(context, listen: false).currentUser;
+
+    List<String> userIds = [];
+    userIds.add(currentUser.id);
+    userIds.add(widget.receiverUser.id);
+    bool isChatExist = await ChatService.checkIfChatExist(userIds);
+    print('chat exist: $isChatExist');
 
     setState(() {
       _currentUser = currentUser;
@@ -54,10 +56,10 @@ class _ChatScreenState extends State<ChatScreen> {
   submit() async {
     if (!_isChatExist) {
       List<String> userIds = [];
-      // userIds.add(_currentUser.id);
-      // userIds.add(widget.receiverUser.id);
-      userIds.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
-      userIds.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
+      userIds.add(_currentUser.id);
+      userIds.add(widget.receiverUser.id);
+      // userIds.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
+      // userIds.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
       bool res = await ChatService.createChat(userIds);
       if (!res) return;
     }
@@ -165,7 +167,20 @@ class _ChatScreenState extends State<ChatScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('widget.chat.name'),
+          title: Row(
+            children: [
+              CircleAvatar(
+                radius: 15,
+                backgroundColor: Colors.grey,
+                backgroundImage: widget.receiverUser.profileImageUrl.isEmpty
+                    ? AssetImage(placeHolderImageRef)
+                    : CachedNetworkImageProvider(
+                        widget.receiverUser.profileImageUrl),
+              ),
+              SizedBox(width: 5.0),
+              Text(widget.receiverUser.name),
+            ],
+          ),
         ),
         body: SafeArea(
           child: Column(

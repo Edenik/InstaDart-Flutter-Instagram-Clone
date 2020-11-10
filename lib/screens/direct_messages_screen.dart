@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/chat_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
@@ -90,41 +91,43 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
     });
 
     return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Colors.white,
-        radius: 28.0,
-        backgroundImage:
-            CachedNetworkImageProvider(users[receiverIndex].profileImageUrl),
-      ),
-      title: Text(
-        users[receiverIndex].name,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: chat.recentSender.isEmpty
-          ? Text(
-              'Chat Created',
-              overflow: TextOverflow.ellipsis,
-              style: readStyle,
-            )
-          : chat.recentMessage != null
-              ? Text(
-                  '${"chat.memberInfo[chat.recentSender]['name']"} : ${chat.recentMessage}',
-                  overflow: TextOverflow.ellipsis,
-                  style: readStyle,
-                )
-              : Text(
-                  '${"chat.memberInfo[chat.recentSender]['name']"} : sent an image',
-                  overflow: TextOverflow.ellipsis,
-                  style: readStyle,
-                ),
-      trailing: Text(
-        timeFormat.format(
-          chat.recentTimestamp.toDate(),
+        leading: CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 28.0,
+          backgroundImage:
+              CachedNetworkImageProvider(users[receiverIndex].profileImageUrl),
         ),
-        style: readStyle,
-      ),
-      onTap: () {},
-    );
+        title: Text(
+          users[receiverIndex].name,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: chat.recentSender.isEmpty
+            ? Text(
+                'Chat Created',
+                overflow: TextOverflow.ellipsis,
+                style: readStyle,
+              )
+            : chat.recentMessage != null
+                ? Text(
+                    '${"chat.memberInfo[chat.recentSender]['name']"} : ${chat.recentMessage}',
+                    overflow: TextOverflow.ellipsis,
+                    style: readStyle,
+                  )
+                : Text(
+                    '${"chat.memberInfo[chat.recentSender]['name']"} : sent an image',
+                    overflow: TextOverflow.ellipsis,
+                    style: readStyle,
+                  ),
+        trailing: Text(
+          timeFormat.format(
+            chat.recentTimestamp.toDate(),
+          ),
+          style: readStyle,
+        ),
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ChatScreen(chat, users[receiverIndex]))));
   }
 
   @override
