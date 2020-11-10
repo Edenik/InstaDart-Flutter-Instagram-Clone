@@ -46,7 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
             : () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ChatScreen(null, user),
+                    builder: (_) => ChatScreen(user),
                   ),
                 ));
   }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +40,7 @@ class ChatService {
       'text': message.text,
       'imageUrl': message.imageUrl,
       'timestamp': message.timestamp,
+      'isLiked': message.isLiked ?? false,
     });
   }
 
@@ -68,22 +70,29 @@ class ChatService {
   }
 
   static Future<Chat> getChatByUsers(List<String> users) async {
-    print(users[0]);
-    print(users[1]);
     QuerySnapshot snapshot = await chatsRef.where('memberIds', whereIn: [
       [users[1], users[0]]
     ]).getDocuments();
+
     if (snapshot.documents.isEmpty) {
       snapshot = await chatsRef.where('memberIds', whereIn: [
         [users[0], users[1]]
       ]).getDocuments();
     }
 
-    print('chat exist: ${snapshot.documents.isNotEmpty}');
-
     if (snapshot.documents.isNotEmpty) {
       return Chat.fromDoc(snapshot.documents[0]);
     }
+    return null;
+  }
+
+  static Future<Null> likeUnlikeMessage(
+      String messageId, String chatId, bool isLiked) {
+    chatsRef
+        .document(chatId)
+        .collection('messages')
+        .document(messageId)
+        .updateData({'isLiked': isLiked});
     return null;
   }
 }

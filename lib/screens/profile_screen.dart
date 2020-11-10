@@ -113,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _displayButton(User user) {
     return user.id == widget.currentUserId
         ? Container(
-            width: 200.0,
+            width: double.infinity,
             child: FlatButton(
                 onPressed: () => Navigator.push(
                       context,
@@ -145,17 +145,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: kFontSize18TextStyle,
                 )),
           )
-        : Container(
-            width: 200.0,
-            child: FlatButton(
-              onPressed: _followOrUnfollow,
-              color: _isFollowing ? Colors.grey[200] : Colors.blue,
-              textColor: _isFollowing ? Colors.black : Colors.white,
-              child: Text(
-                _isFollowing ? 'Unfollow' : 'Follow',
-                style: kFontSize18TextStyle,
+        : Row(
+            children: <Widget>[
+              Expanded(
+                child: FlatButton(
+                  onPressed: _followOrUnfollow,
+                  color: _isFollowing ? Colors.grey[200] : Colors.blue,
+                  textColor: _isFollowing ? Colors.black : Colors.white,
+                  child: Text(
+                    _isFollowing ? 'Unfollow' : 'Follow',
+                    style: kFontSize18TextStyle,
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: FlatButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ChatScreen(_profileUser))),
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  child: Text(
+                    'Message',
+                    style: kFontSize18TextStyle,
+                  ),
+                ),
+              ),
+            ],
           );
   }
 
@@ -167,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Row(
             children: <Widget>[
               CircleAvatar(
-                radius: 50.0,
+                radius: 40.0,
                 backgroundColor: Colors.grey,
                 backgroundImage: user.profileImageUrl.isEmpty
                     ? AssetImage(placeHolderImageRef)
@@ -257,7 +277,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       ],
                     ),
-                    _displayButton(user),
                   ],
                 ),
               )
@@ -282,6 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 15.0),
                 ),
               ),
+              _displayButton(user),
               Divider(
                 color: Theme.of(context).dividerColor,
                 height: 1,

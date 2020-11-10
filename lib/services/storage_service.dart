@@ -38,6 +38,14 @@ class StroageService {
     return compressedImageFile;
   }
 
+  static Future<String> _uploadImage(
+      String path, String imageId, File image) async {
+    StorageUploadTask uploadTask = storageRef.child(path).putFile(image);
+    StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
+    String downloadUrl = await storageSnap.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
   static Future<String> uploadPost(File imageFile) async {
     String photoId = Uuid().v4();
     File image = await compressImage(photoId, imageFile);
@@ -45,6 +53,18 @@ class StroageService {
         storageRef.child('images/posts/post_$photoId.jpg').putFile(image);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     String downloadUrl = await storageSnap.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  static Future<String> uploadMessageImage(File imageFile) async {
+    String imageId = Uuid().v4();
+    File image = await compressImage(imageId, imageFile);
+
+    String downloadUrl = await _uploadImage(
+      'images/messages/message_$imageId.jpg',
+      imageId,
+      image,
+    );
     return downloadUrl;
   }
 }

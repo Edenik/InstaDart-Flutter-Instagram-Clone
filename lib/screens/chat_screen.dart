@@ -1,20 +1,22 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/widgets/message_bubble.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
-  final Chat chat;
   final User receiverUser;
 
-  const ChatScreen(this.chat, this.receiverUser);
+  const ChatScreen(this.receiverUser);
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -97,9 +99,18 @@ class _ChatScreenState extends State<ChatScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 4.0),
             child: IconButton(
               icon: Icon(Icons.photo),
-              onPressed: _isComposingMessage
-                  ? () => _sendMessage(_messageController.text, null)
-                  : null,
+              onPressed: () async {
+                PickedFile pickedFile = await ImagePicker().getImage(
+                  source: ImageSource.camera,
+                );
+                File imageFile = File(pickedFile.path);
+
+                if (imageFile != null) {
+                  String imageUrl =
+                      await StroageService.uploadMessageImage(imageFile);
+                  _sendMessage(null, imageUrl);
+                }
+              },
             ),
           ),
           Expanded(
@@ -109,7 +120,10 @@ class _ChatScreenState extends State<ChatScreen> {
               onChanged: (messageText) {
                 setState(() => _isComposingMessage = messageText.isNotEmpty);
               },
-              decoration: InputDecoration.collapsed(hintText: 'Send a message'),
+              decoration: InputDecoration(
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  hintText: 'Send a message'),
             ),
           ),
           Container(
@@ -143,6 +157,7 @@ class _ChatScreenState extends State<ChatScreen> {
         text: text,
         imageUrl: imageUrl,
         timestamp: Timestamp.now(),
+        isLiked: false,
       );
 
       ChatService.sendChatMessage(_chat, message);
@@ -150,7 +165,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _buildMessagesStream() {
-    print(_chat.id);
     return StreamBuilder(
       stream: chatsRef
           .document(_chat.id)
@@ -200,8 +214,6 @@ class _ChatScreenState extends State<ChatScreen> {
       onWillPop: () {
         if (_chat != null) {
           ChatService.setChatRead(context, _chat, true);
-        } else if (widget.chat != null) {
-          ChatService.setChatRead(context, _chat, true);
         }
         return Future.value(true);
       },
@@ -209,13 +221,16 @@ class _ChatScreenState extends State<ChatScreen> {
         appBar: AppBar(
           title: Row(
             children: [
-              CircleAvatar(
-                radius: 15,
-                backgroundColor: Colors.grey,
-                backgroundImage: widget.receiverUser.profileImageUrl.isEmpty
-                    ? AssetImage(placeHolderImageRef)
-                    : CachedNetworkImageProvider(
-                        widget.receiverUser.profileImageUrl),
+              GestureDetector(
+                onTap: () {},
+                child: CircleAvatar(
+                  radius: 15,
+                  backgroundColor: Colors.grey,
+                  backgroundImage: widget.receiverUser.profileImageUrl.isEmpty
+                      ? AssetImage(placeHolderImageRef)
+                      : CachedNetworkImageProvider(
+                          widget.receiverUser.profileImageUrl),
+                ),
               ),
               SizedBox(width: 5.0),
               Text(widget.receiverUser.name),

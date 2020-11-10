@@ -8,6 +8,7 @@ import 'package:instagram/screens/chat_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:provider/provider.dart';
 
 class DirectMessagesScreen extends StatefulWidget {
@@ -123,7 +124,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => ChatScreen(chat, users[receiverIndex]),
+          builder: (_) => ChatScreen(users[receiverIndex]),
         ),
       ),
     );
@@ -171,9 +172,17 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
                   ),
                 ),
               ),
-              Text(
-                'Messages',
-                textAlign: TextAlign.start,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, bottom: 10),
+                    child: Text(
+                      'Messages',
+                      style: kFontSize18TextStyle,
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: ListView.separated(
