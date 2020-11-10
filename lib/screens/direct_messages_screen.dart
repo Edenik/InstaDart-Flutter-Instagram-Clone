@@ -28,8 +28,6 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
     setState(() {
       _currentUser = currentUser;
     });
-
-    getChats();
   }
 
   Stream<List<Chat>> getChats() async* {
@@ -44,8 +42,8 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
     await for (QuerySnapshot q in stream) {
       for (var doc in q.documents) {
         Chat chatFromDoc = Chat.fromDoc(doc);
-        int receiverIndex = 0;
         List<dynamic> memberIds = chatFromDoc.memberIds;
+        int receiverIndex;
 
         // Getting receiver index
         memberIds.forEach((userId) {
@@ -71,6 +69,8 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
           recentTimestamp: chatFromDoc.recentTimestamp,
         );
 
+        dataToReturn.removeWhere((chat) => chat.id == chatWithUserInfo.id);
+
         dataToReturn.add(chatWithUserInfo);
       }
       yield dataToReturn;
@@ -83,51 +83,50 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
         TextStyle(fontWeight: isRead ? FontWeight.w400 : FontWeight.bold);
 
     List<User> users = chat.memberInfo;
-    int receiverIndex = 0;
-    users.forEach((user) {
-      if (user.id != _currentUser.id) {
-        receiverIndex = users.indexOf(user);
-      }
-    });
+    int receiverIndex = users.indexWhere((user) => user.id != _currentUser.id);
+    int senderIndex = users.indexWhere((user) => user.id == chat.recentSender);
 
     return ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.white,
-          radius: 28.0,
-          backgroundImage:
-              CachedNetworkImageProvider(users[receiverIndex].profileImageUrl),
+      leading: CircleAvatar(
+        backgroundColor: Colors.white,
+        radius: 28.0,
+        backgroundImage:
+            CachedNetworkImageProvider(users[receiverIndex].profileImageUrl),
+      ),
+      title: Text(
+        users[receiverIndex].name,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: chat.recentSender.isEmpty
+          ? Text(
+              'Chat Created',
+              overflow: TextOverflow.ellipsis,
+              style: readStyle,
+            )
+          : chat.recentMessage != null
+              ? Text(
+                  '${chat.memberInfo[senderIndex].name} : ${chat.recentMessage}',
+                  overflow: TextOverflow.ellipsis,
+                  style: readStyle,
+                )
+              : Text(
+                  '${"chat.memberInfo[chat.recentSender]['name']"} : sent an image',
+                  overflow: TextOverflow.ellipsis,
+                  style: readStyle,
+                ),
+      trailing: Text(
+        timeFormat.format(
+          chat.recentTimestamp.toDate(),
         ),
-        title: Text(
-          users[receiverIndex].name,
-          overflow: TextOverflow.ellipsis,
+        style: readStyle,
+      ),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ChatScreen(chat, users[receiverIndex]),
         ),
-        subtitle: chat.recentSender.isEmpty
-            ? Text(
-                'Chat Created',
-                overflow: TextOverflow.ellipsis,
-                style: readStyle,
-              )
-            : chat.recentMessage != null
-                ? Text(
-                    '${"chat.memberInfo[chat.recentSender]['name']"} : ${chat.recentMessage}',
-                    overflow: TextOverflow.ellipsis,
-                    style: readStyle,
-                  )
-                : Text(
-                    '${"chat.memberInfo[chat.recentSender]['name']"} : sent an image',
-                    overflow: TextOverflow.ellipsis,
-                    style: readStyle,
-                  ),
-        trailing: Text(
-          timeFormat.format(
-            chat.recentTimestamp.toDate(),
-          ),
-          style: readStyle,
-        ),
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => ChatScreen(chat, users[receiverIndex]))));
+      ),
+    );
   }
 
   @override
@@ -135,7 +134,6 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Direct'),
-        // filled: true,
       ),
       body: StreamBuilder(
         stream: getChats(),
@@ -145,15 +143,51 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.separated(
-            itemBuilder: (BuildContext context, int index) {
-              Chat chat = snapshot.data[index];
-              return _buildChat(chat, _currentUser.id);
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const Divider(thickness: 1.0);
-            },
-            itemCount: snapshot.data.length,
+          return Column(
+            children: [
+              GestureDetector(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => SearchScreen(
+                              searchFrom: SearchFrom.messagesScreen,
+                            ))),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(5.0)),
+                    child: Row(
+                      children: [
+                        Icon(Icons.search),
+                        SizedBox(width: 5),
+                        Text('Search'),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                'Messages',
+                textAlign: TextAlign.start,
+              ),
+              Expanded(
+                child: ListView.separated(
+                  itemBuilder: (BuildContext context, int index) {
+                    Chat chat = snapshot.data[index];
+                    return _buildChat(chat, _currentUser.id);
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Divider(thickness: 1.0);
+                  },
+                  itemCount: snapshot.data.length,
+                ),
+              ),
+            ],
           );
         },
       ),

@@ -5,23 +5,32 @@ import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
 class ChatService {
-  static Future<bool> createChat(
-    List<String> userIds,
-  ) async {
+  static Future<Chat> createChat(List<User> users, List<String> userIds) async {
     Map<String, dynamic> readStatus = {};
 
-    for (String userId in userIds) {
-      readStatus[userId] = false;
+    for (User user in users) {
+      readStatus[user.id] = false;
     }
 
-    await chatsRef.add({
+    Timestamp timestamp = Timestamp.now();
+
+    DocumentReference res = await chatsRef.add({
       'recentMessage': 'Chat Created',
       'recentSender': '',
-      'recentTimestamp': Timestamp.now(),
+      'recentTimestamp': timestamp,
       'memberIds': userIds,
       'readStatus': readStatus,
     });
-    return true;
+
+    return Chat(
+      id: res.documentID,
+      recentMessage: 'Chat Created',
+      recentSender: '',
+      recentTimestamp: timestamp,
+      memberIds: userIds,
+      readStatus: readStatus,
+      memberInfo: users,
+    );
   }
 
   static void sendChatMessage(Chat chat, Message message) {
@@ -29,7 +38,7 @@ class ChatService {
       'senderId': message.senderId,
       'text': message.text,
       'imageUrl': message.imageUrl,
-      'timeStamp': message.timestamp,
+      'timestamp': message.timestamp,
     });
   }
 
@@ -41,13 +50,40 @@ class ChatService {
     });
   }
 
-  static Future<bool> checkIfChatExist(List<String> users) async {
-    print(users);
-    QuerySnapshot snapshot =
-        await chatsRef.where('memberIds', isEqualTo: users).getDocuments();
+  // static Future<bool> checkIfChatExist(List<String> users) async {
+  //   print(users);
+  //   QuerySnapshot snapshot = await chatsRef
+  //       .where('memberIds', arrayContainsAny: users)
+  //       .getDocuments();
 
-    // print(snapshot.documents);
-    // print(snapshot.documents.isNotEmpty);
-    return snapshot.documents.isNotEmpty;
+  //   return snapshot.documents.isNotEmpty;
+  // }
+
+  static Future<Chat> getChatById(String chatId) async {
+    DocumentSnapshot chatDocSnapshot = await chatsRef.document(chatId).get();
+    if (chatDocSnapshot.exists) {
+      return Chat.fromDoc(chatDocSnapshot);
+    }
+    return Chat();
+  }
+
+  static Future<Chat> getChatByUsers(List<String> users) async {
+    print(users[0]);
+    print(users[1]);
+    QuerySnapshot snapshot = await chatsRef.where('memberIds', whereIn: [
+      [users[1], users[0]]
+    ]).getDocuments();
+    if (snapshot.documents.isEmpty) {
+      snapshot = await chatsRef.where('memberIds', whereIn: [
+        [users[0], users[1]]
+      ]).getDocuments();
+    }
+
+    print('chat exist: ${snapshot.documents.isNotEmpty}');
+
+    if (snapshot.documents.isNotEmpty) {
+      return Chat.fromDoc(snapshot.documents[0]);
+    }
+    return null;
   }
 }

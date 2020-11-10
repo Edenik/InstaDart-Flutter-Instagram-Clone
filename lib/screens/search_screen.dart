@@ -22,26 +22,33 @@ class _SearchScreenState extends State<SearchScreen> {
 
   _buildUserTile(User user) {
     return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Colors.grey,
-        radius: 20.0,
-        backgroundImage: user.profileImageUrl.isEmpty
-            ? AssetImage(placeHolderImageRef)
-            : CachedNetworkImageProvider(user.profileImageUrl),
-      ),
-      title: Text(user.name),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ProfileScreen(
-            isCameFromBottomNavigation: false,
-            userId: user.id,
-            currentUserId:
-                Provider.of<UserData>(context, listen: false).currentUserId,
-          ),
+        leading: CircleAvatar(
+          backgroundColor: Colors.grey,
+          radius: 20.0,
+          backgroundImage: user.profileImageUrl.isEmpty
+              ? AssetImage(placeHolderImageRef)
+              : CachedNetworkImageProvider(user.profileImageUrl),
         ),
-      ),
-    );
+        title: Text(user.name),
+        onTap: widget.searchFrom == SearchFrom.homeScreen
+            ? () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProfileScreen(
+                      isCameFromBottomNavigation: false,
+                      userId: user.id,
+                      currentUserId:
+                          Provider.of<UserData>(context, listen: false)
+                              .currentUserId,
+                    ),
+                  ),
+                )
+            : () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ChatScreen(null, user),
+                  ),
+                ));
   }
 
   _clearSearch() {

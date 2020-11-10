@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/widgets/message_bubble.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -23,6 +25,9 @@ class _ChatScreenState extends State<ChatScreen> {
   Chat _chat;
   bool _isChatExist = false;
   User _currentUser;
+  List<String> _userIds;
+  List<User> _memberInfo;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -31,38 +36,56 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _setup() async {
+    setState(() => _isLoading = true);
     User currentUser =
         Provider.of<UserData>(context, listen: false).currentUser;
 
     List<String> userIds = [];
     userIds.add(currentUser.id);
     userIds.add(widget.receiverUser.id);
-    bool isChatExist = await ChatService.checkIfChatExist(userIds);
-    print('chat exist: $isChatExist');
+
+    List<User> users = [];
+    users.add(currentUser);
+    users.add(widget.receiverUser);
+
+    Chat chat = await ChatService.getChatByUsers(userIds);
+
+    bool isChatExist = chat != null;
+
+    if (isChatExist) {
+      ChatService.setChatRead(context, chat, true);
+
+      Chat chatWithMemberInfo = Chat(
+        id: chat.id,
+        memberIds: chat.memberIds,
+        memberInfo: users,
+        readStatus: chat.readStatus,
+        recentMessage: chat.recentMessage,
+        recentSender: chat.recentSender,
+        recentTimestamp: chat.recentTimestamp,
+      );
+
+      setState(() {
+        _chat = chatWithMemberInfo;
+      });
+    }
 
     setState(() {
       _currentUser = currentUser;
       _isChatExist = isChatExist;
+      _memberInfo = users;
+      _userIds = userIds;
+      _isLoading = false;
     });
-
-    if (isChatExist) {
-      ChatService.setChatRead(context, widget.chat, true);
-    }
-    if (widget.chat != null) {
-      setState(() => _chat = widget.chat);
-    }
   }
 
-  submit() async {
-    if (!_isChatExist) {
-      List<String> userIds = [];
-      userIds.add(_currentUser.id);
-      userIds.add(widget.receiverUser.id);
-      // userIds.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
-      // userIds.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
-      bool res = await ChatService.createChat(userIds);
-      if (!res) return;
-    }
+  Future<void> _createChat(userIds) async {
+    Chat chat = await ChatService.createChat(_memberInfo, userIds);
+
+    setState(() {
+      _chat = chat;
+      _isChatExist = true;
+    });
   }
 
   Container _buildMessageTF() {
@@ -74,24 +97,9 @@ class _ChatScreenState extends State<ChatScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 4.0),
             child: IconButton(
               icon: Icon(Icons.photo),
-              onPressed: () {
-                submit();
-                // List<String> users = [];
-                // users.add('CGc5lhJJKFX3EYfrxcjxfKCi7GD3'); //a@a.com
-                // users.add('iCmGphU8FNVxGVrNfxYN2ofOzwP2'); //edenik5@gmail.com
-
-                // ChatService.checkIfChatExist(users);
-                // PickedFile pickedFile = await ImagePicker().getImage(
-                //   source: ImageSource.camera,
-                // );
-                // File imageFile = File(pickedFile.path);
-
-                // if (imageFile != null) {
-                //   // StroageService
-                //   //         .uploadMessageImage(imageFile);
-                //   // _sendMessage(null, imageUrl);
-                // }
-              },
+              onPressed: _isComposingMessage
+                  ? () => _sendMessage(_messageController.text, null)
+                  : null,
             ),
           ),
           Expanded(
@@ -118,15 +126,20 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  _sendMessage(String text, String imageUrl) {
-    if ((text != null && text.trim().isEmpty) || imageUrl != null) {
+  _sendMessage(String text, String imageUrl) async {
+    print('chat exist: $_isChatExist');
+    if ((text != null && text.trim().isNotEmpty) || imageUrl != null) {
+      if (!_isChatExist) {
+        await _createChat(_userIds);
+      }
+
       if (imageUrl == null) {
         _messageController.clear();
         setState(() => _isComposingMessage = false);
       }
 
       Message message = Message(
-        senderId: Provider.of<UserData>(context, listen: false).currentUserId,
+        senderId: _currentUser.id,
         text: text,
         imageUrl: imageUrl,
         timestamp: Timestamp.now(),
@@ -137,6 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _buildMessagesStream() {
+    print(_chat.id);
     return StreamBuilder(
       stream: chatsRef
           .document(_chat.id)
@@ -151,18 +165,44 @@ class _ChatScreenState extends State<ChatScreen> {
         return Expanded(
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
-            child: ListView(),
+            child: ListView(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+              physics: AlwaysScrollableScrollPhysics(),
+              reverse: true,
+              children: _buildMessageBubbles(snapshot),
+            ),
           ),
         );
       },
     );
   }
 
+  List<MessageBubble> _buildMessageBubbles(
+    AsyncSnapshot<QuerySnapshot> messages,
+  ) {
+    List<MessageBubble> messageBubbles = [];
+
+    messages.data.documents.forEach((doc) {
+      Message message = Message.fromDoc(doc);
+      MessageBubble messageBubble = MessageBubble(
+        chat: _chat,
+        message: message,
+      );
+      messageBubbles.add(messageBubble);
+    });
+    return messageBubbles;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        ChatService.setChatRead(context, widget.chat, true);
+        if (_chat != null) {
+          ChatService.setChatRead(context, _chat, true);
+        } else if (widget.chat != null) {
+          ChatService.setChatRead(context, _chat, true);
+        }
         return Future.value(true);
       },
       child: Scaffold(
@@ -187,7 +227,7 @@ class _ChatScreenState extends State<ChatScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              // _buildMessagesStream(),
+              if (_isChatExist && !_isLoading) _buildMessagesStream(),
               Divider(height: 1.0),
               _buildMessageTF(),
             ],

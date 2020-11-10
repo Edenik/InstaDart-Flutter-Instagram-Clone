@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instagram/models/models.dart';
 
 class Chat {
   final String id;
@@ -8,7 +9,7 @@ class Chat {
   final String recentSender;
   final Timestamp recentTimestamp;
   final List<dynamic> memberIds;
-  final dynamic memberInfo;
+  final List<User> memberInfo;
   final dynamic readStatus;
 
   Chat({
