@@ -96,7 +96,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return Container(
       margin: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.white),
+          border:
+              Border.all(color: Theme.of(context).accentColor.withOpacity(0.3)),
           borderRadius: BorderRadius.circular(30)),
       child: Row(
         children: <Widget>[
@@ -110,6 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: IconButton(
               icon: Icon(
                 Icons.camera_alt,
+                color: Colors.white,
                 size: 20,
               ),
               onPressed: () async {

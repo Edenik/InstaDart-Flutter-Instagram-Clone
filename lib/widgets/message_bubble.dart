@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:animator/animator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
@@ -17,6 +20,7 @@ class MessageBubble extends StatefulWidget {
 
 class _MessageBubbleState extends State<MessageBubble> {
   bool _isLiked = false;
+  bool _heartAnim = false;
 
   @override
   void initState() {
@@ -29,6 +33,17 @@ class _MessageBubbleState extends State<MessageBubble> {
   _likeUnLikeMessage() {
     ChatService.likeUnlikeMessage(widget.message.id, widget.chat.id, !_isLiked);
     setState(() => _isLiked = !_isLiked);
+
+    if (_isLiked) {
+      setState(() {
+        _heartAnim = true;
+      });
+      Timer(Duration(milliseconds: 350), () {
+        setState(() {
+          _heartAnim = false;
+        });
+      });
+    }
   }
 
   @override
@@ -41,7 +56,7 @@ class _MessageBubbleState extends State<MessageBubble> {
     int receiverIndex = widget.chat.memberInfo
         .indexWhere((member) => member.id != widget.message.senderId);
 
-    _buildText(bool isMe) {
+    _buildText() {
       return GestureDetector(
         onDoubleTap: widget.message.senderId == currentUser.id
             ? null
@@ -50,7 +65,8 @@ class _MessageBubbleState extends State<MessageBubble> {
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
           child: Text(
             widget.message.text,
-            style: TextStyle(color: Colors.white, fontSize: 15.0),
+            style:
+                TextStyle(color: Theme.of(context).accentColor, fontSize: 15.0),
           ),
         ),
       );
@@ -99,22 +115,44 @@ class _MessageBubbleState extends State<MessageBubble> {
             ? null
             : () => _likeUnLikeMessage(),
         onTap: _imageFullScreen,
-        child: Container(
-          height: size.height * 0.2,
-          width: size.width * 0.6,
-          child: Hero(
-            tag: widget.message.imageUrl,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                border: Border.all(color: Colors.grey[200]),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(widget.message.imageUrl),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: size.height * 0.2,
+              width: size.width * 0.6,
+              child: Hero(
+                tag: widget.message.imageUrl,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).accentColor.withOpacity(0.7)),
+                    borderRadius: BorderRadius.circular(20.0),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image:
+                          CachedNetworkImageProvider(widget.message.imageUrl),
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+            _heartAnim
+                ? Animator(
+                    duration: Duration(milliseconds: 300),
+                    tween: Tween(begin: 0.5, end: 1.4),
+                    curve: Curves.elasticOut,
+                    builder: (context, anim, child) => Transform.scale(
+                      scale: anim.value,
+                      child: Icon(
+                        Icons.favorite,
+                        size: 80.0,
+                        color: Colors.white54,
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink(),
+          ],
         ),
       );
     }
@@ -130,7 +168,7 @@ class _MessageBubbleState extends State<MessageBubble> {
               : () => _likeUnLikeMessage(),
           child: Icon(
             _isLiked ? Icons.favorite : Icons.favorite_border,
-            color: _isLiked ? Colors.red : Colors.grey[200],
+            color: _isLiked ? Colors.red : Colors.grey[400],
           ),
         ),
       );
@@ -173,15 +211,21 @@ class _MessageBubbleState extends State<MessageBubble> {
                     decoration: BoxDecoration(
                       color: widget.message.imageUrl == null
                           ? isMe
-                              ? Colors.lightBlue
-                              : Colors.green[400]
+                              ? Theme.of(context).cardColor
+                              : Theme.of(context).primaryColor
                           : Colors.transparent,
                       borderRadius: BorderRadius.all(
                         Radius.circular(20.0),
                       ),
+                      border: Border.all(
+                          color: widget.message.imageUrl == null
+                              ? isMe
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).cardColor
+                              : Colors.transparent),
                     ),
                     child: widget.message.imageUrl == null
-                        ? _buildText(isMe)
+                        ? _buildText()
                         : _buildImage(context),
                   ),
                   if (isMe) _buildLikeIcon()
