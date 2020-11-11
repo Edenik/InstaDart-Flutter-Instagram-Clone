@@ -15,6 +15,7 @@ import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/heart_anime.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -300,21 +301,7 @@ class _PostViewState extends State<PostView> {
                   ),
                 ),
               ),
-              _heartAnim
-                  ? Animator(
-                      duration: Duration(milliseconds: 300),
-                      tween: Tween(begin: 0.5, end: 1.4),
-                      curve: Curves.elasticOut,
-                      builder: (context, anim, child) => Transform.scale(
-                        scale: anim.value,
-                        child: Icon(
-                          Icons.favorite,
-                          size: 100.0,
-                          color: Colors.red[400],
-                        ),
-                      ),
-                    )
-                  : SizedBox.shrink(),
+              _heartAnim ? HeartAnime(100.0) : SizedBox.shrink(),
             ],
           ),
         ),

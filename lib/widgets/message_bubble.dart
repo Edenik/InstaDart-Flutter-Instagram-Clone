@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/chat_service.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/widgets/heart_anime.dart';
 import 'package:provider/provider.dart';
 
 class MessageBubble extends StatefulWidget {
@@ -137,21 +138,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                 ),
               ),
             ),
-            _heartAnim
-                ? Animator(
-                    duration: Duration(milliseconds: 300),
-                    tween: Tween(begin: 0.5, end: 1.4),
-                    curve: Curves.elasticOut,
-                    builder: (context, anim, child) => Transform.scale(
-                      scale: anim.value,
-                      child: Icon(
-                        Icons.favorite,
-                        size: 80.0,
-                        color: Colors.white54,
-                      ),
-                    ),
-                  )
-                : SizedBox.shrink(),
+            _heartAnim ? HeartAnime(80.0) : SizedBox.shrink(),
           ],
         ),
       );
@@ -178,21 +165,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                 ),
               ),
             ),
-            _heartAnim
-                ? Animator(
-                    duration: Duration(milliseconds: 300),
-                    tween: Tween(begin: 0.5, end: 1.4),
-                    curve: Curves.elasticOut,
-                    builder: (context, anim, child) => Transform.scale(
-                      scale: anim.value,
-                      child: Icon(
-                        Icons.favorite,
-                        size: 80.0,
-                        color: Colors.white54,
-                      ),
-                    ),
-                  )
-                : SizedBox.shrink(),
+            _heartAnim ? HeartAnime(80.0) : SizedBox.shrink(),
           ],
         ),
       );

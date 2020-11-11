@@ -114,7 +114,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
                     style: readStyle,
                   )
                 : Text(
-                    '${chat.memberInfo[senderIndex].name} : sent an attachment',
+                    '${chat.memberInfo[senderIndex].name} : \nSent an attachment',
                     overflow: TextOverflow.ellipsis,
                     style: readStyle,
                   ),
