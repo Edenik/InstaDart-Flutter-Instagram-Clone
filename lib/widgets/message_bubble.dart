@@ -107,6 +107,7 @@ class _MessageBubbleState extends State<MessageBubble> {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(color: Colors.grey[200]),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: CachedNetworkImageProvider(widget.message.imageUrl),
@@ -118,8 +119,25 @@ class _MessageBubbleState extends State<MessageBubble> {
       );
     }
 
+    Padding _buildLikeIcon() {
+      return Padding(
+        padding: isMe
+            ? const EdgeInsets.only(left: 10)
+            : const EdgeInsets.only(right: 10),
+        child: GestureDetector(
+          onTap: widget.message.senderId == currentUser.id
+              ? null
+              : () => _likeUnLikeMessage(),
+          child: Icon(
+            _isLiked ? Icons.favorite : Icons.favorite_border,
+            color: _isLiked ? Colors.red : Colors.grey[200],
+          ),
+        ),
+      );
+    }
+
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment:
             isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
@@ -131,8 +149,8 @@ class _MessageBubbleState extends State<MessageBubble> {
             children: <Widget>[
               Padding(
                 padding: isMe
-                    ? const EdgeInsets.only(right: 10.0)
-                    : const EdgeInsets.only(left: 10.0),
+                    ? const EdgeInsets.only(right: 40.0)
+                    : const EdgeInsets.only(left: 40.0),
                 child: Text(
                   isMe
                       ? '${timeFormat.format(widget.message.timestamp.toDate())}'
@@ -147,15 +165,7 @@ class _MessageBubbleState extends State<MessageBubble> {
               ),
               Row(
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      _isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: _isLiked ? Colors.red : Colors.grey[200],
-                    ),
-                    onPressed: widget.message.senderId == currentUser.id
-                        ? null
-                        : () => _likeUnLikeMessage(),
-                  ),
+                  if (!isMe) _buildLikeIcon(),
                   Container(
                     constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width * 0.65,
@@ -174,6 +184,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                         ? _buildText(isMe)
                         : _buildImage(context),
                   ),
+                  if (isMe) _buildLikeIcon()
                 ],
               )
             ],

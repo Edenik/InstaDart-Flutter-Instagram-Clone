@@ -3,8 +3,6 @@ import 'package:instagram/models/models.dart';
 
 class Chat {
   final String id;
-  // final String name;
-  // final String imageUrl;
   final String recentMessage;
   final String recentSender;
   final Timestamp recentTimestamp;
@@ -14,8 +12,6 @@ class Chat {
 
   Chat({
     this.id,
-    // this.name,
-    // this.imageUrl,
     this.recentMessage,
     this.recentSender,
     this.recentTimestamp,
@@ -27,13 +23,10 @@ class Chat {
   factory Chat.fromDoc(DocumentSnapshot doc) {
     return Chat(
       id: doc.documentID,
-      // name: doc['name'],
-      // imageUrl: doc['imageUrl'],
       recentMessage: doc['recentMessage'],
       recentSender: doc['recentSender'],
       recentTimestamp: doc['recentTimestamp'],
       memberIds: doc['memberIds'],
-      // memberInfo: doc['memberInfo'],
       readStatus: doc['readStatus'],
     );
   }
