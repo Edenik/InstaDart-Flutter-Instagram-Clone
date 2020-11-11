@@ -193,7 +193,7 @@ class _ChatScreenState extends State<ChatScreen> {
           if (_isComposingMessage)
             GestureDetector(
               onTap: _isComposingMessage
-                  ? () => _sendMessage(_messageController.text, null)
+                  ? () => _sendMessage(_messageController.text.trim(), null)
                   : null,
               child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -325,6 +325,14 @@ class _ChatScreenState extends State<ChatScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               if (_isChatExist && !_isLoading) _buildMessagesStream(),
+              if (!_isChatExist && _isLoading)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 30),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              if (!_isChatExist && !_isLoading) SizedBox.shrink(),
               _buildMessageTF(),
             ],
           ),

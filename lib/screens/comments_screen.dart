@@ -1,3 +1,4 @@
+import 'package:auto_direction/auto_direction.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
@@ -124,21 +125,24 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 : SizedBox.shrink(),
             SizedBox(width: 20.0),
             Expanded(
-              child: TextField(
-                enabled: widget.post.commentsAllowed &&
-                    widget.postStatus == PostStatus.feedPost,
-                controller: _commentController,
-                textCapitalization: TextCapitalization.sentences,
-                onChanged: (comment) {
-                  setState(() {
-                    _isCommenting = comment.length > 0;
-                  });
-                },
-                decoration: InputDecoration(
-                  isCollapsed: true,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  hintText: hintText,
+              child: AutoDirection(
+                text: _commentController.text,
+                child: TextField(
+                  enabled: widget.post.commentsAllowed &&
+                      widget.postStatus == PostStatus.feedPost,
+                  controller: _commentController,
+                  textCapitalization: TextCapitalization.sentences,
+                  onChanged: (comment) {
+                    setState(() {
+                      _isCommenting = comment.length > 0;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    isCollapsed: true,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    hintText: hintText,
+                  ),
                 ),
               ),
             ),

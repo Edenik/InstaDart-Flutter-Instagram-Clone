@@ -91,30 +91,34 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
       leading: CircleAvatar(
         backgroundColor: Colors.white,
         radius: 28.0,
-        backgroundImage:
-            CachedNetworkImageProvider(users[receiverIndex].profileImageUrl),
+        backgroundImage: users[receiverIndex].profileImageUrl.isEmpty
+            ? AssetImage(placeHolderImageRef)
+            : CachedNetworkImageProvider(users[receiverIndex].profileImageUrl),
       ),
       title: Text(
         users[receiverIndex].name,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: chat.recentSender.isEmpty
-          ? Text(
-              'Chat Created',
-              overflow: TextOverflow.ellipsis,
-              style: readStyle,
-            )
-          : chat.recentMessage != null
-              ? Text(
-                  '${chat.memberInfo[senderIndex].name} : ${chat.recentMessage}',
-                  overflow: TextOverflow.ellipsis,
-                  style: readStyle,
-                )
-              : Text(
-                  '${chat.memberInfo[senderIndex].name} : sent an image',
-                  overflow: TextOverflow.ellipsis,
-                  style: readStyle,
-                ),
+      subtitle: Container(
+        height: 35,
+        child: chat.recentSender.isEmpty
+            ? Text(
+                'Chat Created',
+                overflow: TextOverflow.ellipsis,
+                style: readStyle,
+              )
+            : chat.recentMessage != null
+                ? Text(
+                    '${chat.memberInfo[senderIndex].name} : ${chat.recentMessage}',
+                    overflow: TextOverflow.ellipsis,
+                    style: readStyle,
+                  )
+                : Text(
+                    '${chat.memberInfo[senderIndex].name} : sent an image',
+                    overflow: TextOverflow.ellipsis,
+                    style: readStyle,
+                  ),
+      ),
       trailing: Text(
         timeFormat.format(
           chat.recentTimestamp.toDate(),

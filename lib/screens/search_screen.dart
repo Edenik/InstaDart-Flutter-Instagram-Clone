@@ -19,6 +19,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _searchController = TextEditingController();
   Future<QuerySnapshot> _users;
+  String _searchText = '';
 
   _buildUserTile(User user) {
     return ListTile(
@@ -56,6 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
         .addPostFrameCallback((_) => _searchController.clear());
     setState(() {
       _users = null;
+      _searchText = '';
     });
   }
 
@@ -66,21 +68,31 @@ class _SearchScreenState extends State<SearchScreen> {
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
             contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
             border: InputBorder.none,
             hintText: 'Search for a user...',
             prefixIcon: Icon(
               Icons.search,
+              color: Theme.of(context).accentColor.withOpacity(0.6),
               size: 30.0,
             ),
-            suffixIcon: IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: _clearSearch,
-            ),
+            suffixIcon: _searchText.trim().isEmpty
+                ? null
+                : IconButton(
+                    color: Theme.of(context).accentColor.withOpacity(0.6),
+                    icon: Icon(Icons.clear),
+                    onPressed: _clearSearch,
+                  ),
             // filled: true,
           ),
+          onChanged: (value) {
+            setState(() {
+              _searchText = value;
+            });
+          },
           onSubmitted: (input) {
-            print(input);
             if (input.trim().isNotEmpty) {
               setState(() {
                 _users = DatabaseService.searchUsers(input);
