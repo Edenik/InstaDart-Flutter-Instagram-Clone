@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
+import 'package:provider/provider.dart';
 
 class CustomNavigation {
   static void navigateToUserProfile({
@@ -21,6 +23,15 @@ class CustomNavigation {
     );
   }
 
+  static void navigateToHomeScreen(BuildContext context, String currentUserId) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => HomeScreen(currentUserId),
+      ),
+      (Route<dynamic> route) => false,
+    );
+  }
   // _goToUserProfile(BuildContext context, Post post) {
   //   Navigator.push(
   //     context,

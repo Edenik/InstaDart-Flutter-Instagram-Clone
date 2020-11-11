@@ -10,6 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';
@@ -39,6 +40,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   bool _isLoading = false;
   bool _isEdited = false;
   Post _post;
+  String _currentUserId;
   @override
   initState() {
     super.initState();
@@ -46,6 +48,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     currentLocation['latitude'] = 0.0;
     currentLocation['longitude'] = 0.0;
     initPlatformState(); //method to call location
+
+    String currentUserId =
+        Provider.of<UserData>(context, listen: false).currentUserId;
+
+    setState(() {
+      _currentUserId = currentUserId;
+    });
     if (widget.post != null) {
       setState(() {
         _captionController.value = TextEditingValue(text: widget.post.caption);
@@ -185,7 +194,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           caption: _captionController.text,
           location: _locationController.text,
           likeCount: 0,
-          authorId: Provider.of<UserData>(context, listen: false).currentUserId,
+          authorId: _currentUserId,
           timestamp: Timestamp.fromDate(DateTime.now()),
           commentsAllowed: true,
         );
@@ -251,14 +260,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   _goToHomeScreen() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (_) => HomeScreen(
-            Provider.of<UserData>(context, listen: false).currentUserId),
-      ),
-      (Route<dynamic> route) => false,
-    );
+    CustomNavigation.navigateToHomeScreen(context, _currentUserId);
   }
 
   _buildForm() {

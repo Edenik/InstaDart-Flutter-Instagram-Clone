@@ -82,6 +82,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _profileUser = profileUser;
     });
+
+    if (profileUser.id ==
+        Provider.of<UserData>(context, listen: false).currentUserId) {
+      Provider.of<UserData>(context, listen: false).currentUser = profileUser;
+    }
   }
 
   _followOrUnfollow() {

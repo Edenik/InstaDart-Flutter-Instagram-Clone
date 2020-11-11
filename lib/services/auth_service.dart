@@ -27,6 +27,7 @@ class AuthService {
       }
       Provider.of<UserData>(context, listen: false).currentUserId =
           signedInUser.uid;
+
       Navigator.pop(context);
     } on PlatformException catch (err) {
       throw (err);

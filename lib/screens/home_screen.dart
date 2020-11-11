@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             searchFrom: SearchFrom.homeScreen,
           ),
           CreatePostScreen(),
-          ActivityScreen(currentUserId: widget.currentUserId),
+          ActivityScreen(currentUser: _currentUser),
           ProfileScreen(
             isCameFromBottomNavigation: true,
             onProfileEdited: _getCurrentUser,

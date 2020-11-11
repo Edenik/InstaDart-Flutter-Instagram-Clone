@@ -13,9 +13,8 @@ class DatabaseService {
 
   static Future<QuerySnapshot> searchUsers(String name) {
     print(name.toLowerCase());
-    Future<QuerySnapshot> users = usersRef
-        .where('name', isLessThanOrEqualTo: name.toLowerCase())
-        .getDocuments();
+    Future<QuerySnapshot> users =
+        usersRef.where('name', isGreaterThanOrEqualTo: name).getDocuments();
     return users;
   }
 

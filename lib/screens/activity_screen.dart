@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -10,9 +13,9 @@ import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
 
 class ActivityScreen extends StatefulWidget {
-  final String currentUserId;
+  final User currentUser;
 
-  ActivityScreen({this.currentUserId});
+  ActivityScreen({this.currentUser});
 
   @override
   _ActivityScreenState createState() => _ActivityScreenState();
@@ -31,7 +34,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   _setupActivities() async {
     setState(() => _isLoading = true);
     List<Activity> activities =
-        await DatabaseService.getActivities(widget.currentUserId);
+        await DatabaseService.getActivities(widget.currentUser.id);
     if (mounted) {
       setState(() {
         _activities = activities;
@@ -60,7 +63,12 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ? Row(
                   children: <Widget>[
                     Text('${user.name} ', style: kFontWeightBoldTextStyle),
-                    Text('started following you'),
+                    Expanded(
+                      child: Text(
+                        'started following you',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 )
               : activity.comment != null
@@ -77,7 +85,12 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   : Row(
                       children: <Widget>[
                         Text('${user.name} ', style: kFontWeightBoldTextStyle),
-                        Text('liked your post'),
+                        Expanded(
+                          child: Text(
+                            'liked your post',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ],
                     ),
           subtitle: Text(
@@ -91,25 +104,29 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   width: 40.0,
                   fit: BoxFit.cover,
                 ),
-          onTap: () async {
-            String currentUserId =
-                Provider.of<UserData>(context, listen: false).currentUserId;
-            Post post = await DatabaseService.getUserPost(
-              currentUserId,
-              activity.postId,
-            );
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => CommentsScreen(
-                  postStatus: PostStatus.feedPost,
-                  post: post,
-                  likeCount: post.likeCount,
-                  author: snapshot.data,
-                ),
-              ),
-            );
-          },
+          onTap: activity.isFollowEvent
+              ? () => CustomNavigation.navigateToUserProfile(
+                  context: context,
+                  currentUserId: widget.currentUser.id,
+                  isCameFromBottomNavigation: false,
+                  userId: activity.fromUserId)
+              : () async {
+                  Post post = await DatabaseService.getUserPost(
+                    widget.currentUser.id,
+                    activity.postId,
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CommentsScreen(
+                        postStatus: PostStatus.feedPost,
+                        post: post,
+                        likeCount: post.likeCount,
+                        author: widget.currentUser,
+                      ),
+                    ),
+                  );
+                },
         );
       },
     );
