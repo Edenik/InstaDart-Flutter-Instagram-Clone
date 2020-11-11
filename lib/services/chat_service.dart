@@ -41,6 +41,7 @@ class ChatService {
       'imageUrl': message.imageUrl,
       'timestamp': message.timestamp,
       'isLiked': message.isLiked ?? false,
+      'giphyUrl': message.giphyUrl,
     });
   }
 

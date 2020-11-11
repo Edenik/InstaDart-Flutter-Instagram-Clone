@@ -129,10 +129,51 @@ class _MessageBubbleState extends State<MessageBubble> {
                         color: Theme.of(context).accentColor.withOpacity(0.7)),
                     borderRadius: BorderRadius.circular(20.0),
                     image: DecorationImage(
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       image:
                           CachedNetworkImageProvider(widget.message.imageUrl),
                     ),
+                  ),
+                ),
+              ),
+            ),
+            _heartAnim
+                ? Animator(
+                    duration: Duration(milliseconds: 300),
+                    tween: Tween(begin: 0.5, end: 1.4),
+                    curve: Curves.elasticOut,
+                    builder: (context, anim, child) => Transform.scale(
+                      scale: anim.value,
+                      child: Icon(
+                        Icons.favorite,
+                        size: 80.0,
+                        color: Colors.white54,
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink(),
+          ],
+        ),
+      );
+    }
+
+    _buildGiphy(BuildContext context) {
+      final size = MediaQuery.of(context).size;
+      return GestureDetector(
+        onDoubleTap: widget.message.senderId == currentUser.id
+            ? null
+            : () => _likeUnLikeMessage(),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: size.height * 0.2,
+              width: size.width * 0.6,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: CachedNetworkImageProvider(widget.message.giphyUrl),
                   ),
                 ),
               ),
@@ -209,7 +250,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                       maxWidth: MediaQuery.of(context).size.width * 0.65,
                     ),
                     decoration: BoxDecoration(
-                      color: widget.message.imageUrl == null
+                      color: widget.message.text != null
                           ? isMe
                               ? Theme.of(context).cardColor
                               : Theme.of(context).primaryColor
@@ -218,15 +259,17 @@ class _MessageBubbleState extends State<MessageBubble> {
                         Radius.circular(20.0),
                       ),
                       border: Border.all(
-                          color: widget.message.imageUrl == null
+                          color: widget.message.text != null
                               ? isMe
                                   ? Theme.of(context).primaryColor
                                   : Theme.of(context).cardColor
                               : Colors.transparent),
                     ),
-                    child: widget.message.imageUrl == null
+                    child: widget.message.text != null
                         ? _buildText()
-                        : _buildImage(context),
+                        : widget.message.imageUrl != null
+                            ? _buildImage(context)
+                            : _buildGiphy(context),
                   ),
                   if (isMe) _buildLikeIcon()
                 ],

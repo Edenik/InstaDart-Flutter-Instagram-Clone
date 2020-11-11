@@ -123,6 +123,7 @@ Latest Update : 11/11/20
 * [Url Launcer](https://github.com/flutter/plugins/tree/master/packages/url_launcher)
 * [Share](https://github.com/flutter/plugins/blob/master/packages/share)
 * [Auto Direction](https://github.com/AhmedAlYousef/auto_direction)
+* [Giphy Get](https://github.com/bazospa/giphy_get)
 
   
   
@@ -137,7 +138,7 @@ Latest Update : 11/11/20
 - [ ] Firebase Security Rules
 - [X] Delete Posts Firebase Function
 - [X] Direct Messaging
-- [ ] Upgrade Messaging with new Features - send giphy, audio and more.
+- [ ] Upgrade Messaging with new Features - send audio
 - [ ] Stories
 - [ ] Clean up code
 - [X] Edit Posts

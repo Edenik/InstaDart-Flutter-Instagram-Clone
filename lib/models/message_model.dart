@@ -5,6 +5,7 @@ class Message {
   final String senderId;
   final String text;
   final String imageUrl;
+  final String giphyUrl;
   final Timestamp timestamp;
   final bool isLiked;
 
@@ -14,15 +15,18 @@ class Message {
       this.text,
       this.imageUrl,
       this.timestamp,
+      this.giphyUrl,
       this.isLiked});
 
   factory Message.fromDoc(DocumentSnapshot doc) {
     return Message(
-        id: doc.documentID,
-        senderId: doc['senderId'],
-        text: doc['text'],
-        imageUrl: doc['imageUrl'],
-        timestamp: doc['timestamp'],
-        isLiked: doc['isLiked']);
+      id: doc.documentID,
+      senderId: doc['senderId'],
+      text: doc['text'],
+      imageUrl: doc['imageUrl'],
+      timestamp: doc['timestamp'],
+      isLiked: doc['isLiked'],
+      giphyUrl: doc['giphyUrl'] ?? "",
+    );
   }
 }

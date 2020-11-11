@@ -11,9 +11,11 @@ import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
+import 'package:instagram/utilities/repo_const.dart';
 import 'package:instagram/widgets/message_bubble.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_direction/auto_direction.dart';
+import 'package:giphy_get/giphy_get.dart';
 
 class ChatScreen extends StatefulWidget {
   final User receiverUser;
@@ -123,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 if (imageFile != null) {
                   String imageUrl =
                       await StroageService.uploadMessageImage(imageFile);
-                  _sendMessage(null, imageUrl);
+                  _sendMessage(text: null, imageUrl: imageUrl, giphyUrl: null);
                 }
               },
             ),
@@ -174,26 +176,42 @@ class _ChatScreenState extends State<ChatScreen> {
                           String imageUrl =
                               await StroageService.uploadMessageImage(
                                   imageFile);
-                          _sendMessage(null, imageUrl);
+                          _sendMessage(
+                              text: null, imageUrl: imageUrl, giphyUrl: null);
                         }
                       },
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(0.0),
-                    width: 30.0,
-                    child: IconButton(
-                      icon: Icon(Icons.sticky_note_2),
-                      onPressed: () {},
-                    ),
-                  ),
+                      padding: const EdgeInsets.all(0.0),
+                      width: 30.0,
+                      child: IconButton(
+                        icon: Icon(Icons.insert_emoticon),
+                        onPressed: () async {
+                          GiphyGif gif = await GiphyGet.getGif(
+                            context: context,
+                            apiKey: kGiphyApiKey, //YOUR API KEY HERE
+                            lang: GiphyLanguage.spanish,
+                          );
+                          if (gif != null && mounted) {
+                            _sendMessage(
+                                text: null,
+                                imageUrl: null,
+                                giphyUrl: gif.images.original.url);
+                          }
+                        },
+                        tooltip: 'Open Sticker',
+                      ))
                 ],
               ),
             ),
           if (_isComposingMessage)
             GestureDetector(
               onTap: _isComposingMessage
-                  ? () => _sendMessage(_messageController.text.trim(), null)
+                  ? () => _sendMessage(
+                      text: _messageController.text.trim(),
+                      imageUrl: null,
+                      giphyUrl: null)
                   : null,
               child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -210,14 +228,16 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  _sendMessage(String text, String imageUrl) async {
+  _sendMessage({String text, String imageUrl, String giphyUrl}) async {
     print('chat exist: $_isChatExist');
-    if ((text != null && text.trim().isNotEmpty) || imageUrl != null) {
+    if ((text != null && text.trim().isNotEmpty) ||
+        imageUrl != null ||
+        giphyUrl != null) {
       if (!_isChatExist) {
         await _createChat(_userIds);
       }
 
-      if (imageUrl == null) {
+      if (imageUrl == null && giphyUrl == null) {
         _messageController.clear();
         setState(() => _isComposingMessage = false);
       }
@@ -226,6 +246,7 @@ class _ChatScreenState extends State<ChatScreen> {
         senderId: _currentUser.id,
         text: text,
         imageUrl: imageUrl,
+        giphyUrl: giphyUrl,
         timestamp: Timestamp.now(),
         isLiked: false,
       );
