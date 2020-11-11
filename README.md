@@ -80,6 +80,7 @@ Latest Update : 11/11/20
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Feed%20Screen%20+%20Search%20Screen%20+%20Profile%20Screen.gif?raw=true" alt="Feed Screen + Search Screen + Profile Screen" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Upload%20New%20Post.gif?raw=true" alt="Upload New Post" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Direct%20Messaging.gif?raw=true" alt="Direct Messaging" width="250">
+<img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Messaging%20Giphy.gif?raw=true" alt="Direct Messaging" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Light-Dark%20Mode.gif?raw=true" alt="Light / Dark Mode" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/About%20App%20Dialog.gif?raw=true" alt="About App Dialog" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Archive%20Post%20+%20Show%20on%20Profile.gif?raw=true" alt="Archive Post + Show on Profile" width="250">
