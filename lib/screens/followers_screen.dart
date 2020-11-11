@@ -5,6 +5,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:intl/intl.dart';
 
@@ -187,6 +188,14 @@ class _FollowersScreenState extends State<FollowersScreen> {
     );
   }
 
+  _goToUserProfile(BuildContext context, User user) {
+    CustomNavigation.navigateToUserProfile(
+        context: context,
+        currentUserId: widget.currenUserId,
+        userId: user.id,
+        isCameFromBottomNavigation: false);
+  }
+
   _buildFollower(User user, int index) {
     return ListTile(
       leading: CircleAvatar(
@@ -201,18 +210,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
       trailing: widget.user.id == widget.currenUserId
           ? _buildFollowerButton(user, index)
           : SizedBox.shrink(),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ProfileScreen(
-              isCameFromBottomNavigation: false,
-              currentUserId: widget.currenUserId,
-              userId: user.id,
-            ),
-          ),
-        );
-      },
+      onTap: () => _goToUserProfile(context, user),
     );
   }
 
@@ -264,18 +262,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
       trailing: widget.user.id == widget.currenUserId
           ? _buildFollowingButton(user, index)
           : SizedBox.shrink(),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ProfileScreen(
-              isCameFromBottomNavigation: false,
-              currentUserId: widget.currenUserId,
-              userId: user.id,
-            ),
-          ),
-        );
-      },
+      onTap: () => _goToUserProfile(context, user),
     );
   }
 

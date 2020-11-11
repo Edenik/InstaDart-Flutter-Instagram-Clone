@@ -10,8 +10,10 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/widgets/message_bubble.dart';
 import 'package:provider/provider.dart';
+import 'package:auto_direction/auto_direction.dart';
 
 class ChatScreen extends StatefulWidget {
   final User receiverUser;
@@ -92,13 +94,24 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Container _buildMessageTF() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      margin: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(30)),
       child: Row(
         children: <Widget>[
           Container(
+            height: 38,
             margin: const EdgeInsets.symmetric(horizontal: 4.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.lightBlue[400],
+            ),
             child: IconButton(
-              icon: Icon(Icons.photo),
+              icon: Icon(
+                Icons.camera_alt,
+                size: 20,
+              ),
               onPressed: () async {
                 PickedFile pickedFile = await ImagePicker().getImage(
                   source: ImageSource.camera,
@@ -114,27 +127,82 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           Expanded(
-            child: TextField(
-              controller: _messageController,
-              textCapitalization: TextCapitalization.sentences,
-              onChanged: (messageText) {
-                setState(() => _isComposingMessage = messageText.isNotEmpty);
-              },
-              decoration: InputDecoration(
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  hintText: 'Send a message'),
+            child: AutoDirection(
+              text: _messageController.text,
+              child: TextField(
+                minLines: 1,
+                maxLines: 4,
+                controller: _messageController,
+                textCapitalization: TextCapitalization.sentences,
+                onChanged: (messageText) {
+                  setState(() => _isComposingMessage = messageText.isNotEmpty);
+                },
+                decoration: InputDecoration(
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    hintText: 'Message..'),
+              ),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: IconButton(
-              icon: Icon(Icons.send),
-              onPressed: _isComposingMessage
+          if (!_isComposingMessage)
+            Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(0.0),
+                    width: 30.0,
+                    child: IconButton(
+                      icon: Icon(Icons.mic),
+                      onPressed: () {},
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(0.0),
+                    width: 30.0,
+                    child: IconButton(
+                      icon: Icon(Icons.photo),
+                      onPressed: () async {
+                        PickedFile pickedFile = await ImagePicker().getImage(
+                          source: ImageSource.gallery,
+                        );
+                        File imageFile = File(pickedFile.path);
+
+                        if (imageFile != null) {
+                          String imageUrl =
+                              await StroageService.uploadMessageImage(
+                                  imageFile);
+                          _sendMessage(null, imageUrl);
+                        }
+                      },
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(0.0),
+                    width: 30.0,
+                    child: IconButton(
+                      icon: Icon(Icons.sticky_note_2),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          if (_isComposingMessage)
+            GestureDetector(
+              onTap: _isComposingMessage
                   ? () => _sendMessage(_messageController.text, null)
                   : null,
-            ),
-          )
+              child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    'Send',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  )),
+            )
         ],
       ),
     );
@@ -222,7 +290,12 @@ class _ChatScreenState extends State<ChatScreen> {
           title: Row(
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () => CustomNavigation.navigateToUserProfile(
+                  context: context,
+                  userId: widget.receiverUser.id,
+                  currentUserId: _currentUser.id,
+                  isCameFromBottomNavigation: false,
+                ),
                 child: CircleAvatar(
                   radius: 15,
                   backgroundColor: Colors.grey,
@@ -232,8 +305,15 @@ class _ChatScreenState extends State<ChatScreen> {
                           widget.receiverUser.profileImageUrl),
                 ),
               ),
-              SizedBox(width: 5.0),
-              Text(widget.receiverUser.name),
+              SizedBox(width: 15.0),
+              GestureDetector(
+                  onTap: () => CustomNavigation.navigateToUserProfile(
+                        context: context,
+                        userId: widget.receiverUser.id,
+                        currentUserId: _currentUser.id,
+                        isCameFromBottomNavigation: false,
+                      ),
+                  child: Text(widget.receiverUser.name)),
             ],
           ),
         ),
@@ -243,7 +323,6 @@ class _ChatScreenState extends State<ChatScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               if (_isChatExist && !_isLoading) _buildMessagesStream(),
-              Divider(height: 1.0),
               _buildMessageTF(),
             ],
           ),

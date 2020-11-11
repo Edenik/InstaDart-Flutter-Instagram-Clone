@@ -17,6 +17,7 @@ Latest Update : 10/11/20
  - [ ] Firebase Security Rules
  - [X] Delete Posts Firebase Function
  - [X] Direct Messaging
+ - [ ] Upgrade Messaging with new Features - send giphy, audio and more.
  - [ ] Stories
  - [ ] Clean up code
  - [X] Edit Posts
@@ -27,8 +28,7 @@ Latest Update : 10/11/20
  - [X] Login + Signup - Show Auth indication + Error Handling
  - [X] Share Posts to external Apps
  - [ ] Save Favorite Posts
- - [ ] Upgrade Messaging
-
+ - [ ] PageRouteBuilder Navigation Transitions
 
 This app based of tutorial by -
 [MarcusNG](https://marcusng.com/)

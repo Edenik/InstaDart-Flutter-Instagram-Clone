@@ -47,6 +47,7 @@ dependencies:
   url_launcher: ^5.7.10
   uuid: ^2.2.2
   share: ^0.6.5+4
+  auto_direction: ^0.0.4+1
 
 
 dev_dependencies:

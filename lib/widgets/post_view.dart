@@ -13,6 +13,7 @@ import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -58,16 +59,11 @@ class _PostViewState extends State<PostView> {
   }
 
   _goToUserProfile(BuildContext context, Post post) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ProfileScreen(
-          isCameFromBottomNavigation: false,
-          currentUserId: widget.currentUserId,
-          userId: post.authorId,
-        ),
-      ),
-    );
+    CustomNavigation.navigateToUserProfile(
+        context: context,
+        currentUserId: widget.currentUserId,
+        userId: post.authorId,
+        isCameFromBottomNavigation: false);
   }
 
   _initPostLiked() async {

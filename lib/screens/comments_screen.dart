@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -23,16 +24,11 @@ class CommentsScreen extends StatefulWidget {
 }
 
 _goToUserProfile(BuildContext context, Post post, String currentUserId) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => ProfileScreen(
-        isCameFromBottomNavigation: false,
-        currentUserId: currentUserId,
-        userId: post.authorId,
-      ),
-    ),
-  );
+  CustomNavigation.navigateToUserProfile(
+      context: context,
+      currentUserId: currentUserId,
+      userId: post.authorId,
+      isCameFromBottomNavigation: false);
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
