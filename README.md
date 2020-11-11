@@ -197,4 +197,4 @@ Latest Update : 11/11/20
 
 This app based of tutorial by -
 
-[MarcusNG](https://marcusng.com/)# Instagram Clone
+[MarcusNG](https://marcusng.com/)
