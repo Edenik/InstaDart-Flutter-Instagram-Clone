@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:instagram/models/theme_notifier.dart';
 import 'package:instagram/utilities/themes.dart';
@@ -105,5 +106,10 @@ class _ThemeScreenState extends State<ThemeScreen> {
         : themeNotifier.setTheme(lightTheme);
     var prefs = await SharedPreferences.getInstance();
     prefs.setBool('darkMode', value);
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: value ? Colors.black : Colors.white,
+        systemNavigationBarIconBrightness:
+            value ? Brightness.light : Brightness.dark));
   }
 }
