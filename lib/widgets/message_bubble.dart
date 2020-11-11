@@ -208,8 +208,8 @@ class _MessageBubbleState extends State<MessageBubble> {
               ? null
               : () => _likeUnLikeMessage(),
           child: Icon(
-            _isLiked ? Icons.favorite : Icons.favorite_border,
-            color: _isLiked ? Colors.red : Colors.grey[400],
+            widget.message.isLiked ? Icons.favorite : Icons.favorite_border,
+            color: widget.message.isLiked ? Colors.red : Colors.grey[400],
           ),
         ),
       );

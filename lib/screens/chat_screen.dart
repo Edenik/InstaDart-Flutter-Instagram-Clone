@@ -229,7 +229,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _sendMessage({String text, String imageUrl, String giphyUrl}) async {
-    print('chat exist: $_isChatExist');
     if ((text != null && text.trim().isNotEmpty) ||
         imageUrl != null ||
         giphyUrl != null) {
@@ -294,6 +293,7 @@ class _ChatScreenState extends State<ChatScreen> {
         chat: _chat,
         message: message,
       );
+      messageBubbles.removeWhere((msgBbl) => message.id == msgBbl.message.id);
       messageBubbles.add(messageBubble);
     });
     return messageBubbles;
