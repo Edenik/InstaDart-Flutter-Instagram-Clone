@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/repo_const.dart';
 
 class DatabaseService {
   static void updateUser(User user) {
@@ -272,6 +273,26 @@ class DatabaseService {
     List<Post> posts =
         feedSnapshot.documents.map((doc) => Post.fromDoc(doc)).toList();
     return posts;
+  }
+
+  static Future<List<Post>> getAllFeedPosts() async {
+    List<Post> allPosts = [];
+
+    QuerySnapshot usersSnapshot = await usersRef.getDocuments();
+
+    for (var userDoc in usersSnapshot.documents) {
+      QuerySnapshot feedSnapshot = await postsRef
+          .document(userDoc.documentID)
+          .collection('userPosts')
+          .orderBy('timestamp', descending: true)
+          .getDocuments();
+
+      for (var postDoc in feedSnapshot.documents) {
+        Post post = Post.fromDoc(postDoc);
+        allPosts.add(post);
+      }
+    }
+    return allPosts;
   }
 
   static Future<List<Post>> getDeletedPosts(
