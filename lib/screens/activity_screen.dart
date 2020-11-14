@@ -56,7 +56,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 ? AssetImage(placeHolderImageRef)
                 : CachedNetworkImageProvider(user.profileImageUrl),
           ),
-          title: activity.isFollowEvent
+          title: activity.isFollowEvent == true
               ? Row(
                   children: <Widget>[
                     Text('${user.name} ', style: kFontWeightBoldTextStyle),
@@ -68,7 +68,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                     ),
                   ],
                 )
-              : activity.isLikeEvent == false
+              : activity.isCommentEvent == true
                   ? Row(
                       children: <Widget>[
                         Text('${user.name} ', style: kFontWeightBoldTextStyle),

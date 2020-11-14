@@ -140,6 +140,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     isCollapsed: true,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
                     hintText: hintText,
                   ),
                 ),
