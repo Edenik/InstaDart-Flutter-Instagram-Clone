@@ -158,6 +158,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                             currentUserId: currentUserId,
                             post: widget.post,
                             comment: _commentController.text,
+                            recieverToken: widget.author.token,
                           );
                           _commentController.clear();
                           setState(() {

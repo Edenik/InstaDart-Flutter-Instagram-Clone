@@ -249,7 +249,7 @@ class _ChatScreenState extends State<ChatScreen> {
         isLiked: false,
       );
 
-      ChatService.sendChatMessage(_chat, message);
+      ChatService.sendChatMessage(_chat, message, widget.receiverUser);
     }
   }
 
@@ -289,6 +289,9 @@ class _ChatScreenState extends State<ChatScreen> {
     messages.data.documents.forEach((doc) {
       Message message = Message.fromDoc(doc);
       MessageBubble messageBubble = MessageBubble(
+        user: message.senderId == _currentUser.id
+            ? _currentUser
+            : widget.receiverUser,
         chat: _chat,
         message: message,
       );

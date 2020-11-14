@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,7 @@ class ChatService {
     );
   }
 
-  static void sendChatMessage(Chat chat, Message message) {
+  static void sendChatMessage(Chat chat, Message message, User receiverUser) {
     chatsRef.document(chat.id).collection('messages').add({
       'senderId': message.senderId,
       'text': message.text,
@@ -42,6 +43,21 @@ class ChatService {
       'isLiked': message.isLiked ?? false,
       'giphyUrl': message.giphyUrl,
     });
+
+    Post post = Post(
+      authorId: receiverUser.id,
+    );
+
+    DatabaseService.addActivityItem(
+      comment: message.text,
+      currentUserId: message.senderId,
+      isCommentEvent: false,
+      isFollowEvent: false,
+      isLikeEvent: false,
+      isMessageEvent: true,
+      post: post,
+      recieverToken: receiverUser.token,
+    );
   }
 
   static void setChatRead(BuildContext context, Chat chat, bool read) async {
@@ -86,13 +102,42 @@ class ChatService {
     return null;
   }
 
-  static Future<Null> likeUnlikeMessage(
-      String messageId, String chatId, bool isLiked) {
+  static Future<Null> likeUnlikeMessage(Message message, String chatId,
+      bool isLiked, User receiverUser, String currentUserId) {
     chatsRef
         .document(chatId)
         .collection('messages')
-        .document(messageId)
+        .document(message.id)
         .updateData({'isLiked': isLiked});
+
+    Post post = Post(
+      authorId: receiverUser.id,
+    );
+
+    if (isLiked == true) {
+      DatabaseService.addActivityItem(
+        comment: message.text ?? null,
+        currentUserId: currentUserId,
+        isCommentEvent: false,
+        isFollowEvent: false,
+        isLikeEvent: false,
+        isMessageEvent: false,
+        isLikeMessageEvent: true,
+        post: post,
+        recieverToken: receiverUser.token,
+      );
+    } else {
+      DatabaseService.deleteActivityItem(
+        comment: message.text ?? null,
+        currentUserId: currentUserId,
+        isFollowEvent: false,
+        post: post,
+        isCommentEvent: false,
+        isLikeEvent: false,
+        isLikeMessageEvent: true,
+        isMessageEvent: false,
+      );
+    }
     return null;
   }
 }

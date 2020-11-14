@@ -108,7 +108,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _followUser() {
     DatabaseService.followUser(
-        currentUserId: widget.currentUserId, userId: widget.userId);
+      currentUserId: widget.currentUserId,
+      userId: widget.userId,
+      receiverToken: _profileUser.token,
+    );
     setState(() {
       _isFollowing = true;
       _followersCount++;

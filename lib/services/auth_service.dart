@@ -58,7 +58,6 @@ class AuthService {
     final currentUser = await _auth.currentUser();
     final token = await _messaging.getToken();
     final userDoc = await usersRef.document(currentUser.uid).get();
-
     if (userDoc.exists) {
       User user = User.fromDoc(userDoc);
       if (token != user.token) {

@@ -11,8 +11,9 @@ import 'package:provider/provider.dart';
 class MessageBubble extends StatefulWidget {
   final Chat chat;
   final Message message;
+  final User user;
 
-  const MessageBubble({this.chat, this.message});
+  const MessageBubble({this.chat, this.message, this.user});
 
   @override
   _MessageBubbleState createState() => _MessageBubbleState();
@@ -30,8 +31,9 @@ class _MessageBubbleState extends State<MessageBubble> {
     });
   }
 
-  _likeUnLikeMessage() {
-    ChatService.likeUnlikeMessage(widget.message.id, widget.chat.id, !_isLiked);
+  _likeUnLikeMessage(String currentUserId) {
+    ChatService.likeUnlikeMessage(
+        widget.message, widget.chat.id, !_isLiked, widget.user, currentUserId);
     setState(() => _isLiked = !_isLiked);
 
     if (_isLiked) {
@@ -60,7 +62,7 @@ class _MessageBubbleState extends State<MessageBubble> {
       return GestureDetector(
         onDoubleTap: widget.message.senderId == currentUser.id
             ? null
-            : () => _likeUnLikeMessage(),
+            : () => _likeUnLikeMessage(currentUser.id),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
           child: Text(
@@ -113,7 +115,7 @@ class _MessageBubbleState extends State<MessageBubble> {
       return GestureDetector(
         onDoubleTap: widget.message.senderId == currentUser.id
             ? null
-            : () => _likeUnLikeMessage(),
+            : () => _likeUnLikeMessage(currentUser.id),
         onTap: _imageFullScreen,
         child: Stack(
           alignment: Alignment.center,
@@ -148,7 +150,7 @@ class _MessageBubbleState extends State<MessageBubble> {
       return GestureDetector(
         onDoubleTap: widget.message.senderId == currentUser.id
             ? null
-            : () => _likeUnLikeMessage(),
+            : () => _likeUnLikeMessage(currentUser.id),
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -178,7 +180,7 @@ class _MessageBubbleState extends State<MessageBubble> {
         child: GestureDetector(
           onTap: widget.message.senderId == currentUser.id
               ? null
-              : () => _likeUnLikeMessage(),
+              : () => _likeUnLikeMessage(currentUser.id),
           child: Icon(
             widget.message.isLiked ? Icons.favorite : Icons.favorite_border,
             color: widget.message.isLiked ? Colors.red : Colors.grey[400],

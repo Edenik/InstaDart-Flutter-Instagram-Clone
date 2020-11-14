@@ -47,6 +47,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
         if (!snapshot.hasData) {
           return SizedBox.shrink();
         }
+        if (activity.isMessageEvent == true ||
+            activity.isLikeMessageEvent == true) {
+          return SizedBox.shrink();
+        }
         User user = snapshot.data;
         return ListTile(
           leading: CircleAvatar(

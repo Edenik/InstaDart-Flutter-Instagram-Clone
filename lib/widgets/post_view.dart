@@ -84,7 +84,9 @@ class _PostViewState extends State<PostView> {
     } else {
       // Like Post
       DatabaseService.likePost(
-          currentUserId: widget.currentUserId, post: _post);
+          currentUserId: widget.currentUserId,
+          post: _post,
+          receiverToken: widget.author.token);
       setState(() {
         _heartAnim = true;
         _isLiked = true;

@@ -149,7 +149,8 @@ class DatabaseService {
     }
   }
 
-  static void followUser({String currentUserId, String userId}) {
+  static void followUser(
+      {String currentUserId, String userId, String receiverToken}) {
     // Add user to current user's following collection
     followingRef
         .document(currentUserId)
@@ -168,11 +169,18 @@ class DatabaseService {
       authorId: userId,
     );
 
+    print(receiverToken);
+
     addActivityItem(
       comment: null,
       currentUserId: currentUserId,
       isFollowEvent: true,
       post: post,
+      isCommentEvent: false,
+      isLikeEvent: false,
+      isLikeMessageEvent: false,
+      isMessageEvent: false,
+      recieverToken: receiverToken,
     );
   }
 
@@ -210,6 +218,10 @@ class DatabaseService {
       currentUserId: currentUserId,
       isFollowEvent: true,
       post: post,
+      isCommentEvent: false,
+      isLikeEvent: false,
+      isLikeMessageEvent: false,
+      isMessageEvent: false,
     );
   }
 
@@ -330,7 +342,8 @@ class DatabaseService {
     return User();
   }
 
-  static void likePost({String currentUserId, Post post}) {
+  static void likePost(
+      {String currentUserId, Post post, String receiverToken}) {
     DocumentReference postRef = postsRef
         .document(post.authorId)
         .collection('userPosts')
@@ -346,10 +359,16 @@ class DatabaseService {
     });
 
     addActivityItem(
-        currentUserId: currentUserId,
-        post: post,
-        comment: null,
-        isFollowEvent: false);
+      currentUserId: currentUserId,
+      post: post,
+      comment: post.caption ?? null,
+      isFollowEvent: false,
+      isLikeMessageEvent: false,
+      isLikeEvent: true,
+      isCommentEvent: false,
+      isMessageEvent: false,
+      recieverToken: receiverToken,
+    );
   }
 
   static void unlikePost({String currentUserId, Post post}) {
@@ -371,6 +390,17 @@ class DatabaseService {
         }
       });
     });
+
+    deleteActivityItem(
+      comment: null,
+      currentUserId: currentUserId,
+      isFollowEvent: false,
+      post: post,
+      isCommentEvent: false,
+      isLikeMessageEvent: false,
+      isLikeEvent: true,
+      isMessageEvent: false,
+    );
   }
 
   static Future<bool> didLikePost({String currentUserId, Post post}) async {
@@ -382,21 +412,37 @@ class DatabaseService {
     return userDoc.exists;
   }
 
-  static void commentOnPost({String currentUserId, Post post, String comment}) {
+  static void commentOnPost(
+      {String currentUserId, Post post, String comment, String recieverToken}) {
     commentsRef.document(post.id).collection('postComments').add({
       'content': comment,
       'authorId': currentUserId,
       'timestamp': Timestamp.fromDate(DateTime.now())
     });
     addActivityItem(
-        currentUserId: currentUserId,
-        post: post,
-        comment: comment,
-        isFollowEvent: false);
+      currentUserId: currentUserId,
+      post: post,
+      comment: comment,
+      isFollowEvent: false,
+      isLikeMessageEvent: false,
+      isCommentEvent: true,
+      isLikeEvent: false,
+      isMessageEvent: false,
+      recieverToken: recieverToken,
+    );
   }
 
-  static void addActivityItem(
-      {String currentUserId, Post post, String comment, bool isFollowEvent}) {
+  static void addActivityItem({
+    String currentUserId,
+    Post post,
+    String comment,
+    bool isFollowEvent,
+    bool isCommentEvent,
+    bool isLikeEvent,
+    bool isMessageEvent,
+    bool isLikeMessageEvent,
+    String recieverToken,
+  }) {
     if (currentUserId != post.authorId) {
       activitiesRef.document(post.authorId).collection('userActivities').add({
         'fromUserId': currentUserId,
@@ -404,7 +450,12 @@ class DatabaseService {
         'postImageUrl': post.imageUrl,
         'comment': comment,
         'timestamp': Timestamp.fromDate(DateTime.now()),
-        'isFollowEvent': isFollowEvent
+        'isFollowEvent': isFollowEvent,
+        'isCommentEvent': isCommentEvent,
+        'isLikeEvent': isLikeEvent,
+        'isMessageEvent': isMessageEvent,
+        'isLikeMessageEvent': isLikeMessageEvent,
+        'recieverToken': recieverToken,
       });
     }
   }
@@ -413,12 +464,31 @@ class DatabaseService {
       {String currentUserId,
       Post post,
       String comment,
-      bool isFollowEvent}) async {
+      bool isFollowEvent,
+      bool isCommentEvent,
+      bool isLikeEvent,
+      bool isMessageEvent,
+      bool isLikeMessageEvent}) async {
+    String boolCondition;
+
+    if (isFollowEvent) {
+      boolCondition = 'isFollowEvent';
+    } else if (isCommentEvent) {
+      boolCondition = 'isCommentEvent';
+    } else if (isLikeEvent) {
+      boolCondition = 'isLikeEvent';
+    } else if (isMessageEvent) {
+      boolCondition = 'isMessageEvent';
+    } else if (isLikeMessageEvent) {
+      boolCondition = 'isLikeMessageEvent';
+    }
+
     QuerySnapshot activities = await activitiesRef
         .document(post.authorId)
         .collection('userActivities')
         .where('fromUserId', isEqualTo: currentUserId)
-        .where('isFollowEvent', isEqualTo: true)
+        .where('postId', isEqualTo: post.id)
+        .where(boolCondition, isEqualTo: true)
         .getDocuments();
 
     activities.documents.forEach((element) {

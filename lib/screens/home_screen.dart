@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -17,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   int _currentTab = 0;
   PageController _pageController;
   User _currentUser;
@@ -26,6 +28,26 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _getCurrentUser();
     _pageController = PageController();
+    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
+      print('On message: $message');
+    }, onResume: (Map<String, dynamic> message) {
+      print('On message: $message');
+    }, onLaunch: (Map<String, dynamic> message) {
+      print('On message: $message');
+    });
+
+    _firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(
+        sound: true,
+        badge: true,
+        alert: true,
+      ),
+    );
+    _firebaseMessaging.onIosSettingsRegistered.listen((settings) {
+      print('settings registered:  $settings');
+    });
+
+    AuthService.updateToken();
   }
 
   _getCurrentUser() async {

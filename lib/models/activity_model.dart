@@ -7,6 +7,12 @@ class Activity {
   final String postImageUrl;
   final String comment;
   final bool isFollowEvent;
+  final bool isLikeEvent;
+  final bool isMessageEvent;
+  final bool isCommentEvent;
+  final bool isLikeMessageEvent;
+
+  final String recieverToken;
   final Timestamp timestamp;
 
   Activity({
@@ -17,6 +23,11 @@ class Activity {
     this.comment,
     this.timestamp,
     this.isFollowEvent,
+    this.isLikeEvent,
+    this.isMessageEvent,
+    this.isCommentEvent,
+    this.isLikeMessageEvent,
+    this.recieverToken,
   });
 
   factory Activity.fromDoc(DocumentSnapshot doc) {
@@ -28,6 +39,11 @@ class Activity {
       comment: doc['comment'],
       timestamp: doc['timestamp'],
       isFollowEvent: doc['isFollowEvent'] ?? false,
+      isCommentEvent: doc['isCommentEvent'] ?? false,
+      isLikeEvent: doc['isLikeEvent'] ?? false,
+      isMessageEvent: doc['isMessageEvent'] ?? false,
+      isLikeMessageEvent: doc['isMessageEvent'] ?? false,
+      recieverToken: doc['receiverToken'] ?? '',
     );
   }
 }

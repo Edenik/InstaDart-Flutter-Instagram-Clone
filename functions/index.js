@@ -192,3 +192,71 @@ exports.addChatMessage = functions.firestore
 
         }
     });
+
+
+exports.onNewActivity = functions.firestore
+    .document('/activities/{userId}/userActivities/{activityId}')
+    .onCreate(async (snapshot, context) => {
+        const activityData = snapshot.data();
+        const senderUserRef = admin
+            .firestore()
+            .collection('users')
+            .doc(activityData.fromUserId);
+
+        const senderUserSnapshot = await senderUserRef.get();
+        if (!senderUserSnapshot.exists) {
+            return;
+        }
+
+        const senderUserData = senderUserSnapshot.data();
+        let event;
+        let senderName = senderUserData.name;
+        let body;
+
+
+        if (activityData.isFollowEvent == true) {
+            event = 'isFollowEvent';
+            body = 'Started follow you!'
+        } else if (activityData.isLikeEvent == true) {
+            event = 'isLikeEvent';
+            if (activityData.comment != null) {
+                body = `Liked your post: "${activityData.comment}"`
+            } else {
+                body = `Liked your post`
+            }
+        } else if (activityData.isCommentEvent == true) {
+            event = 'isCommentEvent';
+            body = `Commented on your post: "${activityData.comment}"`
+        } else if (activityData.isMessageEvent == true) {
+            event = 'isMessageEvent';
+            if (activityData.comment != null) {
+                body = `Sent a message: "${activityData.comment}"`
+            } else {
+                body = `Sent a file message`
+            }
+        } else if (activityData.isLikeMessageEvent == true) {
+            event = 'isLikeMessageEvent';
+            if (activityData.comment != null) {
+                body = `Liked your message: "${activityData.comment}"`
+            } else {
+                body = `Liked your message file`
+            }
+        }
+
+        if (activityData.recieverToken != null && activityData.recieverToken.length > 1 && event != null) {
+            const payload = {
+                notification: {
+                    title: senderName,
+                    body: body,
+                    image: senderUserData.profileImageUrl,
+                }
+            }
+            const options = {
+                priority: 'high',
+                timeToLive: 60 * 60 * 24
+            }
+            admin.messaging().sendToDevice(activityData.recieverToken, payload, options);
+        }
+    }
+    );
+

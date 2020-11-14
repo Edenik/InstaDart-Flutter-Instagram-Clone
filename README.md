@@ -10,7 +10,7 @@ A working Instagram clone written in Flutter using Firebase / Firestore
 
   
 
-Latest Update : 12/11/20
+Latest Update : 14/11/20
 
   
   
@@ -23,9 +23,9 @@ Latest Update : 12/11/20
 
 * Post photo posts from camera or gallery
 
-* Like posts
+* Like posts 
 
-* Comment on posts
+* Comment on posts 
 
 * View all comments on a post
 
@@ -71,6 +71,8 @@ Latest Update : 12/11/20
 
 * Chat Screen stream messages + upload images
 
+* Push notifications - For Comments on posts, Likes on post, Direct messages, New followers and more..
+
   
 
 ## Screenshots
@@ -80,6 +82,7 @@ Latest Update : 12/11/20
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Feed%20Screen%20+%20Search%20Screen%20+%20Profile%20Screen.gif?raw=true" alt="Feed Screen + Search Screen + Profile Screen" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Upload%20New%20Post.gif?raw=true" alt="Upload New Post" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Direct%20Messaging.gif?raw=true" alt="Direct Messaging" width="250">
+<img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Receiving%20Notifications.gif?raw=true" alt="Receiving Notifications" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Messaging%20Giphy.gif?raw=true" alt="Direct Messaging" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Light-Dark%20Mode.gif?raw=true" alt="Light / Dark Mode" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/About%20App%20Dialog.gif?raw=true" alt="About App Dialog" width="250">
@@ -133,7 +136,7 @@ Latest Update : 12/11/20
 
 - [ ] Error handling
 - [ ] Share Image instantly to App
-- [ ] Notificaitons for likes, comments, follows, etc
+- [X] Notificaitons for likes, comments, follows, messages, etc
 - [ ] Improve Caching of Profiles, Images, Etc.
 - [ ] Better post creation, add filters to your image
 - [ ] Firebase Security Rules

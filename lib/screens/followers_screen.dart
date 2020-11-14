@@ -229,7 +229,9 @@ class _FollowersScreenState extends State<FollowersScreen> {
         } else {
           // Follow User
           DatabaseService.followUser(
-              currentUserId: widget.currenUserId, userId: user.id);
+              currentUserId: widget.currenUserId,
+              userId: user.id,
+              receiverToken: user.token);
           setState(() {
             _userFollowingState[index] = true;
             _followingCount++;
