@@ -33,6 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<String> _userIds;
   List<User> _memberInfo;
   bool _isLoading = false;
+  bool _isSending = false;
 
   @override
   void initState() {
@@ -206,7 +207,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           if (_isComposingMessage)
             GestureDetector(
-              onTap: _isComposingMessage
+              onTap: _isComposingMessage && !_isSending
                   ? () => _sendMessage(
                       text: _messageController.text.trim(),
                       imageUrl: null,
@@ -231,6 +232,8 @@ class _ChatScreenState extends State<ChatScreen> {
     if ((text != null && text.trim().isNotEmpty) ||
         imageUrl != null ||
         giphyUrl != null) {
+      setState(() => _isSending = true);
+
       if (!_isChatExist) {
         await _createChat(_userIds);
       }
@@ -250,6 +253,7 @@ class _ChatScreenState extends State<ChatScreen> {
       );
 
       ChatService.sendChatMessage(_chat, message, widget.receiverUser);
+      setState(() => _isSending = false);
     }
   }
 
