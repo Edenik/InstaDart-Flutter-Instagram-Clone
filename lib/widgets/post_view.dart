@@ -1,16 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:animator/animator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram/models/post_model.dart';
-import 'package:instagram/models/user_model.dart';
-import 'package:instagram/screens/comments_screen.dart';
-import 'package:instagram/screens/create_post_screen.dart';
-import 'package:instagram/screens/home_screen.dart';
-import 'package:instagram/screens/profile_screen.dart';
+import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';

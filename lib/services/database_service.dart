@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/utilities/repo_const.dart';
 
 class DatabaseService {
   static void updateUser(User user) {

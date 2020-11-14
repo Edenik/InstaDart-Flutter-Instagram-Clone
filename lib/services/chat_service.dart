@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';

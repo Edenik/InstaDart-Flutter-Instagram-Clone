@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
-import 'package:provider/provider.dart';
 
 class CustomNavigation {
   static void navigateToUserProfile({
