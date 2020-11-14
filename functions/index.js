@@ -249,6 +249,7 @@ exports.onNewActivity = functions.firestore
                     title: senderName,
                     body: body,
                     image: senderUserData.profileImageUrl,
+                    click_action: 'FLUTTER_NOTIFICATION_CLICK'
                 }
             }
             const options = {

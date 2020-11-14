@@ -47,10 +47,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
         if (!snapshot.hasData) {
           return SizedBox.shrink();
         }
-        if (activity.isMessageEvent == true ||
-            activity.isLikeMessageEvent == true) {
-          return SizedBox.shrink();
-        }
+        // if (activity.isMessageEvent == true ||
+        //     activity.isLikeMessageEvent == true) {
+        //   return SizedBox.shrink();
+        // }
         User user = snapshot.data;
         return ListTile(
           leading: CircleAvatar(
@@ -97,7 +97,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
           subtitle: Text(
             timeago.format(activity.timestamp.toDate()),
           ),
-          trailing: activity.isFollowEvent
+          trailing: activity.postImageUrl == null
               ? SizedBox.shrink()
               : CachedNetworkImage(
                   imageUrl: activity.postImageUrl,
@@ -152,6 +152,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 itemCount: _activities.length,
                 itemBuilder: (BuildContext context, int index) {
                   Activity activity = _activities[index];
+                  if (activity.isMessageEvent == true ||
+                      activity.isLikeMessageEvent == true) {
+                    return SizedBox.shrink();
+                  }
                   return _buildActivity(activity);
                 },
               ),

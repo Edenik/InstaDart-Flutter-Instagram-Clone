@@ -31,9 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
       print('On message: $message');
     }, onResume: (Map<String, dynamic> message) {
-      print('On message: $message');
+      print('On resume: $message');
     }, onLaunch: (Map<String, dynamic> message) {
-      print('On message: $message');
+      print('On launch: $message');
     });
 
     _firebaseMessaging.requestNotificationPermissions(

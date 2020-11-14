@@ -23,11 +23,11 @@ class CommentsScreen extends StatefulWidget {
   _CommentsScreenState createState() => _CommentsScreenState();
 }
 
-_goToUserProfile(BuildContext context, Post post, String currentUserId) {
+_goToUserProfile(BuildContext context, Comment comment, String currentUserId) {
   CustomNavigation.navigateToUserProfile(
       context: context,
       currentUserId: currentUserId,
-      userId: post.authorId,
+      userId: comment.authorId,
       isCameFromBottomNavigation: false);
 }
 
@@ -53,7 +53,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
       String currentUserId) {
     return ListTile(
       leading: GestureDetector(
-        onTap: () => _goToUserProfile(context, widget.post, currentUserId),
+        onTap: () => _goToUserProfile(context, comment, currentUserId),
         child: CircleAvatar(
           radius: 25.0,
           backgroundColor: Colors.grey,
@@ -63,7 +63,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         ),
       ),
       title: GestureDetector(
-          onTap: () => _goToUserProfile(context, widget.post, currentUserId),
+          onTap: () => _goToUserProfile(context, comment, currentUserId),
           child: Text(
             author.name,
             style: kFontWeightBoldTextStyle,
