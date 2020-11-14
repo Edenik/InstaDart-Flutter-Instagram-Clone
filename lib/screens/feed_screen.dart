@@ -32,6 +32,7 @@ class _FeedScreenState extends State<FeedScreen> {
     List<Post> posts = await DatabaseService.getFeedPosts(
       widget.currentUserId,
     );
+    // List<Post> posts = await DatabaseService.getAllFeedPosts();
     setState(() {
       _posts = posts;
       _isLoading = false;

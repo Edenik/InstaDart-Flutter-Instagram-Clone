@@ -1,14 +1,17 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:instagram/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';
 
 class AuthService {
-  static final _auth = FirebaseAuth.instance;
-  static final _firestore = Firestore.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final Firestore _firestore = Firestore.instance;
+  static final FirebaseMessaging _messaging = FirebaseMessaging();
 
   static Future<void> signUpUser(
       BuildContext context, String name, String email, String password) async {
@@ -19,10 +22,12 @@ class AuthService {
       );
       FirebaseUser signedInUser = authResult.user;
       if (signedInUser != null) {
+        String token = await _messaging.getToken();
         _firestore.collection('/users').document(signedInUser.uid).setData({
           'name': name,
           'email': email,
           'profileImageUrl': '',
+          'token': token,
         });
       }
       Provider.of<UserData>(context, listen: false).currentUserId =
@@ -42,7 +47,32 @@ class AuthService {
     }
   }
 
-  static void logout() {
-    _auth.signOut();
+  static Future<void> removeToken() async {
+    final currentUser = await _auth.currentUser();
+    await usersRef
+        .document(currentUser.uid)
+        .setData({'token': ''}, merge: true);
+  }
+
+  static Future<void> updateToken() async {
+    final currentUser = await _auth.currentUser();
+    final token = await _messaging.getToken();
+    final userDoc = await usersRef.document(currentUser.uid).get();
+
+    if (userDoc.exists) {
+      User user = User.fromDoc(userDoc);
+      if (token != user.token) {
+        usersRef
+            .document(currentUser.uid)
+            .setData({'token': token}, merge: true);
+      }
+    }
+  }
+
+  static Future<void> logout() async {
+    await removeToken();
+    Future.wait([
+      _auth.signOut(),
+    ]);
   }
 }

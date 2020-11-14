@@ -36,6 +36,7 @@ dependencies:
   share: ^0.6.5+4
   auto_direction: ^0.0.4+1
   giphy_get: ^1.0.1
+  firebase_messaging: ^6.0.9
 
 
 dev_dependencies:

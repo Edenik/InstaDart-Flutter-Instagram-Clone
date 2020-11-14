@@ -6,6 +6,7 @@ class User {
   final String profileImageUrl;
   final String email;
   final String bio;
+  final String token;
 
   User({
     this.id,
@@ -13,6 +14,7 @@ class User {
     this.profileImageUrl,
     this.email,
     this.bio,
+    this.token,
   });
 
   factory User.fromDoc(DocumentSnapshot doc) {
@@ -22,6 +24,7 @@ class User {
       profileImageUrl: doc['profileImageUrl'],
       email: doc['email'],
       bio: doc['bio'] ?? '',
+      token: doc['token'] ?? '',
     );
   }
 }
