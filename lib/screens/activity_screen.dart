@@ -47,10 +47,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
         if (!snapshot.hasData) {
           return SizedBox.shrink();
         }
-        // if (activity.isMessageEvent == true ||
-        //     activity.isLikeMessageEvent == true) {
-        //   return SizedBox.shrink();
-        // }
         User user = snapshot.data;
         return ListTile(
           leading: CircleAvatar(
@@ -72,7 +68,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                     ),
                   ],
                 )
-              : activity.comment != null
+              : activity.isLikeEvent == false
                   ? Row(
                       children: <Widget>[
                         Text('${user.name} ', style: kFontWeightBoldTextStyle),
