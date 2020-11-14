@@ -134,17 +134,6 @@ Latest Update : 14/11/20
 
 ## What's Next?
 
-- [ ] Error handling
-- [ ] Share Image instantly to App
-- [X] Notificaitons for likes, comments, follows, messages, etc
-- [ ] Improve Caching of Profiles, Images, Etc.
-- [ ] Better post creation, add filters to your image
-- [ ] Firebase Security Rules
-- [X] Delete Posts Firebase Function
-- [X] Direct Messaging
-- [ ] Upgrade Messaging with new Features - send audio
-- [ ] Stories
-- [ ] Clean up code
 - [X] Edit Posts
 - [X] Dark / Light Theme Mode
 - [X] Splash Screen
@@ -152,6 +141,17 @@ Latest Update : 14/11/20
 - [X] Turn on / off Comments on Posts
 - [X] Login + Signup - Show Auth indication + Error Handling
 - [X] Share Posts to external Apps
+- [X] Notificaitons for likes, comments, follows, messages, etc
+- [X] Delete Posts Firebase Function
+- [X] Direct Messaging
+- [ ] Error handling
+- [ ] Share Image instantly to App
+- [ ] Improve Caching of Profiles, Images, Etc.
+- [ ] Better post creation, add filters to your image
+- [ ] Firebase Security Rules
+- [ ] Upgrade Messaging with new Features - send audio
+- [ ] Stories
+- [ ] Clean up code
 - [ ] Save Favorite Posts
 - [ ] PageRouteBuilder Navigation Transitions
 - [ ] iOS Support
