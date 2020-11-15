@@ -5,22 +5,28 @@ admin.initializeApp();
 exports.onFollowUser = functions.firestore
     .document('/followers/{userId}/userFollowers/{followerId}')
     .onCreate(async (snapshot, context) => {
-        console.log(snapshot.data());
         const userId = context.params.userId;
         const followerId = context.params.followerId;
+
+        // Followed User posts
         const followedUserPostsRef = admin
             .firestore()
             .collection('posts')
             .doc(userId)
             .collection('userPosts');
+
+        // Current User feed
         const userFeedRef = admin
             .firestore()
             .collection('feeds')
             .doc(followerId)
             .collection('userFeed');
+
+        // Get all posts from followed user
         const followedUserPostsSnapshot = await followedUserPostsRef.get();
         followedUserPostsSnapshot.forEach(doc => {
             if (doc.exists) {
+                // Add followed user posts to current user feed 
                 userFeedRef.doc(doc.id).set(doc.data());
             }
         });
@@ -31,15 +37,20 @@ exports.onUnfollowUser = functions.firestore
     .onDelete(async (snapshot, context) => {
         const userId = context.params.userId;
         const followerId = context.params.followerId;
+
+        // All posts from unfollowed user in current user feed 
         const userFeedRef = admin
             .firestore()
             .collection('feeds')
             .doc(followerId)
             .collection('userFeed')
             .where('authorId', '==', userId);
+
+        // Get all posts unfollowed user
         const userPostsSnapshot = await userFeedRef.get();
         userPostsSnapshot.forEach(doc => {
             if (doc.exists) {
+                // Delete each unfollowed user post from current user feed 
                 doc.ref.delete();
             }
         });
@@ -51,16 +62,18 @@ exports.onUploadPost = functions.firestore
         const userId = context.params.userId;
         const postId = context.params.postId;
 
+        // All the current user followers 
         const userFollowersRef = admin
             .firestore()
             .collection('followers')
             .doc(userId)
             .collection('userFollowers');
 
+        // Get current user followers
         const userFollowersSnapshot = await userFollowersRef.get();
 
         userFollowersSnapshot.forEach(doc => {
-            //Uploading post to followers feed
+            // Uploading post to followers feed
             admin
                 .firestore()
                 .collection('feeds')
@@ -70,7 +83,7 @@ exports.onUploadPost = functions.firestore
                 .set(snapshot.data());
         })
 
-        //Uploading post to author feed
+        // Uploading post to author feed
         admin
             .firestore()
             .collection('feeds')
@@ -87,17 +100,19 @@ exports.onUpdatePost = functions.firestore
         const userId = context.params.userId;
         const postId = context.params.postId;
         const newPostData = snapshot.after.data();
-        console.log(newPostData);
+
+        // All the current user followers 
         const userFollowersRef = admin
             .firestore()
             .collection('followers')
             .doc(userId)
             .collection('userFollowers');
 
-
+        // Get current user followers
         const userFollowersSnapshot = await userFollowersRef.get();
+
         userFollowersSnapshot.forEach(async userDoc => {
-            //Updating post to followers feed
+            // Updating post to current user followers feed
             const postRef = admin
                 .firestore()
                 .collection('feeds')
@@ -110,7 +125,7 @@ exports.onUpdatePost = functions.firestore
         });
 
 
-        //Updating post to author feed
+        // Updating post to author feed
         const postRef = admin
             .firestore()
             .collection('feeds')
@@ -135,7 +150,7 @@ exports.onDeletePost = functions.firestore
             .doc(authorId)
             .collection('userFollowers');
 
-        // get author followers
+        //Get author followers
         const authorFollowersSnapshot = await authorFollowersRef.get();
 
         authorFollowersSnapshot.docs.forEach(async userDoc => {
@@ -144,7 +159,7 @@ exports.onDeletePost = functions.firestore
                 .collection('feeds')
                 .doc(userDoc.id)
                 .collection('userFeed');
-
+            // Delete post for each follower feed
             await postRef.doc(postId).delete();
         });
         /* End of Deleting post from followers feeds */
@@ -167,13 +182,18 @@ exports.addChatMessage = functions.firestore
     .onCreate(async (snapshot, context) => {
         const chatId = context.params.chatId;
         const messageData = snapshot.data();
+
+
         const chatRef = admin
             .firestore()
             .collection('chats')
             .doc(chatId);
+        // Get chat document
         const chatDoc = await chatRef.get();
         const chatData = chatDoc.data();
+
         if (chatDoc.exists) {
+            // Update read status to false
             const readStatus = chatData.readStatus;
             for (let userId in readStatus) {
                 if (
@@ -183,6 +203,7 @@ exports.addChatMessage = functions.firestore
                     readStatus[userId] = false;
                 }
             }
+            // Update the chat doc
             chatRef.update({
                 recentMessage: messageData.text,
                 recentSender: messageData.senderId,
@@ -203,6 +224,7 @@ exports.onNewActivity = functions.firestore
             .collection('users')
             .doc(activityData.fromUserId);
 
+        // Get the message sender - user document 
         const senderUserSnapshot = await senderUserRef.get();
         if (!senderUserSnapshot.exists) {
             return;
@@ -213,7 +235,7 @@ exports.onNewActivity = functions.firestore
         let senderName = senderUserData.name;
         let body;
 
-
+        // Check for the message event
         if (activityData.isFollowEvent == true) {
             event = 'isFollowEvent';
             body = 'Started follow you!'
@@ -243,6 +265,7 @@ exports.onNewActivity = functions.firestore
             }
         }
 
+        // If there is a receiver token && the message event matches the events above
         if (activityData.recieverToken != null && activityData.recieverToken.length > 1 && event != null) {
             const payload = {
                 notification: {
@@ -256,7 +279,14 @@ exports.onNewActivity = functions.firestore
                 priority: 'high',
                 timeToLive: 60 * 60 * 24
             }
+            // Send push notifications
             admin.messaging().sendToDevice(activityData.recieverToken, payload, options);
+        }
+
+
+        // If this activity is message event or like message event - delete doc
+        if (activityData.isLikeMessageEvent || activityData.isMessageEvent) {
+            snapshot.ref.delete();
         }
     }
     );
