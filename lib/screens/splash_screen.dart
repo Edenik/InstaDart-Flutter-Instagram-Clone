@@ -44,15 +44,19 @@ class SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              new Image.asset(
+              Text(
+                'InstaDart',
+                style: kBillabongFamilyTextStyle.copyWith(fontSize: 70),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Image.asset(
                 'assets/images/instagram_logo.png',
                 height: 150,
                 width: 150,
+                fit: BoxFit.cover,
               ),
-              Text(
-                'Instagram',
-                style: kBillabongFamilyTextStyle,
-              )
             ],
           ),
         ],

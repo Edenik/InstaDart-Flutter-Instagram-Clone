@@ -46,7 +46,7 @@ class _FeedScreenState extends State<FeedScreen> {
         backgroundColor: Theme.of(context).appBarTheme.color,
         centerTitle: true,
         title: Text(
-          'Instagram',
+          'InstaDart',
           style: kBillabongFamilyTextStyle,
         ),
         actions: [

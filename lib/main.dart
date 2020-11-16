@@ -18,7 +18,6 @@ void main() {
         systemNavigationBarColor: darkModeOn ? Colors.black : Colors.white,
         systemNavigationBarIconBrightness:
             darkModeOn ? Brightness.light : Brightness.dark));
-
     runApp(
       MultiProvider(
         providers: [
@@ -34,6 +33,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   Widget _getScreenId() {
     return StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return MaterialApp(
-      title: 'Instagram',
+      title: 'InstaDart',
       debugShowCheckedModeBanner: false,
       theme: themeNotifier.getTheme(),
       home: _getScreenId(),

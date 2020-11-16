@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Instagram',
+                'InstaDart',
                 style: kBillabongFamilyTextStyle.copyWith(fontSize: 50.0),
               ),
               Form(

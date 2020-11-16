@@ -1,5 +1,5 @@
 
-# Instagram Clone
+# InstaDart - Instagram Clone
 A working Instagram clone written in Flutter using Firebase / Firestore
 
   
@@ -10,7 +10,7 @@ A working Instagram clone written in Flutter using Firebase / Firestore
 
   
 
-Latest Update : 14/11/20
+Latest Update : 16/11/20
 
   
   
@@ -163,6 +163,5 @@ Latest Update : 14/11/20
 
 
 
-This app based of tutorial by -
-
+This app based on a tutorial by -
 [MarcusNG](https://marcusng.com/)

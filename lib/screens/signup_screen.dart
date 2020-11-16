@@ -62,7 +62,7 @@ class _SignupScreenState extends State<SignupScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text('Instagram',
+              Text('InstaDart',
                   style: kBillabongFamilyTextStyle.copyWith(fontSize: 50.0)),
               Form(
                 key: _formKey,
