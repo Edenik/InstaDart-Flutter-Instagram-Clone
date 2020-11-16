@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,11 +20,23 @@ class AboutAppDialog extends StatefulWidget {
 class _AboutAppDialogState extends State<AboutAppDialog> {
   bool _isFollowing = false;
   String _followText = 'Follow ME!';
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _setupIsFollowing();
+  }
+
+  _reportABug() async {
+    User user = await DatabaseService.getUserWithId(kAdminUId);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChatScreen(user),
+      ),
+    );
   }
 
   Future _setupIsFollowing() async {
@@ -32,6 +46,7 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
     );
     setState(() {
       _isFollowing = isFollowingUser;
+      _isLoading = false;
     });
   }
 
@@ -41,14 +56,14 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
       title: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          Text('InstaDart',
+              style: kBillabongFamilyTextStyle.copyWith(fontSize: 45.0)),
           Text(
             'Developed With ♥ By:',
             style: kFontSize18FontWeight600TextStyle.copyWith(
                 color: Theme.of(context).accentColor.withOpacity(0.8)),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -87,9 +102,7 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: 10),
         ],
       ),
       children: <Widget>[
@@ -120,7 +133,7 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
             children: [
               FaIcon(FontAwesomeIcons.github),
               Text(
-                ' Github Repo',
+                ' GitHub Repo',
                 style: kFontSize18TextStyle.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -137,10 +150,9 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
             Navigator.pop(context);
           },
         ),
-        Divider(),
-        _isFollowing
-            ? SizedBox.shrink()
-            : SimpleDialogOption(
+        if (!_isLoading && !_isFollowing) Divider(),
+        !_isFollowing && !_isLoading
+            ? SimpleDialogOption(
                 child: Center(
                   child: Text(
                     _followText,
@@ -160,7 +172,24 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
                         DatabaseService.followUser(
                             currentUserId: widget.currentUserId,
                             userId: kAdminUId);
-                      }),
+                      })
+            : SizedBox.shrink(),
+        Divider(),
+        SimpleDialogOption(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Report A Bug ',
+                style: kFontSize18TextStyle.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              FaIcon(FontAwesomeIcons.paperPlane),
+            ],
+          ),
+          onPressed: _reportABug,
+        ),
       ],
     );
   }

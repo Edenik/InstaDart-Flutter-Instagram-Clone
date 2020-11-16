@@ -30,16 +30,4 @@ class CustomNavigation {
       (Route<dynamic> route) => false,
     );
   }
-  // _goToUserProfile(BuildContext context, Post post) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (_) => ProfileScreen(
-  //         isCameFromBottomNavigation: false,
-  //         currentUserId: widget.currentUserId,
-  //         userId: post.authorId,
-  //       ),
-  //     ),
-  //   );
-  // }
 }
