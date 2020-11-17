@@ -7,6 +7,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/chat_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/database_service.dart';
+import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +27,8 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
 
     final User currentUser =
         Provider.of<UserData>(context, listen: false).currentUser;
-    setState(() {
-      _currentUser = currentUser;
-    });
+    setState(() => _currentUser = currentUser);
+    AuthService.updateTokenWithUser(currentUser);
   }
 
   Stream<List<Chat>> getChats() async* {

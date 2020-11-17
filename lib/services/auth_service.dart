@@ -68,6 +68,13 @@ class AuthService {
     }
   }
 
+  static Future<void> updateTokenWithUser(User user) async {
+    final token = await _messaging.getToken();
+    if (token != user.token) {
+      await usersRef.document(user.id).updateData({'token': token});
+    }
+  }
+
   static Future<void> logout() async {
     await removeToken();
     Future.wait([

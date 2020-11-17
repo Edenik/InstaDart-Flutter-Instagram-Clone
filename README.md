@@ -10,7 +10,7 @@ A working Instagram clone written in Flutter using Firebase / Firestore
 
   
 
-Latest Update : 16/11/20
+Latest Update : 17/11/20
 
   
   

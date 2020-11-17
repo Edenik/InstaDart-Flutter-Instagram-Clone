@@ -55,9 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
         await DatabaseService.getUserWithId(widget.currentUserId);
 
     Provider.of<UserData>(context, listen: false).currentUser = currentUser;
-    setState(() {
-      _currentUser = currentUser;
-    });
+    setState(() => _currentUser = currentUser);
+    AuthService.updateTokenWithUser(currentUser);
   }
 
   @override

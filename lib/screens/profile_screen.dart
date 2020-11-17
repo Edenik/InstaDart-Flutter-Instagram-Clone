@@ -79,12 +79,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _setupProfileUser() async {
     User profileUser = await DatabaseService.getUserWithId(widget.userId);
-    setState(() {
-      _profileUser = profileUser;
-    });
-
+    setState(() => _profileUser = profileUser);
     if (profileUser.id ==
         Provider.of<UserData>(context, listen: false).currentUserId) {
+      AuthService.updateTokenWithUser(profileUser);
       Provider.of<UserData>(context, listen: false).currentUser = profileUser;
     }
   }
@@ -142,6 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     .currentUser = updatedUser;
                                 _profileUser = updatedUser;
                               });
+                              AuthService.updateTokenWithUser(updatedUser);
                               widget.onProfileEdited();
                             }),
                       ),
