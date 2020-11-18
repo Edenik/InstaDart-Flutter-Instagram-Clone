@@ -12,3 +12,5 @@ export 'signup_screen.dart';
 export 'settings_screen.dart';
 export 'splash_screen.dart';
 export 'chat_screen.dart';
+export 'create_story_screen.dart';
+export 'camera_screen.dart';

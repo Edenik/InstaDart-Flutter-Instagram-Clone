@@ -32,3 +32,8 @@ enum SearchFrom {
   messagesScreen,
   homeScreen,
 }
+
+enum CameraConsumer {
+  post,
+  story,
+}

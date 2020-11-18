@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/screens/screens.dart';
+import 'package:instagram/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
@@ -22,6 +23,7 @@ class _CameraScreenState extends State<CameraScreen> {
   bool _toggleCamera = false;
   CameraController controller;
   final _picker = ImagePicker();
+  CameraConsumer _cameraConsumer = CameraConsumer.post;
 
   @override
   void initState() {
@@ -78,8 +80,51 @@ class _CameraScreenState extends State<CameraScreen> {
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Container(
+                    width: 110,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                            onTap: () => changeConsumer(CameraConsumer.post),
+                            child: Text(
+                              'Post',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: _cameraConsumer == CameraConsumer.post
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight:
+                                    _cameraConsumer == CameraConsumer.post
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                              ),
+                            )),
+                        GestureDetector(
+                            onTap: () => changeConsumer(CameraConsumer.story),
+                            child: Text(
+                              'Story',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: _cameraConsumer == CameraConsumer.story
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight:
+                                    _cameraConsumer == CameraConsumer.story
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
                   IconButton(
                     icon: FaIcon(
                       FontAwesomeIcons.times,
@@ -179,6 +224,12 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
+  void changeConsumer(CameraConsumer cameraConsumer) {
+    setState(() {
+      _cameraConsumer = cameraConsumer;
+    });
+  }
+
   void onCameraSelected(CameraDescription cameraDescription) async {
     if (controller != null) await controller.dispose();
     controller =
@@ -229,15 +280,27 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   void setCameraResult() async {
-    File croppedImage = await _cropImage(File(imagePath));
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => CreatePostScreen(
-          imageFile: croppedImage,
+    if (_cameraConsumer == CameraConsumer.post) {
+      File croppedImage = await _cropImage(File(imagePath));
+      if (croppedImage == null) {
+        return;
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CreatePostScreen(
+            imageFile: croppedImage,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CreateStoryScreen(File(imagePath)),
+        ),
+      );
+    }
   }
 
   Future<String> takePicture() async {
