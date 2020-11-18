@@ -4,13 +4,21 @@ A working Instagram clone written in Flutter using Firebase / Firestore
 
   
 
- **Demo**
+ 
 
+ <p align="center">
+  <img width="400" height="400" src="https://github.com/Edenik/InstaDart-Flutter-Instagram-Clone/blob/main/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png?raw=true">
+</p>
+
+ <p align="center">
+**Demo**
 [<img src="https://level01.io/wp-content/uploads/2020/10/direct-download-apk.png" width="250">](https://github.com/Edenik/Flutter-Instagram-Clone/raw/main/media/app-release.apk)
+Latest Update : 17/11/20
+</p>
 
   
 
-Latest Update : 17/11/20
+
 
   
   
