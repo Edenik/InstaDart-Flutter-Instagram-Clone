@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instagram/models/models.dart';
-import 'package:instagram/models/user_data.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:provider/provider.dart';

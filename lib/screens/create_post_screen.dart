@@ -21,8 +21,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 class CreatePostScreen extends StatefulWidget {
   final Post post;
   final PostStatus postStatus;
+  final Function backToHomeScreen;
 
-  CreatePostScreen({this.post, this.postStatus});
+  CreatePostScreen({this.post, this.postStatus, this.backToHomeScreen});
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -299,7 +300,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 controller: _captionController,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                    hintText: 'Write a caption...', border: InputBorder.none),
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    hintText: 'Write a caption...',
+                    border: InputBorder.none),
               ),
             ),
           ],
@@ -313,6 +318,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               controller: _locationController,
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
                   hintText: 'Where was this photo taken?',
                   border: InputBorder.none),
             ),
@@ -326,6 +334,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     return _imageFile == null && _post == null
         ? Scaffold(
+            appBar: AppBar(
+              backgroundColor: Theme.of(context).backgroundColor,
+              actions: [
+                IconButton(
+                  icon: FaIcon(FontAwesomeIcons.times),
+                  onPressed: widget.backToHomeScreen,
+                ),
+              ],
+            ),
             body: Center(
               child: GestureDetector(
                 onTap: () => _isEdited ? null : _showSelectImageDialog(),

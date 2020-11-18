@@ -1,17 +1,13 @@
 
 # InstaDart - Instagram Clone
-A working Instagram clone written in Flutter using Firebase / Firestore
-
-  
+A working Instagram clone written with Dart & Flutter using Firebase as backend.
 
  
 
  <p align="center">
 <a href="https://github.com/Edenik/Flutter-Instagram-Clone/raw/main/media/app-release.apk">
-
   <img width="400" height="400" src="https://github.com/Edenik/InstaDart-Flutter-Instagram-Clone/blob/main/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png?raw=true">
 </a>
-
 </p>
 
  <p align="center">
@@ -19,8 +15,11 @@ A working Instagram clone written in Flutter using Firebase / Firestore
 <img src="https://level01.io/wp-content/uploads/2020/10/direct-download-apk.png" 
 width="250">
 </a>
-Latest Update : 17/11/20
 </p>
+ <p align="center">
+Latest Update : 18/11/20
+</p>
+
 
   
 
@@ -158,6 +157,7 @@ Latest Update : 17/11/20
 - [X] Notificaitons for likes, comments, follows, messages, etc
 - [X] Delete Posts Firebase Function
 - [X] Direct Messaging
+- [X] Upgrade PageView + NavigationBar on HomeScreen
 - [ ] Error handling
 - [ ] Share Image instantly to App
 - [ ] Improve Caching of Profiles, Images, Etc.

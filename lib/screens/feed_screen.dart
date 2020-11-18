@@ -11,8 +11,9 @@ import 'package:instagram/widgets/post_view.dart';
 class FeedScreen extends StatefulWidget {
   static final String id = 'feed_screen';
   final String currentUserId;
+  final Function goToDirectMessages;
 
-  FeedScreen({this.currentUserId});
+  FeedScreen({this.currentUserId, this.goToDirectMessages});
   @override
   _FeedScreenState createState() => _FeedScreenState();
 }
@@ -52,8 +53,9 @@ class _FeedScreenState extends State<FeedScreen> {
         actions: [
           IconButton(
               icon: FaIcon(FontAwesomeIcons.paperPlane),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => DirectMessagesScreen())))
+              // onPressed: () => Navigator.push(context,
+              //     MaterialPageRoute(builder: (_) => DirectMessagesScreen())))
+              onPressed: widget.goToDirectMessages),
         ],
       ),
       body: !_isLoading

@@ -72,16 +72,16 @@ class CustomDrawer extends StatelessWidget {
               _buildDrawerOption(
                   Icon(Icons.history_toggle_off), 'Your Activity', null),
               _buildDrawerOption(Icon(Icons.bookmark), 'Saved', null),
-              // _buildDrawerOption(
-              //   Icon(Icons.bookmark),
-              //   'Splash Screen test',
-              //   () => Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (_) => SplashScreen(),
-              //     ),
-              //   ),
-              // ),
+              _buildDrawerOption(
+                Icon(Icons.bookmark),
+                'Splash Screen test',
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SplashScreen(),
+                  ),
+                ),
+              ),
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
