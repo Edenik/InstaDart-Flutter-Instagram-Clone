@@ -21,9 +21,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 class CreatePostScreen extends StatefulWidget {
   final Post post;
   final PostStatus postStatus;
-  final Function backToHomeScreen;
-
-  CreatePostScreen({this.post, this.postStatus, this.backToHomeScreen});
+  final File imageFile;
+  CreatePostScreen({
+    this.post,
+    this.postStatus,
+    this.imageFile,
+  });
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -31,19 +34,18 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   final _picker = ImagePicker();
-  File _imageFile;
   Address _address;
   TextEditingController _captionController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   Map<String, double> currentLocation = Map();
   String _caption = '';
   bool _isLoading = false;
-  bool _isEdited = false;
   Post _post;
   String _currentUserId;
   @override
   initState() {
     super.initState();
+
     //variables with location assigned as 0.0
     currentLocation['latitude'] = 0.0;
     currentLocation['longitude'] = 0.0;
@@ -65,6 +67,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 
+  @override
+  void dispose() {
+    _captionController?.dispose();
+    _locationController?.dispose();
+    super.dispose();
+  }
+
   //method to get Location and save into variables
   initPlatformState() async {
     Address first = await LocationService.getUserLocation();
@@ -75,89 +84,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 
-  _showSelectImageDialog() {
-    return Platform.isIOS ? _iosBottomSheet() : _androidDialog();
-  }
-
-  _iosBottomSheet() {
-    showCupertinoModalPopup(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoActionSheet(
-            title: Text('Add Photo'),
-            actions: <Widget>[
-              CupertinoActionSheetAction(
-                onPressed: () => _handleImage(ImageSource.camera),
-                child: Text('Take Photo'),
-              ),
-              CupertinoActionSheetAction(
-                onPressed: () => _handleImage(ImageSource.gallery),
-                child: Text('Choose From Gallery'),
-              )
-            ],
-            cancelButton: CupertinoActionSheetAction(
-              child: Text(
-                'Cancel',
-                style: kFontColorRedTextStyle,
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          );
-        });
-  }
-
-  _androidDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            title: Text('Add Photo'),
-            children: <Widget>[
-              SimpleDialogOption(
-                child: Text('Take Photo'),
-                onPressed: () => _handleImage(ImageSource.camera),
-              ),
-              SimpleDialogOption(
-                child: Text('Choose From Gallery'),
-                onPressed: () => _handleImage(ImageSource.gallery),
-              ),
-              SimpleDialogOption(
-                child: Text(
-                  'Cancel',
-                  style: kFontColorRedTextStyle,
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        });
-  }
-
-  _handleImage(ImageSource source) async {
-    Navigator.pop(context);
-    File image;
-    PickedFile pickedFile = await _picker.getImage(source: source);
-    if (pickedFile != null) {
-      image = await _cropImage(File(pickedFile.path));
-      setState(() {
-        _imageFile = image;
-      });
-    } else {
-      print('No image selected.');
-    }
-  }
-
-  _cropImage(File imageFile) async {
-    File croppedImage = await ImageCropper.cropImage(
-      sourcePath: imageFile.path,
-      aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-    );
-    return croppedImage;
-  }
-
   _submit() async {
     if (!_isLoading &&
-        (_imageFile != null || _post.imageUrl != null) &&
+        (widget.imageFile != null || _post.imageUrl != null) &&
         _captionController.text.isNotEmpty) {
       if (mounted) {
         setState(() {
@@ -165,6 +94,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         });
       }
 
+      print(_post != null);
       if (_post != null) {
         // Edit existing Post
         Post post = Post(
@@ -179,16 +109,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         );
 
         DatabaseService.editPost(post, widget.postStatus);
-        setState(() {
-          _isEdited = true;
-        });
+        // _goToHomeScreen();
 
-        Timer(Duration(seconds: 1), () {
-          _goToHomeScreen();
-        });
+        // Timer(Duration(seconds: 1), () {
+        // });
       } else {
         //Create new Post
-        String imageUrl = await StroageService.uploadPost(_imageFile);
+        String imageUrl = await StroageService.uploadPost(widget.imageFile);
         Post post = Post(
           imageUrl: imageUrl,
           caption: _captionController.text,
@@ -201,18 +128,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
         DatabaseService.createPost(post);
       }
+      _goToHomeScreen();
 
-      //Reset Data
-      _captionController.clear();
-      _locationController.clear();
+      // Reset Data
+      // _captionController.clear();
+      // _locationController.clear();
 
-      if (mounted) {
-        setState(() {
-          _imageFile = null;
-          _post = null;
-          _isLoading = false;
-        });
-      }
+      // if (mounted) {
+      //   setState(() {
+      //     _post = null;
+      //     _isLoading = false;
+      //   });
+      // }
     }
   }
 
@@ -249,16 +176,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 
-  _backButton() {
-    if (_post == null) {
-      setState(() {
-        _imageFile = null;
-      });
-    } else {
-      _goToHomeScreen();
-    }
-  }
-
   _goToHomeScreen() {
     CustomNavigation.navigateToHomeScreen(context, _currentUserId);
   }
@@ -281,9 +198,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       alignment: FractionalOffset.topCenter,
-                      image: _imageFile == null
+                      image: widget.imageFile == null
                           ? CachedNetworkImageProvider(_post.imageUrl)
-                          : FileImage(_imageFile),
+                          : FileImage(widget.imageFile),
                     ),
                   ),
                 ),
@@ -332,84 +249,49 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _imageFile == null && _post == null
-        ? Scaffold(
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).backgroundColor,
-              actions: [
-                IconButton(
-                  icon: FaIcon(FontAwesomeIcons.times),
-                  onPressed: widget.backToHomeScreen,
-                ),
-              ],
-            ),
-            body: Center(
-              child: GestureDetector(
-                onTap: () => _isEdited ? null : _showSelectImageDialog(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    FaIcon(
-                      _isEdited
-                          ? FontAwesomeIcons.check
-                          : FontAwesomeIcons.cameraRetro,
-                      size: 50.0,
+    return Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).appBarTheme.color,
+          centerTitle: true,
+          title: Text(widget.imageFile == null ? 'Edit Post' : 'New Post'),
+          actions: <Widget>[
+            FlatButton(
+                onPressed:
+                    _captionController.text.trim() != '' ? _submit : null,
+                child: Text(
+                  widget.imageFile == null ? 'Save' : 'Share',
+                  style: TextStyle(
+                      color: _captionController.text.trim() != ''
+                          ? Theme.of(context).accentColor
+                          : Theme.of(context).hintColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0),
+                ))
+          ],
+        ),
+        body: ListView(
+          children: <Widget>[
+            _buildForm(),
+            Divider(),
+            (_address == null)
+                ? SizedBox.shrink()
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.only(right: 5.0, left: 5.0),
+                    child: Row(
+                      children: <Widget>[
+                        _buildLocationButton(_address.featureName),
+                        _buildLocationButton(_address.subLocality),
+                        _buildLocationButton(_address.locality),
+                        _buildLocationButton(_address.subAdminArea),
+                        _buildLocationButton(_address.adminArea),
+                        _buildLocationButton(_address.countryName),
+                      ],
                     ),
-                    SizedBox(height: 5.0),
-                    Text(_isEdited ? 'Edited Successfully' : 'Click')
-                  ],
-                ),
-              ),
-            ),
-          )
-        : Scaffold(
-            resizeToAvoidBottomPadding: false,
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).appBarTheme.color,
-              centerTitle: true,
-              leading: IconButton(
-                  icon: Icon(Icons.arrow_back,
-                      color: Theme.of(context).accentColor),
-                  onPressed: _backButton),
-              title: Text(_imageFile == null ? 'Edit Post' : 'New Post'),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed:
-                        _captionController.text.trim() != '' ? _submit : null,
-                    child: Text(
-                      _imageFile == null ? 'Save' : 'Share',
-                      style: TextStyle(
-                          color: _captionController.text.trim() != ''
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).hintColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0),
-                    ))
-              ],
-            ),
-            body: ListView(
-              children: <Widget>[
-                _buildForm(),
-                Divider(),
-                (_address == null)
-                    ? SizedBox.shrink()
-                    : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.only(right: 5.0, left: 5.0),
-                        child: Row(
-                          children: <Widget>[
-                            _buildLocationButton(_address.featureName),
-                            _buildLocationButton(_address.subLocality),
-                            _buildLocationButton(_address.locality),
-                            _buildLocationButton(_address.subAdminArea),
-                            _buildLocationButton(_address.adminArea),
-                            _buildLocationButton(_address.countryName),
-                          ],
-                        ),
-                      ),
-                (_address == null) ? SizedBox.shrink() : Divider(),
-              ],
-            ));
+                  ),
+            (_address == null) ? SizedBox.shrink() : Divider(),
+          ],
+        ));
   }
 }

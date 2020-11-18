@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +8,7 @@ import 'package:instagram/utilities/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? false;
@@ -17,6 +18,7 @@ void main() {
         systemNavigationBarColor: darkModeOn ? Colors.black : Colors.white,
         systemNavigationBarIconBrightness:
             darkModeOn ? Brightness.light : Brightness.dark));
+
     runApp(
       MultiProvider(
         providers: [

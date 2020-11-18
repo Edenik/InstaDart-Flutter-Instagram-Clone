@@ -1,7 +1,9 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instagram/screens/camera_screen.dart';
 import 'package:instagram/screens/direct_messages_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _lastTab = 0;
   PageController _pageController;
   User _currentUser;
+  List<CameraDescription> cameras;
 
   @override
   void initState() {
@@ -32,8 +35,18 @@ class _HomeScreenState extends State<HomeScreen> {
     _getCurrentUser();
     _initPageView();
     _listenToNotifications();
-
+    getCameras();
     AuthService.updateToken();
+  }
+
+  Future<Null> getCameras() async {
+    print('getcameras');
+    try {
+      cameras = await availableCameras();
+      print(cameras.length);
+    } on CameraException catch (e) {
+      //logError(e.code, e.description);
+    }
   }
 
   void _initPageView() {
@@ -140,9 +153,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: _pageController,
         children: <Widget>[
-          CreatePostScreen(
-            backToHomeScreen: _backToHomeScreenFromCreatePost,
-          ),
+          // CreatePostScreen(
+          //   backToHomeScreen: _backToHomeScreenFromCreatePost,
+          // ),
+          CameraScreen(cameras, _backToHomeScreenFromCreatePost),
           _pages[_currentTab],
           DirectMessagesScreen(_backToHomeScreenFromDirect)
         ],

@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   animator: ^2.0.1
   cached_network_image: ^2.3.3
-  # camera: ^0.5.8+11
+  camera: ^0.5.8+11
   cloud_firestore: ^0.12.9+4
   cupertino_icons: ^1.0.0
   firebase_analytics: ^5.0.2
@@ -49,6 +49,9 @@ flutter:
   assets:
     - assets/images/user_placeholder.jpg
     - assets/images/instagram_logo.png
+    - assets/images/shutter.png
+    - assets/images/switch_camera.png
+    - assets/images/gallery_button.png
   fonts:
     - family: Billabong
       fonts:

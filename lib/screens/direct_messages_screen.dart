@@ -26,7 +26,6 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
   @override
   void initState() {
     super.initState();
-
     final User currentUser =
         Provider.of<UserData>(context, listen: false).currentUser;
     setState(() => _currentUser = currentUser);

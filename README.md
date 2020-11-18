@@ -89,7 +89,7 @@ Latest Update : 18/11/20
   
 
 ## Screenshots
-<p>
+<p align="center">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Login%20Screen%20+%20Error%20Handling.gif?raw=true" alt="Login Screen + Error Handling" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Signup%20Screen%20+%20Error%20Handling.gif?raw=true" alt="Signup  Screen + Error Handling" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Feed%20Screen%20+%20Search%20Screen%20+%20Profile%20Screen.gif?raw=true" alt="Feed Screen + Search Screen + Profile Screen" width="250">
@@ -159,9 +159,9 @@ Latest Update : 18/11/20
 - [X] Direct Messaging
 - [X] Upgrade PageView + NavigationBar on HomeScreen
 - [ ] Error handling
-- [ ] Share Image instantly to App
+- [X] Custom Camera Screen
+- [ ] Add filters to your image
 - [ ] Improve Caching of Profiles, Images, Etc.
-- [ ] Better post creation, add filters to your image
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio
 - [ ] Stories
