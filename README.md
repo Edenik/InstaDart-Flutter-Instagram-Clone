@@ -6,7 +6,7 @@ A working Instagram clone written with Dart & Flutter using Firebase as backend.
 
  <p align="center">
 <a href="https://github.com/Edenik/Flutter-Instagram-Clone/raw/main/media/app-release.apk">
-  <img width="400" height="400" src="https://github.com/Edenik/InstaDart-Flutter-Instagram-Clone/blob/main/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png?raw=true">
+  <img width="400" height="400" src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/InstaDartLogo.png?raw=true">
 </a>
 </p>
 
