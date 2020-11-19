@@ -6,7 +6,7 @@ A working Instagram clone written with Dart & Flutter using Firebase as backend.
 
  <p align="center">
 <a href="https://github.com/Edenik/Flutter-Instagram-Clone/raw/main/media/app-release.apk">
-  <img width="400" height="400" src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/InstaDartLogo.png?raw=true">
+  <img width="300" height="300" src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/InstaDartLogo.png?raw=true">
 </a>
 </p>
 
@@ -17,7 +17,7 @@ width="250">
 </a>
 </p>
  <p align="center">
-Latest Update : 18/11/20
+Latest Update : 19/11/20
 </p>
 
 
@@ -167,7 +167,7 @@ Latest Update : 18/11/20
 - [ ] Stories
 - [ ] Clean up code
 - [ ] Save Favorite Posts
-- [ ] PageRouteBuilder Navigation Transitions
+- [X] Better Navigation Transitions
 - [ ] iOS Support
 
   

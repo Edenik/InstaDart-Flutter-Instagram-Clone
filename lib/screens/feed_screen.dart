@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:instagram/models/models.dart';
-import 'package:instagram/screens/direct_messages_screen.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';

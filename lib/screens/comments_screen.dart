@@ -193,41 +193,44 @@ class _CommentsScreenState extends State<CommentsScreen> {
             'Comments',
           ),
         ),
-        body: Column(
-          children: <Widget>[
-            SizedBox(height: 10.0),
-            _buildListTile(
-                context, widget.author, postDescription, currentUserId),
-            Divider(),
-            StreamBuilder(
-              stream: commentsRef
-                  .document(widget.post.id)
-                  .collection('postComments')
-                  .orderBy('timestamp', descending: true)
-                  .snapshots(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 10.0),
+              _buildListTile(
+                  context, widget.author, postDescription, currentUserId),
+              Divider(),
+              StreamBuilder(
+                stream: commentsRef
+                    .document(widget.post.id)
+                    .collection('postComments')
+                    .orderBy('timestamp', descending: true)
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Comment comment =
+                            Comment.fromDoc(snapshot.data.documents[index]);
+                        return _buildComment(comment, currentUserId);
+                      },
+                    ),
                   );
-                }
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: snapshot.data.documents.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Comment comment =
-                          Comment.fromDoc(snapshot.data.documents[index]);
-                      return _buildComment(comment, currentUserId);
-                    },
-                  ),
-                );
-              },
-            ),
-            Divider(
-              height: 1.0,
-            ),
-            _buildCommentTF(),
-          ],
+                },
+              ),
+              Divider(
+                height: 1.0,
+              ),
+              _buildCommentTF(),
+            ],
+          ),
         ));
   }
 }

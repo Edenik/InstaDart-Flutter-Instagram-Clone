@@ -1,13 +1,9 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 
-import 'package:instagram/utilities/themes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CreatePostScreen extends StatefulWidget {
@@ -33,7 +28,6 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-  final _picker = ImagePicker();
   Address _address;
   TextEditingController _captionController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
@@ -85,6 +79,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   _submit() async {
+    FocusScope.of(context).unfocus();
+
     if (!_isLoading &&
         (widget.imageFile != null || _post.imageUrl != null) &&
         _captionController.text.isNotEmpty) {
@@ -270,28 +266,31 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 ))
           ],
         ),
-        body: ListView(
-          children: <Widget>[
-            _buildForm(),
-            Divider(),
-            (_address == null)
-                ? SizedBox.shrink()
-                : SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.only(right: 5.0, left: 5.0),
-                    child: Row(
-                      children: <Widget>[
-                        _buildLocationButton(_address.featureName),
-                        _buildLocationButton(_address.subLocality),
-                        _buildLocationButton(_address.locality),
-                        _buildLocationButton(_address.subAdminArea),
-                        _buildLocationButton(_address.adminArea),
-                        _buildLocationButton(_address.countryName),
-                      ],
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: ListView(
+            children: <Widget>[
+              _buildForm(),
+              Divider(),
+              (_address == null)
+                  ? SizedBox.shrink()
+                  : SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.only(right: 5.0, left: 5.0),
+                      child: Row(
+                        children: <Widget>[
+                          _buildLocationButton(_address.featureName),
+                          _buildLocationButton(_address.subLocality),
+                          _buildLocationButton(_address.locality),
+                          _buildLocationButton(_address.subAdminArea),
+                          _buildLocationButton(_address.adminArea),
+                          _buildLocationButton(_address.countryName),
+                        ],
+                      ),
                     ),
-                  ),
-            (_address == null) ? SizedBox.shrink() : Divider(),
-          ],
+              (_address == null) ? SizedBox.shrink() : Divider(),
+            ],
+          ),
         ));
   }
 }
