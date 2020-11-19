@@ -82,55 +82,71 @@ class _CameraScreenState extends State<CameraScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 110,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: Colors.black26,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                            onTap: () => changeConsumer(CameraConsumer.post),
-                            child: Text(
-                              'Post',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: _cameraConsumer == CameraConsumer.post
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight:
-                                    _cameraConsumer == CameraConsumer.post
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                              ),
-                            )),
-                        GestureDetector(
-                            onTap: () => changeConsumer(CameraConsumer.story),
-                            child: Text(
-                              'Story',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: _cameraConsumer == CameraConsumer.story
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight:
-                                    _cameraConsumer == CameraConsumer.story
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                              ),
-                            )),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                topLeft: Radius.circular(15))),
+                        onPressed: () => changeConsumer(CameraConsumer.post),
+                        color: _cameraConsumer == CameraConsumer.post
+                            ? Colors.black54
+                            : Colors.grey.withOpacity(0.7),
+                        child: Text(
+                          'Post',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: _cameraConsumer == CameraConsumer.post
+                                ? Colors.white
+                                : Colors.black,
+                            fontWeight: _cameraConsumer == CameraConsumer.post
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(15),
+                                topRight: Radius.circular(15))),
+                        onPressed: () => changeConsumer(CameraConsumer.story),
+                        color: _cameraConsumer == CameraConsumer.story
+                            ? Colors.black54
+                            : Colors.grey.withOpacity(0.7),
+                        child: Text(
+                          'Story',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: _cameraConsumer == CameraConsumer.story
+                                ? Colors.white
+                                : Colors.black,
+                            fontWeight: _cameraConsumer == CameraConsumer.story
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: FaIcon(
-                      FontAwesomeIcons.times,
-                      color: Colors.black,
+                  GestureDetector(
+                    onTap: widget.backToHomeScreen,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      height: 34,
+                      width: 34,
+                      child: Center(
+                        child: FaIcon(
+                          FontAwesomeIcons.times,
+                          color: Colors.white.withOpacity(0.8),
+                          size: 20,
+                        ),
+                      ),
                     ),
-                    onPressed: widget.backToHomeScreen,
                   ),
                 ],
               ),
@@ -142,7 +158,7 @@ class _CameraScreenState extends State<CameraScreen> {
               width: double.infinity,
               height: 120.0,
               padding: EdgeInsets.all(20.0),
-              color: Color.fromRGBO(00, 00, 00, 0.7),
+              color: Colors.black45,
               child: Stack(
                 children: <Widget>[
                   Align(
@@ -225,9 +241,9 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   void changeConsumer(CameraConsumer cameraConsumer) {
-    setState(() {
-      _cameraConsumer = cameraConsumer;
-    });
+    if (_cameraConsumer != cameraConsumer) {
+      setState(() => _cameraConsumer = cameraConsumer);
+    }
   }
 
   void onCameraSelected(CameraDescription cameraDescription) async {
