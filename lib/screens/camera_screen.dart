@@ -76,163 +76,170 @@ class _CameraScreenState extends State<CameraScreen> {
             ),
           ),
           Align(
-            alignment: Alignment.topLeft,
+            alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.all(30.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(15),
-                                topLeft: Radius.circular(15))),
-                        onPressed: () => changeConsumer(CameraConsumer.post),
-                        color: _cameraConsumer == CameraConsumer.post
-                            ? Colors.black54
-                            : Colors.grey.withOpacity(0.7),
-                        child: Text(
-                          'Post',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: _cameraConsumer == CameraConsumer.post
-                                ? Colors.white
-                                : Colors.black,
-                            fontWeight: _cameraConsumer == CameraConsumer.post
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(15),
-                                topRight: Radius.circular(15))),
-                        onPressed: () => changeConsumer(CameraConsumer.story),
-                        color: _cameraConsumer == CameraConsumer.story
-                            ? Colors.black54
-                            : Colors.grey.withOpacity(0.7),
-                        child: Text(
-                          'Story',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: _cameraConsumer == CameraConsumer.story
-                                ? Colors.white
-                                : Colors.black,
-                            fontWeight: _cameraConsumer == CameraConsumer.story
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ],
+              child: GestureDetector(
+                onTap: widget.backToHomeScreen,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black45,
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  GestureDetector(
-                    onTap: widget.backToHomeScreen,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black45,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      height: 34,
-                      width: 34,
-                      child: Center(
-                        child: FaIcon(
-                          FontAwesomeIcons.times,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
+                  height: 34,
+                  width: 34,
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.times,
+                      color: Colors.white,
+                      size: 20,
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              height: 120.0,
-              padding: EdgeInsets.all(20.0),
-              color: Colors.black45,
-              child: Stack(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.center,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                        onTap: () {
-                          _captureImage();
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(4.0),
-                          child: Image.asset(
-                            'assets/images/shutter.png',
-                            width: 72.0,
-                            height: 72.0,
-                          ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              topLeft: Radius.circular(15))),
+                      onPressed: () => changeConsumer(CameraConsumer.post),
+                      color: _cameraConsumer == CameraConsumer.post
+                          ? Colors.black54
+                          : Colors.grey.withOpacity(0.7),
+                      child: Text(
+                        'Post',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: _cameraConsumer == CameraConsumer.post
+                              ? Colors.white
+                              : Colors.black,
+                          fontWeight: _cameraConsumer == CameraConsumer.post
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                        onTap: () {
-                          if (!_toggleCamera) {
-                            onCameraSelected(widget.cameras[1]);
-                            setState(() {
-                              _toggleCamera = true;
-                            });
-                          } else {
-                            onCameraSelected(widget.cameras[0]);
-                            setState(() {
-                              _toggleCamera = false;
-                            });
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(4.0),
-                          child: Image.asset(
-                            'assets/images/switch_camera.png',
-                            color: Colors.grey[200],
-                            width: 42.0,
-                            height: 42.0,
-                          ),
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(15),
+                              topRight: Radius.circular(15))),
+                      onPressed: () => changeConsumer(CameraConsumer.story),
+                      color: _cameraConsumer == CameraConsumer.story
+                          ? Colors.black54
+                          : Colors.grey.withOpacity(0.7),
+                      child: Text(
+                        'Story',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: _cameraConsumer == CameraConsumer.story
+                              ? Colors.white
+                              : Colors.black,
+                          fontWeight: _cameraConsumer == CameraConsumer.story
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                        onTap: getGalleryImage,
-                        child: Container(
-                          padding: EdgeInsets.all(4.0),
-                          child: Image.asset(
-                            'assets/images/gallery_button.png',
-                            color: Colors.grey[200],
-                            width: 42.0,
-                            height: 42.0,
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 120.0,
+                  padding: EdgeInsets.all(20.0),
+                  color: Colors.black45,
+                  child: Stack(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.center,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50.0)),
+                            onTap: () {
+                              _captureImage();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(4.0),
+                              child: Image.asset(
+                                'assets/images/shutter.png',
+                                width: 72.0,
+                                height: 72.0,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50.0)),
+                            onTap: () {
+                              if (!_toggleCamera) {
+                                onCameraSelected(widget.cameras[1]);
+                                setState(() {
+                                  _toggleCamera = true;
+                                });
+                              } else {
+                                onCameraSelected(widget.cameras[0]);
+                                setState(() {
+                                  _toggleCamera = false;
+                                });
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(4.0),
+                              child: Image.asset(
+                                'assets/images/switch_camera.png',
+                                color: Colors.grey[200],
+                                width: 42.0,
+                                height: 42.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50.0)),
+                            onTap: getGalleryImage,
+                            child: Container(
+                              padding: EdgeInsets.all(4.0),
+                              child: Image.asset(
+                                'assets/images/gallery_button.png',
+                                color: Colors.grey[200],
+                                width: 42.0,
+                                height: 42.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
