@@ -38,7 +38,6 @@ dependencies:
   giphy_get: ^1.0.1
   firebase_messaging: ^6.0.9
   # painter2: ^1.0.1
-  # photo_view: ^0.10.3
 
 
 dev_dependencies:

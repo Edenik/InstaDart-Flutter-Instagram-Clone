@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/instaDart_richText.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = 'login_screen';
@@ -65,10 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  'InstaDart',
-                  style: kBillabongFamilyTextStyle.copyWith(fontSize: 50.0),
-                ),
+                InstaDartRichText(
+                    kBillabongFamilyTextStyle.copyWith(fontSize: 50.0)),
                 Form(
                   key: _formKey,
                   child: Column(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/instaDart_richText.dart';
 
 class SignupScreen extends StatefulWidget {
   static final String id = 'signup_screen';
@@ -66,8 +67,8 @@ class _SignupScreenState extends State<SignupScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text('InstaDart',
-                    style: kBillabongFamilyTextStyle.copyWith(fontSize: 50.0)),
+                InstaDartRichText(
+                    kBillabongFamilyTextStyle.copyWith(fontSize: 50.0)),
                 Form(
                   key: _formKey,
                   child: Column(

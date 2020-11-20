@@ -18,10 +18,25 @@ class EditPhotoScreen extends StatefulWidget {
   _EditPhotoScreenState createState() => _EditPhotoScreenState();
 }
 
-class _EditPhotoScreenState extends State<EditPhotoScreen> {
+class _EditPhotoScreenState extends State<EditPhotoScreen>
+    with TickerProviderStateMixin {
   final GlobalKey _globalKey = GlobalKey();
+  TabController _tabController;
 
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 1, vsync: this);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
+  }
 
   void convertFilteredImageToImageFile() async {
     RenderRepaintBoundary repaintBoundary =
@@ -42,12 +57,13 @@ class _EditPhotoScreenState extends State<EditPhotoScreen> {
 
   _buildFilterThumbnail(int index, Image image) {
     return Container(
+      padding: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
         border: Border.all(
             color: _selectedIndex == index
-                ? Theme.of(context).accentColor
+                ? Colors.blue
                 : Theme.of(context).primaryColor,
-            width: 4),
+            width: 4.0),
       ),
       child: ColorFiltered(
         colorFilter: ColorFilter.matrix(filters[index].matrixValues),
@@ -72,7 +88,7 @@ class _EditPhotoScreenState extends State<EditPhotoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Add Filter",
+          "Edit Photo",
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).appBarTheme.color,
@@ -100,47 +116,62 @@ class _EditPhotoScreenState extends State<EditPhotoScreen> {
                     ColorFilter.matrix(filters[_selectedIndex].matrixValues),
                 child: image,
               ),
-              // child: PageView.builder(
-              //     itemCount: filters.length,
-              //     itemBuilder: (context, index) {
-              //       return ColorFiltered(
-              //         colorFilter: ColorFilter.matrix(filters[index]),
-              //         child: image,
-              //       );
-              //     }),
             ),
           ),
           Expanded(
-            child: Container(
-              color: Theme.of(context).backgroundColor,
-              alignment: Alignment.center,
-              child: Container(
-                height: 130,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: filters.length,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        child: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              _buildFilterThumbnail(index, image),
-                              SizedBox(
-                                height: 5.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(child: SizedBox()),
+                Container(
+                  color: Theme.of(context).backgroundColor,
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: 140,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: filters.length,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  _buildFilterThumbnail(index, image),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                    filters[index].name,
+                                  )
+                                ],
                               ),
-                              Text(
-                                filters[index].name,
-                              )
-                            ],
-                          ),
-                        ),
-                        onTap: () => setState(() => _selectedIndex = index),
-                      );
-                    }),
-              ),
+                            ),
+                            onTap: () => setState(() => _selectedIndex = index),
+                          );
+                        }),
+                  ),
+                ),
+                Expanded(child: SizedBox()),
+                TabBar(
+                  controller: _tabController,
+                  indicatorWeight: 3.0,
+                  indicatorColor: Colors.blue,
+                  labelColor: Colors.blue,
+                  labelStyle: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  unselectedLabelStyle: TextStyle(fontSize: 18.0),
+                  unselectedLabelColor:
+                      Theme.of(context).accentColor.withOpacity(0.7),
+                  tabs: <Widget>[
+                    Tab(text: 'Filters'),
+                  ],
+                ),
+              ],
             ),
           )
         ],

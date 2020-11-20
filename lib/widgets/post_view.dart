@@ -10,11 +10,11 @@ import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/utilities/zoomOverlay.dart';
 import 'package:instagram/widgets/heart_anime.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:photo_view/photo_view.dart';
 
 import 'package:http/http.dart';
 import 'package:share/share.dart';
@@ -38,26 +38,13 @@ class _PostViewState extends State<PostView> {
   bool _isLiked = false;
   bool _heartAnim = false;
   Post _post;
-  // PhotoViewScaleStateController scaleStateController;
 
   @override
   void initState() {
     super.initState();
     _likeCount = widget.post.likeCount;
     _post = widget.post;
-    // scaleStateController = PhotoViewScaleStateController();
-
     _initPostLiked();
-  }
-
-  @override
-  void dispose() {
-    // scaleStateController.dispose();
-    super.dispose();
-  }
-
-  void resetImageSize() {
-    // scaleStateController.scaleState = PhotoViewScaleState.covering;
   }
 
   @override
@@ -304,24 +291,10 @@ class _PostViewState extends State<PostView> {
             alignment: Alignment.center,
             children: <Widget>[
               Container(
-                height: MediaQuery.of(context).size.width,
-                // child: ClipRect(
-                //   child: PhotoView(
-                //     scaleStateController: scaleStateController,
-                //     minScale: PhotoViewComputedScale.contained * 0.8,
-                //     maxScale: PhotoViewComputedScale.covered * 1.6,
-                //     backgroundDecoration: BoxDecoration(
-                //       color: Theme.of(context).backgroundColor,
-                //     ),
-                //     imageProvider: CachedNetworkImageProvider(_post.imageUrl),
-                //   ),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: CachedNetworkImageProvider(_post.imageUrl),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+                  height: MediaQuery.of(context).size.width,
+                  child: ZoomOverlay(
+                      twoTouchOnly: true,
+                      child: CachedNetworkImage(imageUrl: _post.imageUrl))),
               _heartAnim ? HeartAnime(100.0) : SizedBox.shrink(),
             ],
           ),
