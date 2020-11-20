@@ -347,6 +347,13 @@ class _CameraScreenState extends State<CameraScreen> {
 
   _cropImage(File imageFile) async {
     File croppedImage = await ImageCropper.cropImage(
+      androidUiSettings: AndroidUiSettings(
+        backgroundColor: Theme.of(context).backgroundColor,
+        toolbarColor: Theme.of(context).primaryColor,
+        toolbarWidgetColor: Theme.of(context).accentColor,
+        toolbarTitle: 'Crop Photo',
+        activeControlsWidgetColor: Colors.white,
+      ),
       sourcePath: imageFile.path,
       aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
     );
