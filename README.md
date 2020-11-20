@@ -86,6 +86,7 @@ Latest Update : 20/11/20
 
 * Push notifications - For Comments on posts, Likes on post, Direct messages, New followers and more..
 
+* Add Filters to Posts + Stories
   
 
 ## Screenshots
@@ -160,11 +161,11 @@ Latest Update : 20/11/20
 - [X] Upgrade PageView + NavigationBar on HomeScreen
 - [ ] Error handling
 - [X] Custom Camera Screen
-- [X] Add filters to your images
+- [X] Add filters to Post + Stories
 - [ ] Improve Caching of Profiles, Images, Etc.
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio
-- [ ] Stories
+- [-] Stories - on Progress...
 - [ ] Clean up code
 - [ ] Save Favorite Posts
 - [X] Better Navigation Transitions
