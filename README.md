@@ -17,7 +17,7 @@ width="250">
 </a>
 </p>
  <p align="center">
-Latest Update : 19/11/20
+Latest Update : 20/11/20
 </p>
 
 
@@ -160,7 +160,7 @@ Latest Update : 19/11/20
 - [X] Upgrade PageView + NavigationBar on HomeScreen
 - [ ] Error handling
 - [X] Custom Camera Screen
-- [ ] Add filters to your image
+- [X] Add filters to your images
 - [ ] Improve Caching of Profiles, Images, Etc.
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio

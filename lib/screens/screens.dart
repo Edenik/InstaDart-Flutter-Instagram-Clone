@@ -14,3 +14,4 @@ export 'splash_screen.dart';
 export 'chat_screen.dart';
 export 'create_story_screen.dart';
 export 'camera_screen.dart';
+export 'edit_photo_screen.dart';

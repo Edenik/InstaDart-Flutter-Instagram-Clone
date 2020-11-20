@@ -304,10 +304,13 @@ class _CameraScreenState extends State<CameraScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => CreatePostScreen(
-            imageFile: croppedImage,
-          ),
-        ),
+            builder: (_) => EditPhotoScreen(
+                  imageFile: croppedImage,
+                )
+            //  CreatePostScreen(
+            //   imageFile: croppedImage,
+            // ),
+            ),
       );
     } else {
       Navigator.push(
