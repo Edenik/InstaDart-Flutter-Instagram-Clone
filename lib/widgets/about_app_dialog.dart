@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
+import 'package:instagram/widgets/instaDart_richText.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:instagram/services/services.dart';
@@ -58,8 +59,7 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
       title: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('InstaDart',
-              style: kBillabongFamilyTextStyle.copyWith(fontSize: 45.0)),
+          InstaDartRichText(kBillabongFamilyTextStyle.copyWith(fontSize: 45)),
           Text(
             'Developed With ♥ By:',
             style: kFontSize18FontWeight600TextStyle.copyWith(

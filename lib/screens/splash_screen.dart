@@ -1,6 +1,7 @@
 // import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/instaDart_richText.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -44,18 +45,8 @@ class SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              RichText(
-                text: TextSpan(
-                    text: 'Insta',
-                    style: kBillabongFamilyTextStyle.copyWith(
-                        fontSize: 70, color: Theme.of(context).accentColor),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Dart',
-                          style: kBillabongFamilyTextStyle.copyWith(
-                              fontSize: 70, color: Colors.blue))
-                    ]),
-              ),
+              InstaDartRichText(
+                  kBillabongFamilyTextStyle.copyWith(fontSize: 70)),
               SizedBox(
                 height: 50,
               ),

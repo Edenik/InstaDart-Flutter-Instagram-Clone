@@ -5,6 +5,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/instaDart_richText.dart';
 import 'package:instagram/widgets/post_view.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -45,18 +46,8 @@ class _FeedScreenState extends State<FeedScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.color,
         centerTitle: true,
-        title: RichText(
-          text: TextSpan(
-              text: 'Insta',
-              style: kBillabongFamilyTextStyle.copyWith(
-                  color: Theme.of(context).accentColor),
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Dart',
-                    style:
-                        kBillabongFamilyTextStyle.copyWith(color: Colors.blue))
-              ]),
-        ),
+        title:
+            InstaDartRichText(kBillabongFamilyTextStyle.copyWith(fontSize: 40)),
         actions: [
           IconButton(
               icon: FaIcon(FontAwesomeIcons.paperPlane),
