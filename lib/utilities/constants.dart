@@ -31,6 +31,7 @@ enum PostStatus {
 enum SearchFrom {
   messagesScreen,
   homeScreen,
+  createStoryScreen,
 }
 
 enum CameraConsumer {

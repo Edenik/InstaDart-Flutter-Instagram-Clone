@@ -165,7 +165,8 @@ Latest Update : 20/11/20
 - [ ] Improve Caching of Profiles, Images, Etc.
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio
-- [-] Stories - on Progress...
+- [ ] Stories - on Progress...
+- [X] Stories Screen - Share Image to Direct Messaging
 - [ ] Clean up code
 - [ ] Save Favorite Posts
 - [X] Better Navigation Transitions

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,7 @@ class _EditPhotoScreenState extends State<EditPhotoScreen> {
     ByteData byteData =
         await boxImage.toByteData(format: ui.ImageByteFormat.png);
     String tempPath = (await getTemporaryDirectory()).path;
-    File file = File('$tempPath/filteredImage.png');
+    File file = File('$tempPath/${Timestamp.now().toString()}.png');
     await file.writeAsBytes(byteData.buffer
         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 

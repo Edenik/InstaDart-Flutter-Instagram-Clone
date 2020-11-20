@@ -34,7 +34,9 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ChatScreen(user),
+        builder: (_) => ChatScreen(
+          receiverUser: user,
+        ),
       ),
     );
   }

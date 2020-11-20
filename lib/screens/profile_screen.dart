@@ -173,7 +173,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => ChatScreen(_profileUser))),
+                          builder: (_) => ChatScreen(
+                                receiverUser: _profileUser,
+                              ))),
                   color: Colors.blue,
                   textColor: Colors.white,
                   child: Text(

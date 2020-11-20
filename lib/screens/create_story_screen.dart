@@ -1,12 +1,19 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'dart:ui' as ui;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/filters.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class CreateStoryScreen extends StatefulWidget {
@@ -22,6 +29,12 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
   bool _newTitle = false;
   PageController _pageController = PageController();
   int _selectedIndex = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController?.dispose();
+  }
 
   void setTitle(title) {
     setState(() {
@@ -57,6 +70,32 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
         ));
   }
 
+  void _openModlaBottomSheet() async {
+    File imageFile = await convertFilteredImageToImageFile();
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return DirectMessagesWidget(
+            searchFrom: SearchFrom.createStoryScreen,
+            imageFile: imageFile,
+          );
+        });
+  }
+
+  Future<File> convertFilteredImageToImageFile() async {
+    RenderRepaintBoundary repaintBoundary =
+        _globalKey.currentContext.findRenderObject();
+    ui.Image boxImage = await repaintBoundary.toImage(pixelRatio: 1);
+    ByteData byteData =
+        await boxImage.toByteData(format: ui.ImageByteFormat.png);
+    String tempPath = (await getTemporaryDirectory()).path;
+    File file = File('$tempPath/${Timestamp.now().toString()}.png');
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    return file;
+  }
+
   @override
   Widget build(BuildContext context) {
     final User _currentUser = Provider.of<UserData>(context).currentUser;
@@ -76,6 +115,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                 child: PageView.builder(
                     controller: _pageController,
                     onPageChanged: (value) {
+                      print(value);
                       setState(() => _selectedIndex = value);
                       setTitle(value);
                     },
@@ -152,33 +192,50 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              onPressed: () => postStory(context),
-              color: Theme.of(context).primaryColor.withOpacity(0.8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 15.0,
-                    backgroundImage: _currentUser.profileImageUrl.isEmpty
-                        ? AssetImage(placeHolderImageRef)
-                        : CachedNetworkImageProvider(
-                            _currentUser.profileImageUrl),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  onPressed: () => postStory(context),
+                  color: Theme.of(context).primaryColor.withOpacity(0.8),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 15.0,
+                        backgroundImage: _currentUser.profileImageUrl.isEmpty
+                            ? AssetImage(placeHolderImageRef)
+                            : CachedNetworkImageProvider(
+                                _currentUser.profileImageUrl),
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      Text(
+                        'Post Story',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: 5.0,
-                  ),
-                  Text(
-                    'Post Story',
+                ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  onPressed: () => _openModlaBottomSheet(),
+                  color: Theme.of(context).primaryColor.withOpacity(0.8),
+                  child: Text(
+                    'Share to..',
                     style: TextStyle(
                       fontSize: 18,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           )
         ],

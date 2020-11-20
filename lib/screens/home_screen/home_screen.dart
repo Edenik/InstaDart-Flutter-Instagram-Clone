@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instagram/screens/camera_screen.dart';
-import 'package:instagram/screens/direct_messages_screen.dart';
+import 'package:instagram/screens/direct_messages/direct_messages_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';

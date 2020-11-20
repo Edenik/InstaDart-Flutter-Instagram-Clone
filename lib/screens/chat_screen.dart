@@ -18,8 +18,9 @@ import 'package:giphy_get/giphy_get.dart';
 
 class ChatScreen extends StatefulWidget {
   final User receiverUser;
+  final File imageFile;
 
-  const ChatScreen(this.receiverUser);
+  const ChatScreen({this.receiverUser, this.imageFile});
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -38,6 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+
     _setup();
   }
 
@@ -83,6 +85,69 @@ class _ChatScreenState extends State<ChatScreen> {
       _userIds = userIds;
       _isLoading = false;
     });
+
+    checkForImage();
+  }
+
+  checkForImage() {
+    if (widget.imageFile != null) {
+      showDialog(
+          context: context,
+          child: SimpleDialog(
+            backgroundColor: Theme.of(context).backgroundColor.withOpacity(0.8),
+            title: Column(
+              children: [
+                Text(
+                  'Send Image To ${widget.receiverUser.name}?',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Image.file(
+                  widget.imageFile,
+                  height: 300,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SimpleDialogOption(
+                  child: Center(
+                    child: Text('Send',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0,
+                        )),
+                  ),
+                  onPressed: () async {
+                    Navigator.pop(context);
+
+                    String imageUrl = await StroageService.uploadMessageImage(
+                        widget.imageFile);
+                    _sendMessage(
+                        text: null, imageUrl: imageUrl, giphyUrl: null);
+                  },
+                ),
+                SimpleDialogOption(
+                  child: Center(
+                    child: Text('Cancel',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0,
+                        )),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ));
+    }
   }
 
   Future<void> _createChat(userIds) async {
@@ -312,6 +377,7 @@ class _ChatScreenState extends State<ChatScreen> {
         if (_chat != null) {
           ChatService.setChatRead(context, _chat, true);
         }
+
         return Future.value(true);
       },
       child: Scaffold(
