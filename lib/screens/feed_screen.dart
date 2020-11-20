@@ -45,9 +45,17 @@ class _FeedScreenState extends State<FeedScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.color,
         centerTitle: true,
-        title: Text(
-          'InstaDart',
-          style: kBillabongFamilyTextStyle,
+        title: RichText(
+          text: TextSpan(
+              text: 'Insta',
+              style: kBillabongFamilyTextStyle.copyWith(
+                  color: Theme.of(context).accentColor),
+              children: <TextSpan>[
+                TextSpan(
+                    text: 'Dart',
+                    style:
+                        kBillabongFamilyTextStyle.copyWith(color: Colors.blue))
+              ]),
         ),
         actions: [
           IconButton(

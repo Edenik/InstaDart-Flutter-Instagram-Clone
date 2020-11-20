@@ -44,9 +44,17 @@ class SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
-                'InstaDart',
-                style: kBillabongFamilyTextStyle.copyWith(fontSize: 70),
+              RichText(
+                text: TextSpan(
+                    text: 'Insta',
+                    style: kBillabongFamilyTextStyle.copyWith(
+                        fontSize: 70, color: Theme.of(context).accentColor),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: 'Dart',
+                          style: kBillabongFamilyTextStyle.copyWith(
+                              fontSize: 70, color: Colors.blue))
+                    ]),
               ),
               SizedBox(
                 height: 50,
