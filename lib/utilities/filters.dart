@@ -147,8 +147,6 @@ final Filter indigoFilter = Filter('Indigo',
 final Filter purpleFilter = Filter('Purple',
     [1, -0.2, 0, 0, 0, 0, 1, 0, -0.1, 0, 0, 1.2, 1, 0.1, 0, 0, 0, 1.7, 1, 0]);
 
-final Filter cyanFilter = Filter('Cyan',
-    [1, 0, 0, 1.9, -2.2, 0, 1, 0, 0.0, 0.3, 0, 0, 1, 0, 0.5, 0, 0, 0, 1, 0.2]);
 final Filter blueFilter = Filter(
     'Blue', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]);
 final Filter greenFilter = Filter(
@@ -186,7 +184,6 @@ final List<Filter> filters = [
   darkenFilter,
   indigoFilter,
   purpleFilter,
-  cyanFilter,
   blueFilter,
   greenFilter,
   lightYellowFilter,

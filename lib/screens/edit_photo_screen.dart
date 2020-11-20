@@ -101,7 +101,6 @@ class _EditPhotoScreenState extends State<EditPhotoScreen>
               onPressed: convertFilteredImageToImageFile)
         ],
       ),
-      backgroundColor: Colors.black,
       body: Column(
         children: [
           RepaintBoundary(
