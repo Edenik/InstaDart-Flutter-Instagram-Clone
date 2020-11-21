@@ -105,7 +105,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   children: [
                     _isLoadingStories
                         ? Container(
-                            height: 135,
+                            height: 155,
                             child: Center(
                               child: CircularProgressIndicator(),
                             ),

@@ -41,8 +41,9 @@ class _StoryScreenState extends State<StoryScreen>
             _currentIndex++;
             _loadStory(story: widget.stories[_currentIndex]);
           } else {
-            _currentIndex = 0;
-            _loadStory(story: widget.stories[_currentIndex]);
+            Navigator.pop(context);
+            // _currentIndex = 0;
+            // _loadStory(story: widget.stories[_currentIndex]);
           }
         });
       }
@@ -85,6 +86,7 @@ class _StoryScreenState extends State<StoryScreen>
             // widget.onSwipeUp();
             //swipe Up
           } else {
+            //swipe down
             Navigator.of(context).pop();
           }
         },

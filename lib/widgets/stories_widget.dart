@@ -103,7 +103,14 @@ class _StoriesWidgetState extends State<StoriesWidget> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   width: 3.0,
-                                  color: Colors.blue,
+                                  color: widget.currentUserId ==
+                                              userStories[0].authorId &&
+                                          _isCurrentUserHasStories
+                                      ? Colors.blue
+                                      : widget.currentUserId !=
+                                              userStories[0].authorId
+                                          ? Colors.blue
+                                          : Colors.grey,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
@@ -150,8 +157,11 @@ class _StoriesWidgetState extends State<StoriesWidget> {
                       },
                     )),
               )
-            : Center(
-                child: CircularProgressIndicator(),
+            : Container(
+                height: 115,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
       ],
     );
