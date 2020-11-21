@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/stories_screen/stories_screen.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import '../models/user_model.dart';
@@ -87,6 +88,10 @@ class _StoriesWidgetState extends State<StoriesWidget> {
                       itemCount: _followingUsers.length,
                       itemBuilder: (BuildContext context, int index) {
                         User user = _followingUsers[index];
+                        List<Story> userStories = _stories
+                            .where((Story story) => story.authorId == user.id)
+                            .toList();
+
                         return Column(
                           children: [
                             Container(
@@ -108,15 +113,24 @@ class _StoriesWidgetState extends State<StoriesWidget> {
                                   )
                                 ],
                               ),
-                              child: ClipOval(
-                                child: Image(
-                                  image: user.profileImageUrl.isEmpty
-                                      ? AssetImage(placeHolderImageRef)
-                                      : CachedNetworkImageProvider(
-                                          user.profileImageUrl),
-                                  height: 60.0,
-                                  width: 60.0,
-                                  fit: BoxFit.cover,
+                              child: GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => StoryScreen(
+                                              stories: userStories,
+                                              user: user,
+                                            ))),
+                                child: ClipOval(
+                                  child: Image(
+                                    image: user.profileImageUrl.isEmpty
+                                        ? AssetImage(placeHolderImageRef)
+                                        : CachedNetworkImageProvider(
+                                            user.profileImageUrl),
+                                    height: 60.0,
+                                    width: 60.0,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),

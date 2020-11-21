@@ -63,15 +63,25 @@ class StoriesService {
     return null;
   }
 
-  static void setNewStoryView(String currentUserId, Story story) {
+  static void setNewStoryView(String currentUserId, Story story) async {
     final Timestamp timestamp = Timestamp.now();
-    Map<String, Timestamp> storyViews = story.views;
+    Map<dynamic, dynamic> storyViews = story.views;
     storyViews[currentUserId] = timestamp;
 
-    storiesRef
+    DocumentSnapshot storySnapshot = await storiesRef
         .document(story.authorId)
         .collection('stories')
         .document(story.id)
-        .updateData({'views': storyViews});
+        .get();
+
+    Story storyFromDoc = Story.fromDoc(storySnapshot);
+
+    if (!storyFromDoc.views.containsKey(currentUserId)) {
+      await storiesRef
+          .document(story.authorId)
+          .collection('stories')
+          .document(story.id)
+          .updateData({'views': storyViews});
+    }
   }
 }

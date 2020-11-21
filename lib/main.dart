@@ -69,6 +69,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     return MaterialApp(
       title: 'InstaDart',
