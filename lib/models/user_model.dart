@@ -7,6 +7,11 @@ class User {
   final String email;
   final String bio;
   final String token;
+  // final List<String> favoritePosts;
+  // final List<String> blockedUsers;
+  // final List<String> hideStoryFromUsers;
+  // final List<String> closeFriends;
+  // final bool allowStoryMessageReplies;
 
   User({
     this.id,

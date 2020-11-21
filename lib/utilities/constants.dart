@@ -15,6 +15,7 @@ final activitiesRef = _firestore.collection('activities');
 final archivedPostsRef = _firestore.collection('archivedPosts');
 final deletedPostsRef = _firestore.collection('deletedPosts');
 final chatsRef = _firestore.collection('chats');
+final storiesRef = _firestore.collection('stories');
 final String user = 'userFeed';
 final String usersFollowers = 'userFollowers';
 final String userFollowing = 'userFollowing';

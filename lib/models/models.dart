@@ -6,3 +6,4 @@ export 'user_model.dart';
 export 'theme_notifier.dart';
 export 'chat_model.dart';
 export 'message_model.dart';
+export 'story_model.dart';

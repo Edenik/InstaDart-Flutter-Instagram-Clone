@@ -67,4 +67,16 @@ class StroageService {
     );
     return downloadUrl;
   }
+
+  static Future<String> uploadStoryImage(File imageFile) async {
+    String imageId = Uuid().v4();
+    File image = await compressImage(imageId, imageFile);
+
+    String downloadUrl = await _uploadImage(
+      'images/stories/story_$imageId.jpg',
+      imageId,
+      image,
+    );
+    return downloadUrl;
+  }
 }
