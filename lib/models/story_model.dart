@@ -7,7 +7,7 @@ class Story {
   final String authorId;
   final String imageUrl;
   final String caption;
-  final Map<String, Timestamp> views;
+  final Map<dynamic, dynamic> views;
   final String location;
   final String filter;
 

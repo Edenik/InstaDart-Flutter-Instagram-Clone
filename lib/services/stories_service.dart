@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:instagram/models/models.dart';
-import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:provider/provider.dart';
 
 class StoriesService {
   static Future<void> createStory(Story story) async {
@@ -30,20 +27,30 @@ class StoriesService {
 
   static Future<List<Story>> getStoriesByUserId(
       String userId, bool checkDate) async {
-    final Timestamp timestamp = Timestamp.now();
+    final DateTime dateNow = DateTime.now();
+    final Timestamp timeEnd = Timestamp.fromDate(DateTime(
+      dateNow.year,
+      dateNow.month,
+      dateNow.day - 1,
+      dateNow.hour,
+      dateNow.minute,
+      dateNow.second,
+      dateNow.microsecond,
+    ));
     QuerySnapshot snapshot;
     List<Story> userStories = [];
 
     if (checkDate) {
-      snapshot = await chatsRef
+      snapshot = await storiesRef
           .document(userId)
           .collection('stories')
-          .where('timeStart', isLessThanOrEqualTo: timestamp)
-          .where('timeEnd', isGreaterThanOrEqualTo: timestamp)
+          .where('timeEnd', isGreaterThanOrEqualTo: timeEnd)
           .getDocuments();
     } else {
-      snapshot =
-          await chatsRef.document(userId).collection('stories').getDocuments();
+      snapshot = await storiesRef
+          .document(userId)
+          .collection('stories')
+          .getDocuments();
     }
 
     if (snapshot.documents.isNotEmpty) {
