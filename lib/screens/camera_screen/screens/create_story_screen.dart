@@ -206,8 +206,6 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
   }
 
   void postStory(BuildContext context) {
-    print(_locationController.text);
-    print(_captionController.text);
     showDialog(
         context: context,
         child: SimpleDialog(
@@ -314,7 +312,6 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                 child: PageView.builder(
                     controller: _pageController,
                     onPageChanged: (value) {
-                      print(value);
                       setState(() => _selectedIndex = value);
                       setTitle(value);
                     },

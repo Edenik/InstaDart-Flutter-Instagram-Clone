@@ -27,7 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _lastTab = 0;
   PageController _pageController;
   User _currentUser;
-  List<CameraDescription> cameras;
+  List<CameraDescription> _cameras;
+  CameraConsumer _cameraConsumer = CameraConsumer.post;
 
   @override
   void initState() {
@@ -46,10 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<Null> getCameras() async {
-    print('getcameras');
     try {
-      cameras = await availableCameras();
-      print(cameras.length);
+      _cameras = await availableCameras();
     } on CameraException catch (e) {
       //logError(e.code, e.description);
     }
@@ -83,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _selectTab(int index) {
     if (index == 2) {
-      // createPostScreen
+      // go to CameraScreen
       _pageController.animateToPage(0,
           duration: Duration(milliseconds: 200), curve: Curves.easeIn);
       _selectPage(2);
@@ -96,8 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _selectPage(int index) {
     if (index == 1 && _currentTab == 2) {
-      // Come back from createpostscreen to feed screen
+      // Come back from CameraScreen to FeedScreen
       _selectTab(_lastTab);
+      if (_cameraConsumer != CameraConsumer.post) {
+        setState(() => _cameraConsumer = CameraConsumer.post);
+      }
     }
 
     setState(() {
@@ -117,7 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
         duration: Duration(milliseconds: 200), curve: Curves.easeIn);
   }
 
-  void _backToHomeScreenFromCreatePost() {
+  void _goToCameraScreen() {
+    setState(() => _cameraConsumer = CameraConsumer.story);
+    _selectPage(0);
+    _pageController.animateToPage(0,
+        duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+  }
+
+  void _backToHomeScreenFromCameraScreen() {
     _selectPage(1);
     _pageController.animateToPage(1,
         duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -137,13 +146,13 @@ class _HomeScreenState extends State<HomeScreen> {
     List<Widget> _pages = [
       FeedScreen(
         currentUserId: widget.currentUserId,
-        goToDirectMessages: () => _goToDirect(),
+        goToDirectMessages: _goToDirect,
+        goToCameraScreen: _goToCameraScreen,
       ),
       SearchScreen(
         searchFrom: SearchFrom.homeScreen,
       ),
       SizedBox.shrink(),
-      // CreatePostScreen(),
       ActivityScreen(
         currentUser: _currentUser,
       ),
@@ -159,10 +168,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: _pageController,
         children: <Widget>[
-          // CreatePostScreen(
-          //   backToHomeScreen: _backToHomeScreenFromCreatePost,
-          // ),
-          CameraScreen(cameras, _backToHomeScreenFromCreatePost),
+          CameraScreen(
+              _cameras, _backToHomeScreenFromCameraScreen, _cameraConsumer),
           _pages[_currentTab],
           DirectMessagesScreen(_backToHomeScreenFromDirect)
         ],

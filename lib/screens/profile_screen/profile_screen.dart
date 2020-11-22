@@ -51,6 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       currentUserId: widget.currentUserId,
       userId: widget.userId,
     );
+    if (!mounted) return;
     setState(() {
       _isFollowing = isFollowingUser;
     });
@@ -58,6 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _setupFollowers() async {
     int userFollowersCount = await DatabaseService.numFollowers(widget.userId);
+    if (!mounted) return;
     setState(() {
       _followersCount = userFollowersCount;
     });
@@ -65,6 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _setupFollowing() async {
     int userFollowingCount = await DatabaseService.numFollowing(widget.userId);
+    if (!mounted) return;
     setState(() {
       _followingCount = userFollowingCount;
     });
@@ -72,6 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _setupPosts() async {
     List<Post> posts = await DatabaseService.getUserPosts(widget.userId);
+    if (!mounted) return;
     setState(() {
       _posts = posts;
     });
@@ -79,6 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _setupProfileUser() async {
     User profileUser = await DatabaseService.getUserWithId(widget.userId);
+    if (!mounted) return;
     setState(() => _profileUser = profileUser);
     if (profileUser.id ==
         Provider.of<UserData>(context, listen: false).currentUserId) {
@@ -110,6 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       userId: widget.userId,
       receiverToken: _profileUser.token,
     );
+    if (!mounted) return;
     setState(() {
       _isFollowing = true;
       _followersCount++;
@@ -449,13 +455,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               )
             : SizedBox.shrink(),
-
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.exit_to_app),
-        //     onPressed: AuthService.logout,
-        //   )
-        // ],
       ),
       endDrawer: _profileUser != null && widget.userId == widget.currentUserId
           ? ProfileScreenDrawer(

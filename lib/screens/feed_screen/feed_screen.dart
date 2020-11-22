@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/repo_const.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/screens/feed_screen/widgets/stories_widget.dart';
 import 'package:instagram/widgets/instaDart_richText.dart';
@@ -14,8 +15,10 @@ class FeedScreen extends StatefulWidget {
   static final String id = 'feed_screen';
   final String currentUserId;
   final Function goToDirectMessages;
+  final Function goToCameraScreen;
 
-  FeedScreen({this.currentUserId, this.goToDirectMessages});
+  FeedScreen(
+      {this.currentUserId, this.goToDirectMessages, this.goToCameraScreen});
   @override
   _FeedScreenState createState() => _FeedScreenState();
 }
@@ -24,7 +27,6 @@ class _FeedScreenState extends State<FeedScreen> {
   List<Post> _posts = [];
   bool _isLoadingFeed = false;
   bool _isLoadingStories = false;
-  List<List<Story>> _stories = [];
   List<User> _followingUsersWithStories = [];
 
   @override
@@ -49,36 +51,50 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   void _setupStories() async {
-    setState(() {
-      _isLoadingStories = true;
-    });
+    setState(() => _isLoadingStories = true);
+
+    // Get currentUser followingUsers
     List<User> followingUsers =
         await DatabaseService.getUserFollowingUsers(widget.currentUserId);
+
     if (!mounted) return;
     User currentUser =
         Provider.of<UserData>(context, listen: false).currentUser;
+
+    /* A method to add Admin stories to each user */
+    if (currentUser.id != kAdminUId) {
+      bool isFollowingAdmin = false;
+
+      for (User user in followingUsers) {
+        if (user.id == kAdminUId) {
+          isFollowingAdmin = true;
+        }
+      }
+      // if current user doesn't follow admin
+      if (!isFollowingAdmin) {
+        // get admin stories
+        List<Story> adminStories =
+            await StoriesService.getStoriesByUserId(kAdminUId, true);
+        if (!mounted) return;
+        // if there is admin stories
+        if (adminStories != null && adminStories.isNotEmpty) {
+          // get admin user
+          User adminUser = await DatabaseService.getUserWithId(kAdminUId);
+          if (!mounted) return;
+          // add admin to story circle list
+          followingUsers.insert(0, adminUser);
+        }
+      }
+    }
+    /* End of method to add Admin stories to each user */
+
+    // Add current user to the first story circle
     followingUsers.insert(0, currentUser);
-    List<List<Story>> stories = [];
 
-    // if (followingUsers.isNotEmpty) {
-    //   for (User user in followingUsers) {
-    //     print(user.name);
-    //     List<Story> userStories =
-    //         await StoriesService.getStoriesByUserId(user.id, true);
-
-    //     if (userStories.isNotEmpty) {
-    //       stories.add(userStories);
-    //     } else {
-    //       followingUsers
-    //           .removeWhere((User followingUser) => followingUser.id == user.id);
-    //     }
-    //   }
-    // }
     if (mounted) {
       setState(() {
         _isLoadingStories = false;
         _followingUsersWithStories = followingUsers;
-        _stories = stories;
       });
     }
   }
@@ -114,8 +130,9 @@ class _FeedScreenState extends State<FeedScreen> {
                               child: CircularProgressIndicator(),
                             ),
                           )
-                        : StoriesWidget(
-                            _followingUsersWithStories, widget.currentUserId),
+                        : StoriesWidget(_followingUsersWithStories,
+                            widget.currentUserId, widget.goToCameraScreen),
+                    SizedBox(height: 5),
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,

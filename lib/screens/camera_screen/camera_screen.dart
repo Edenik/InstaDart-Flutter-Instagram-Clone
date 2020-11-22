@@ -11,8 +11,9 @@ import 'dart:io';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
+  final CameraConsumer cameraConsumer;
   final Function backToHomeScreen;
-  CameraScreen(this.cameras, this.backToHomeScreen);
+  CameraScreen(this.cameras, this.backToHomeScreen, this.cameraConsumer);
 
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -31,6 +32,9 @@ class _CameraScreenState extends State<CameraScreen> {
       onCameraSelected(widget.cameras[0]);
     } catch (e) {
       print(e.toString());
+    }
+    if (widget.cameraConsumer != CameraConsumer.post) {
+      changeConsumer(widget.cameraConsumer);
     }
     super.initState();
   }
@@ -114,15 +118,15 @@ class _CameraScreenState extends State<CameraScreen> {
                               topLeft: Radius.circular(15))),
                       onPressed: () => changeConsumer(CameraConsumer.post),
                       color: _cameraConsumer == CameraConsumer.post
-                          ? Colors.black54
-                          : Colors.grey.withOpacity(0.7),
+                          ? Colors.white.withOpacity(0.85)
+                          : Colors.black38,
                       child: Text(
                         'Post',
                         style: TextStyle(
                           fontSize: 18,
                           color: _cameraConsumer == CameraConsumer.post
-                              ? Colors.white
-                              : Colors.black,
+                              ? Colors.black
+                              : Colors.white,
                           fontWeight: _cameraConsumer == CameraConsumer.post
                               ? FontWeight.bold
                               : FontWeight.normal,
@@ -136,15 +140,15 @@ class _CameraScreenState extends State<CameraScreen> {
                               topRight: Radius.circular(15))),
                       onPressed: () => changeConsumer(CameraConsumer.story),
                       color: _cameraConsumer == CameraConsumer.story
-                          ? Colors.black54
-                          : Colors.grey.withOpacity(0.7),
+                          ? Colors.white.withOpacity(0.85)
+                          : Colors.black38,
                       child: Text(
                         'Story',
                         style: TextStyle(
                           fontSize: 18,
                           color: _cameraConsumer == CameraConsumer.story
-                              ? Colors.white
-                              : Colors.black,
+                              ? Colors.black
+                              : Colors.white,
                           fontWeight: _cameraConsumer == CameraConsumer.story
                               ? FontWeight.bold
                               : FontWeight.normal,

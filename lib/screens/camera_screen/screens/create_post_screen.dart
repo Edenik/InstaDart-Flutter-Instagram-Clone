@@ -90,7 +90,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         });
       }
 
-      print(_post != null);
       if (_post != null) {
         // Edit existing Post
         Post post = Post(

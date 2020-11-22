@@ -84,7 +84,6 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     String _currentUserId = Provider.of<UserData>(context).currentUserId;
-    print(widget.searchFrom);
     void _clearSearch() {
       WidgetsBinding.instance
           .addPostFrameCallback((_) => _searchController.clear());

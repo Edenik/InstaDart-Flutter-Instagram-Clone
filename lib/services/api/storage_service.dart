@@ -16,7 +16,6 @@ class StroageService {
       //Updating user profile image
       RegExp exp = RegExp(r'userProfile_(.*).jpg');
       photoId = exp.firstMatch(url)[1];
-      print(photoId);
     }
     File image = await compressImage(photoId, imageFile);
     StorageUploadTask uploadTask = storageRef
