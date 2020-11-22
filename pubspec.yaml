@@ -48,11 +48,13 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/user_placeholder.jpg
-    - assets/images/instagram_logo.png
-    - assets/images/shutter.png
-    - assets/images/switch_camera.png
-    - assets/images/gallery_button.png
+    - assets/images/
+    # - assets/images/user_placeholder.jpg
+    # - assets/images/instagram_logo.png
+    # - assets/images/shutter.png
+    # - assets/images/switch_camera.png
+    # - assets/images/gallery_button.png
+    # - assets/images/verfiriedUserBadge.png
   fonts:
     - family: Billabong
       fonts:

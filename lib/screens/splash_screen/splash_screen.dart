@@ -28,7 +28,12 @@ class SplashScreenState extends State<SplashScreen> {
                   onTap: () async {
                     const url = 'https://Edenik.com';
                     if (await canLaunch(url)) {
-                      await launch(url);
+                      await launch(
+                        url,
+                        forceSafariVC: true,
+                        forceWebView: true,
+                        enableJavaScript: true,
+                      );
                     } else {
                       throw 'Could not launch $url';
                     }

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
-import 'package:instagram/services/database_service.dart';
+import 'package:instagram/services/api/database_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';

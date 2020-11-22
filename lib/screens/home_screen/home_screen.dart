@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:instagram/screens/camera_screen.dart';
+import 'package:instagram/screens/camera_screen/camera_screen.dart';
 import 'package:instagram/screens/direct_messages/direct_messages_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _listenToNotifications();
     getCameras();
     AuthService.updateToken();
+  }
+
+  @override
+  void dispose() {
+    _pageController?.dispose();
+    super.dispose();
   }
 
   Future<Null> getCameras() async {

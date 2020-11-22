@@ -4,7 +4,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/stories_screen/stories_screen.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
-import '../models/user_model.dart';
+import '../../../models/user_model.dart';
 
 class StoriesWidget extends StatefulWidget {
   final List<User> users;
@@ -26,6 +26,12 @@ class _StoriesWidgetState extends State<StoriesWidget> {
     // TODO: implement initState
     super.initState();
     _getStories();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement initState
+    super.dispose();
   }
 
   Future<void> _getStories() async {

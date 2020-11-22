@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/models/user_data.dart';
-import 'package:instagram/screens/deleted_posts_screen.dart';
+import 'package:instagram/screens/profile_screen/screens/deleted_posts_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:provider/provider.dart';
 
-class CustomDrawer extends StatelessWidget {
+class ProfileScreenDrawer extends StatelessWidget {
   final String name;
-  CustomDrawer({@required this.name});
+  ProfileScreenDrawer({@required this.name});
 
   _buildDrawerOption(Icon icon, String title, Function onTap) {
     return ListTile(

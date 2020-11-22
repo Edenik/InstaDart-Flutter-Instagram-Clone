@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:instagram/widgets/custom_drawer.dart';
+import 'package:instagram/screens/profile_screen/widgets/profile_screen_drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -429,8 +429,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
         automaticallyImplyLeading:
             widget.isCameFromBottomNavigation ? false : true,
 
-        title:
-            _profileUser != null ? Text(_profileUser.name) : SizedBox.shrink(),
+        title: _profileUser != null
+            ? Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _profileUser.name,
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: 5,
+                  // ),
+                  // Image.asset(
+                  //   'assets/images/verifiedUserBadge.png',
+                  //   height: 20,
+                  //   width: 20,
+                  // )
+                ],
+              )
+            : SizedBox.shrink(),
 
         // actions: <Widget>[
         //   IconButton(
@@ -440,7 +458,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         // ],
       ),
       endDrawer: _profileUser != null && widget.userId == widget.currentUserId
-          ? CustomDrawer(
+          ? ProfileScreenDrawer(
               name: _profileUser.name,
             )
           : null,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class StoryUserInfo extends StatelessWidget {
   final User user;
@@ -47,8 +48,16 @@ class StoryUserInfo extends StatelessWidget {
                             style: kFontSize18FontWeight600TextStyle.copyWith(
                                 color: Colors.white),
                           ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            timeago.format(story.timeStart.toDate()),
+                            style: TextStyle(color: Colors.white),
+                          ),
                           story.filter != ''
-                              ? Text('Filter: ${story.filter}')
+                              ? Text('Filter: ${story.filter}',
+                                  style: TextStyle(color: Colors.white))
                               : SizedBox.shrink()
                         ],
                       ),
@@ -57,8 +66,14 @@ class StoryUserInfo extends StatelessWidget {
                   story.location != ''
                       ? Row(
                           children: [
-                            Icon(Icons.location_pin),
-                            Text(story.location)
+                            Icon(
+                              Icons.location_pin,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              story.location,
+                              style: TextStyle(color: Colors.white),
+                            )
                           ],
                         )
                       : SizedBox.shrink(),
@@ -75,7 +90,7 @@ class StoryUserInfo extends StatelessWidget {
               ? Text(
                   story.caption,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 30),
+                  style: TextStyle(fontSize: 30, color: Colors.white),
                 )
               : const SizedBox.shrink(),
           const SizedBox.shrink()

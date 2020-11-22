@@ -121,7 +121,12 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
           onPressed: () async {
             const url = 'https://Edenik.com';
             if (await canLaunch(url)) {
-              await launch(url);
+              await launch(
+                url,
+                forceSafariVC: true,
+                forceWebView: true,
+                enableJavaScript: true,
+              );
             } else {
               throw 'Could not launch $url';
             }
@@ -145,7 +150,12 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
           onPressed: () async {
             const url = 'https://github.com/Edenik/Flutter-Instagram-Clone';
             if (await canLaunch(url)) {
-              await launch(url);
+              await launch(
+                url,
+                forceSafariVC: true,
+                forceWebView: true,
+                enableJavaScript: true,
+              );
             } else {
               throw 'Could not launch $url';
             }

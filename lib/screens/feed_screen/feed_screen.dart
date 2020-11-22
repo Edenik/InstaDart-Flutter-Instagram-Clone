@@ -5,7 +5,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/stories_widget.dart';
+import 'package:instagram/screens/feed_screen/widgets/stories_widget.dart';
 import 'package:instagram/widgets/instaDart_richText.dart';
 import 'package:instagram/widgets/post_view.dart';
 import 'package:provider/provider.dart';

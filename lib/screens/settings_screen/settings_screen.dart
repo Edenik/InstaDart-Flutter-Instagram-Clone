@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
-import 'package:instagram/screens/theme_screen.dart';
+import 'package:instagram/screens/settings_screen/theme_screen.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/about_app_dialog.dart';
+import 'package:instagram/screens/settings_screen/widgets/about_app_dialog.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {

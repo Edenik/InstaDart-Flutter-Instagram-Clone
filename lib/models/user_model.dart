@@ -12,6 +12,8 @@ class User {
   // final List<String> hideStoryFromUsers;
   // final List<String> closeFriends;
   // final bool allowStoryMessageReplies;
+  // final String role;
+  // final String isVerified;
 
   User({
     this.id,

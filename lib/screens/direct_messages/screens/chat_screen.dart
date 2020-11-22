@@ -11,7 +11,7 @@ import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/repo_const.dart';
-import 'package:instagram/widgets/message_bubble.dart';
+import 'package:instagram/screens/direct_messages/widgets/message_bubble.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:giphy_get/giphy_get.dart';
