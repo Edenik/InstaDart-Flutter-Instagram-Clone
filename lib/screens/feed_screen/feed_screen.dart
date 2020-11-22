@@ -31,10 +31,11 @@ class _FeedScreenState extends State<FeedScreen> {
   void initState() {
     super.initState();
     _setupFeed();
-    _setupStories();
   }
 
   _setupFeed() async {
+    _setupStories();
+
     setState(() => _isLoadingFeed = true);
     List<Post> posts = await DatabaseService.getFeedPosts(
       widget.currentUserId,
@@ -53,6 +54,7 @@ class _FeedScreenState extends State<FeedScreen> {
     });
     List<User> followingUsers =
         await DatabaseService.getUserFollowingUsers(widget.currentUserId);
+    if (!mounted) return;
     User currentUser =
         Provider.of<UserData>(context, listen: false).currentUser;
     followingUsers.insert(0, currentUser);
@@ -72,11 +74,13 @@ class _FeedScreenState extends State<FeedScreen> {
     //     }
     //   }
     // }
-    setState(() {
-      _isLoadingStories = false;
-      _followingUsersWithStories = followingUsers;
-      _stories = stories;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoadingStories = false;
+        _followingUsersWithStories = followingUsers;
+        _stories = stories;
+      });
+    }
   }
 
   @override
@@ -105,7 +109,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   children: [
                     _isLoadingStories
                         ? Container(
-                            height: 155,
+                            height: 88,
                             child: Center(
                               child: CircularProgressIndicator(),
                             ),

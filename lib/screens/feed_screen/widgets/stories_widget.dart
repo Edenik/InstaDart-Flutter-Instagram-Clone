@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/feed_screen/widgets/story_circle.dart';
 import 'package:instagram/screens/stories_screen/stories_screen.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
@@ -23,24 +24,20 @@ class _StoriesWidgetState extends State<StoriesWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getStories();
   }
 
-  @override
-  void dispose() {
-    // TODO: implement initState
-    super.dispose();
-  }
-
   Future<void> _getStories() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
     List<User> followingUsersWithStories = [];
     List<Story> stories = [];
     for (User user in widget.users) {
       List<Story> userStories =
           await StoriesService.getStoriesByUserId(user.id, true);
+      if (!mounted) return;
+
       if (userStories != null && userStories.isNotEmpty) {
         followingUsersWithStories.add(user);
 
@@ -54,10 +51,12 @@ class _StoriesWidgetState extends State<StoriesWidget> {
       } else {
         if (widget.currentUserId != user.id) {
           print('no stories');
+        } else {
+          // followingUsersWithStories.insert(0, user);
         }
       }
     }
-
+    if (!mounted) return;
     setState(() {
       _isLoading = false;
       _followingUsers = followingUsersWithStories;
@@ -67,109 +66,35 @@ class _StoriesWidgetState extends State<StoriesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
-          child: Text(
-            'Stories',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2.0,
-            ),
-          ),
-        ),
-        !_isLoading
-            ? GestureDetector(
-                onTap: () {},
-                child: Container(
-                    height: 120.0,
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      padding: EdgeInsets.only(left: 10.0),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _followingUsers.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        User user = _followingUsers[index];
-                        List<Story> userStories = _stories
-                            .where((Story story) => story.authorId == user.id)
-                            .toList();
+    return !_isLoading
+        ? GestureDetector(
+            onTap: () {},
+            child: Container(
+                height: 88.0,
+                child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.only(left: 5.0),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _followingUsers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    User user = _followingUsers[index];
+                    List<Story> userStories = _stories
+                        .where((Story story) => story.authorId == user.id)
+                        .toList();
 
-                        return Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.all(10.0),
-                              height: 60.0,
-                              width: 60.0,
-                              padding: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 3.0,
-                                  color: widget.currentUserId ==
-                                              userStories[0].authorId &&
-                                          _isCurrentUserHasStories
-                                      ? Colors.blue
-                                      : widget.currentUserId !=
-                                              userStories[0].authorId
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    offset: Offset(0, 2),
-                                    blurRadius: 6.0,
-                                  )
-                                ],
-                              ),
-                              child: GestureDetector(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => StoryScreen(
-                                              stories: userStories,
-                                              user: user,
-                                            ))),
-                                child: ClipOval(
-                                  child: Image(
-                                    image: user.profileImageUrl.isEmpty
-                                        ? AssetImage(placeHolderImageRef)
-                                        : CachedNetworkImageProvider(
-                                            user.profileImageUrl),
-                                    height: 60.0,
-                                    width: 60.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // Container(
-                            //   width: 50,
-                            //   height: 20,
-                            //   child: Expanded(
-                            //     child: Text(
-                            //       user.name,
-                            //       textAlign: TextAlign.center,
-                            //       overflow: TextOverflow.fade,
-                            //     ),
-                            //   ),
-                            // )
-                          ],
-                        );
-                      },
-                    )),
-              )
-            : Container(
-                height: 115,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-      ],
-    );
+                    return StoryCircle(
+                      currentUserId: widget.currentUserId,
+                      user: user,
+                      userStories: userStories,
+                    );
+                  },
+                )),
+          )
+        : Container(
+            height: 88,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
   }
 }

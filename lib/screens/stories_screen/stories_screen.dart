@@ -9,7 +9,11 @@ import 'package:provider/provider.dart';
 class StoryScreen extends StatefulWidget {
   final List<Story> stories;
   final User user;
-  const StoryScreen({@required this.stories, @required this.user});
+  final int seenStories;
+  const StoryScreen(
+      {@required this.stories,
+      @required this.user,
+      @required this.seenStories});
 
   @override
   _StoryScreenState createState() => _StoryScreenState();
@@ -22,15 +26,23 @@ class _StoryScreenState extends State<StoryScreen>
   int _currentIndex = 0;
   DragStartDetails startVerticalDragDetails;
   DragUpdateDetails updateVerticalDragDetails;
+  int _seenStories;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
     _animController = AnimationController(vsync: this);
+    setState(() => _seenStories = widget.seenStories);
 
-    final Story firstStory = widget.stories.first;
-    _loadStory(story: firstStory, animateToPage: false);
+    if (_seenStories != 0 && _seenStories != widget.stories.length) {
+      _pageController = PageController(initialPage: _seenStories);
+      setState(() => _currentIndex = _seenStories);
+      _loadStory(story: widget.stories[_seenStories], animateToPage: false);
+    } else {
+      final Story firstStory = widget.stories.first;
+      _loadStory(story: firstStory, animateToPage: false);
+    }
 
     _animController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -41,7 +53,7 @@ class _StoryScreenState extends State<StoryScreen>
             _currentIndex++;
             _loadStory(story: widget.stories[_currentIndex]);
           } else {
-            Navigator.pop(context);
+            Navigator.of(context).pop(_currentIndex);
             // _currentIndex = 0;
             // _loadStory(story: widget.stories[_currentIndex]);
           }
@@ -87,7 +99,7 @@ class _StoryScreenState extends State<StoryScreen>
             //swipe Up
           } else {
             //swipe down
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(_currentIndex);
           }
         },
         onTapDown: (detailes) => _onTapDown(detailes),
@@ -99,6 +111,7 @@ class _StoryScreenState extends State<StoryScreen>
               itemCount: widget.stories.length,
               itemBuilder: (context, index) {
                 final Story story = widget.stories[index];
+
                 StoriesService.setNewStoryView(currentUserId, story);
 
                 return CachedNetworkImage(
@@ -148,7 +161,6 @@ class _StoryScreenState extends State<StoryScreen>
   void _onTapDown(TapDownDetails details) {
     final Size screenSize = MediaQuery.of(context).size;
     final double dx = details.globalPosition.dx;
-    print('jheel');
 
     if (dx < screenSize.width / 3) {
       setState(() {
@@ -163,7 +175,7 @@ class _StoryScreenState extends State<StoryScreen>
           _currentIndex++;
           _loadStory(story: widget.stories[_currentIndex]);
         } else {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(_currentIndex);
         }
       });
     } else {}

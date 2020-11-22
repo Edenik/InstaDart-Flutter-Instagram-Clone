@@ -27,16 +27,8 @@ class StoriesService {
 
   static Future<List<Story>> getStoriesByUserId(
       String userId, bool checkDate) async {
-    final DateTime dateNow = DateTime.now();
-    final Timestamp timeEnd = Timestamp.fromDate(DateTime(
-      dateNow.year,
-      dateNow.month,
-      dateNow.day - 1,
-      dateNow.hour,
-      dateNow.minute,
-      dateNow.second,
-      dateNow.microsecond,
-    ));
+    final Timestamp timeNow = Timestamp.now();
+
     QuerySnapshot snapshot;
     List<Story> userStories = [];
 
@@ -44,7 +36,7 @@ class StoriesService {
       snapshot = await storiesRef
           .document(userId)
           .collection('stories')
-          .where('timeEnd', isGreaterThanOrEqualTo: timeEnd)
+          .where('timeEnd', isGreaterThanOrEqualTo: timeNow)
           .getDocuments();
     } else {
       snapshot = await storiesRef
