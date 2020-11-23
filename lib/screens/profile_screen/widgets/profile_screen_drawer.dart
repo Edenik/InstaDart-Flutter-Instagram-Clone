@@ -39,13 +39,7 @@ class ProfileScreenDrawer extends StatelessWidget {
                 child: ListTile(
                     title: Row(
                   children: [
-                    Text(
-                      user.name,
-                      style: kFontSize18TextStyle,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
+                    Text(user.name, style: kFontSize18TextStyle),
                     UserBadges(user: user, size: 20),
                   ],
                 )),

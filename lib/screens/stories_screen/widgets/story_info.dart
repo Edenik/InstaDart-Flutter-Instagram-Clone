@@ -90,9 +90,6 @@ class StoryInfo extends StatelessWidget {
                             user.name,
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
                           UserBadges(user: user, size: 20),
                         ],
                       ),

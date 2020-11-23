@@ -60,7 +60,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
           title: activity.isFollowEvent == true
               ? Row(
                   children: <Widget>[
-                    Text('${user.name} ', style: kFontWeightBoldTextStyle),
+                    Text('${user.name}', style: kFontWeightBoldTextStyle),
+                    UserBadges(user: user, size: 15),
                     Expanded(
                       child: Text(
                         'started following you',
@@ -72,7 +73,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
               : activity.isCommentEvent == true
                   ? Row(
                       children: <Widget>[
-                        Text('${user.name} ', style: kFontWeightBoldTextStyle),
+                        Text('${user.name}', style: kFontWeightBoldTextStyle),
+                        UserBadges(user: user, size: 15),
                         Expanded(
                             child: Text(
                           'commented: "${activity.comment}',
@@ -82,7 +84,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                     )
                   : Row(
                       children: <Widget>[
-                        Text('${user.name} ', style: kFontWeightBoldTextStyle),
+                        Text('${user.name}', style: kFontWeightBoldTextStyle),
                         UserBadges(user: user, size: 15),
                         Expanded(
                           child: Text(

@@ -11,18 +11,14 @@ class UserBadges extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        SizedBox(
-          width: 5,
-        ),
+        if (user?.isVerified) SizedBox(width: 5),
         if (user?.isVerified)
           Image.asset(
             'assets/images/verifiedUserBadge.png',
             height: size,
             width: size,
           ),
-        SizedBox(
-          width: 5,
-        ),
+        if (user?.isVerified) SizedBox(width: 5),
         if (user.role == 'admin')
           FaIcon(
             FontAwesomeIcons.userShield,

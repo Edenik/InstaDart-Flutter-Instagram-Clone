@@ -482,9 +482,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         overflow: TextOverflow.clip,
                       ),
                     ),
-                    SizedBox(
-                      width: 5,
-                    ),
                     UserBadges(user: _profileUser, size: 20),
                   ],
                 ),
