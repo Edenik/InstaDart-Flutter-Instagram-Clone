@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/screens/profile_screen/widgets/profile_screen_drawer.dart';
 import 'package:instagram/utilities/show_error_dialog.dart';
+import 'package:instagram/widgets/user_badges.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -483,12 +485,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(
                       width: 5,
                     ),
-                    if (_profileUser?.isVerified)
-                      Image.asset(
-                        'assets/images/verifiedUserBadge.png',
-                        height: 20,
-                        width: 20,
-                      )
+                    UserBadges(user: _profileUser, size: 20),
                   ],
                 ),
               )
@@ -496,7 +493,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       endDrawer: _profileUser != null && widget.userId == widget.currentUserId
           ? ProfileScreenDrawer(
-              name: _profileUser.name,
+              user: _profileUser,
             )
           : null,
       body: FutureBuilder(

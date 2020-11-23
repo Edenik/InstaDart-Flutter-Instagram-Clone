@@ -12,7 +12,7 @@ class User {
   // final List<String> hideStoryFromUsers;
   // final List<String> closeFriends;
   // final bool allowStoryMessageReplies;
-  // final String role;
+  final String role;
   final bool isVerified;
   final String website;
 
@@ -25,6 +25,7 @@ class User {
     this.token,
     this.isVerified,
     this.website,
+    this.role,
   });
 
   factory User.fromDoc(DocumentSnapshot doc) {
@@ -37,6 +38,7 @@ class User {
       token: doc['token'] ?? '',
       isVerified: doc['isVerified'] ?? false,
       website: doc['website'] ?? '',
+      role: doc['role'] ?? 'user',
     );
   }
 }

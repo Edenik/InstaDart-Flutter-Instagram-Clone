@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:instagram/models/models.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/screens/profile_screen/screens/deleted_posts_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/user_badges.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreenDrawer extends StatelessWidget {
-  final String name;
-  ProfileScreenDrawer({@required this.name});
+  final User user;
+  ProfileScreenDrawer({@required this.user});
 
-  _buildDrawerOption(Icon icon, String title, Function onTap) {
+  _buildDrawerOption(Widget icon, String title, Function onTap) {
     return ListTile(
       leading: icon,
       title: Text(
@@ -34,9 +37,17 @@ class ProfileScreenDrawer extends StatelessWidget {
               Container(
                 height: 56,
                 child: ListTile(
-                    title: Text(
-                  name,
-                  style: kFontSize18TextStyle,
+                    title: Row(
+                  children: [
+                    Text(
+                      user.name,
+                      style: kFontSize18TextStyle,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    UserBadges(user: user, size: 20),
+                  ],
                 )),
               ),
               Divider(height: 3),
@@ -71,6 +82,13 @@ class ProfileScreenDrawer extends StatelessWidget {
               ),
               _buildDrawerOption(
                   Icon(Icons.history_toggle_off), 'Your Activity', null),
+              if (user.role == 'admin')
+                _buildDrawerOption(
+                    FaIcon(
+                      FontAwesomeIcons.userShield,
+                    ),
+                    'Admins Section',
+                    null),
               _buildDrawerOption(Icon(Icons.bookmark), 'Saved', null),
               // _buildDrawerOption(
               //   Icon(Icons.bookmark),

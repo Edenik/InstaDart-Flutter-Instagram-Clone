@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/widgets/user_badges.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -43,6 +44,7 @@ class StoryInfo extends StatelessWidget {
                     children: [
                       Icon(
                         Ionicons.arrow_up_circle,
+                        color: Colors.white,
                         size: 30,
                       ),
                       Text(
@@ -91,12 +93,7 @@ class StoryInfo extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          if (user.isVerified)
-                            Image.asset(
-                              'assets/images/verifiedUserBadge.png',
-                              height: 20,
-                              width: 20,
-                            ),
+                          UserBadges(user: user, size: 20),
                         ],
                       ),
                       Row(
@@ -109,7 +106,7 @@ class StoryInfo extends StatelessWidget {
                                 )
                               : SizedBox.shrink(),
                           Text(
-                            '${timeago.format(story.timeStart.toDate(), locale: 'en_short')} ago',
+                            '${timeago.format(story.timeStart.toDate(), locale: 'en_short')}',
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
@@ -117,15 +114,15 @@ class StoryInfo extends StatelessWidget {
                       story.location != ''
                           ? Row(
                               children: [
+                                Text(
+                                  story.location,
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 Icon(
                                   Icons.location_pin,
                                   size: 18,
                                   color: Colors.white,
                                 ),
-                                Text(
-                                  story.location,
-                                  style: TextStyle(color: Colors.white),
-                                )
                               ],
                             )
                           : SizedBox.shrink(),

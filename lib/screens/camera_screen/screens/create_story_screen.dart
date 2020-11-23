@@ -110,7 +110,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
             ),
 
           // displays row of buttons on top of the screen
-          if (!_isLoading) _displayEditStoryButtons(),
+          if (!_isLoading) _displayEditStoryButtons(_currentUser),
 
           // displays post buttons on bottom of the screen
           if (!_isLoading) _displayBottomButtons(_currentUser),
@@ -265,7 +265,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
     );
   }
 
-  Align _displayEditStoryButtons() {
+  Align _displayEditStoryButtons(User currentuser) {
     int _duration;
     return Align(
       alignment: Alignment.topCenter,
@@ -330,6 +330,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                           });
                         },
                         widget: DurationForm(
+                            currentUser: currentuser,
                             screenSize: screenSize,
                             onChange: (double value) {
                               _duration = value.toInt();

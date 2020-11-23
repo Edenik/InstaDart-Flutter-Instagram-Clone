@@ -28,6 +28,8 @@ class AuthService {
           'email': email,
           'profileImageUrl': '',
           'token': token,
+          'isVerified': false,
+          'role': 'user',
         });
       }
       Provider.of<UserData>(context, listen: false).currentUserId =

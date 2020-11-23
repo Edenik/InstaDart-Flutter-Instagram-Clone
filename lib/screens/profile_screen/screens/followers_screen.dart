@@ -6,6 +6,7 @@ import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/user_badges.dart';
 import 'package:intl/intl.dart';
 
 class FollowersScreen extends StatefulWidget {
@@ -204,7 +205,12 @@ class _FollowersScreenState extends State<FollowersScreen> {
             ? AssetImage(placeHolderImageRef)
             : CachedNetworkImageProvider(user.profileImageUrl),
       ),
-      title: Text(user.name),
+      title: Row(
+        children: [
+          Text(user.name),
+          UserBadges(user: user, size: 15),
+        ],
+      ),
       subtitle: Text(user.email),
       trailing: widget.user.id == widget.currenUserId
           ? _buildFollowerButton(user, index)
@@ -258,7 +264,12 @@ class _FollowersScreenState extends State<FollowersScreen> {
             ? AssetImage(placeHolderImageRef)
             : CachedNetworkImageProvider(user.profileImageUrl),
       ),
-      title: Text(user.name),
+      title: Row(
+        children: [
+          Text(user.name),
+          UserBadges(user: user, size: 15),
+        ],
+      ),
       subtitle: Text(user.email),
       trailing: widget.user.id == widget.currenUserId
           ? _buildFollowingButton(user, index)
@@ -275,7 +286,12 @@ class _FollowersScreenState extends State<FollowersScreen> {
       child: Scaffold(
         appBar: AppBar(
             backgroundColor: Theme.of(context).appBarTheme.color,
-            title: Text(widget.user.name),
+            title: Row(
+              children: [
+                Text(widget.user.name),
+                UserBadges(user: widget.user, size: 15),
+              ],
+            ),
             bottom: TabBar(
               tabs: [
                 Tab(

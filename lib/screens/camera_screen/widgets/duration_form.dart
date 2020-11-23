@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/models/user_model.dart';
 
 class DurationForm extends StatefulWidget {
   final Function onChange;
   final Size screenSize;
   final int duration;
+  final User currentUser;
+
   DurationForm(
       {@required this.screenSize,
       @required this.onChange,
-      @required this.duration});
+      @required this.duration,
+      @required this.currentUser});
   @override
   _DurationFormState createState() => _DurationFormState();
 }
@@ -15,11 +19,15 @@ class DurationForm extends StatefulWidget {
 class _DurationFormState extends State<DurationForm> {
   double _currentSliderValue;
   double _maxValue = 10;
+
   double _minValue = 5;
 
   @override
   void initState() {
     super.initState();
+
+    // if current user is admin
+    if (widget.currentUser.role == 'admin') setState(() => _maxValue = 15);
     _currentSliderValue = widget.duration.toDouble();
   }
 

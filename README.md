@@ -166,6 +166,8 @@ Latest Update : 21/11/20
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio
 - [ ] Stories - on Progress (really soon)...
+- [X] Verified Users - on Progress
+- [X] User Roles - on Progress
 - [X] Stories Screen - Share Image to Direct Messaging
 - [ ] Clean up code
 - [ ] Save Favorite Posts

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/user_badges.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:instagram/services/services.dart';
@@ -82,6 +83,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   : Row(
                       children: <Widget>[
                         Text('${user.name} ', style: kFontWeightBoldTextStyle),
+                        UserBadges(user: user, size: 15),
                         Expanded(
                           child: Text(
                             'liked your post',

@@ -12,6 +12,7 @@ import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/utilities/zoomOverlay.dart';
 import 'package:instagram/widgets/heart_anime.dart';
+import 'package:instagram/widgets/user_badges.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -276,9 +277,14 @@ class _PostViewState extends State<PostView> {
             ),
             title: GestureDetector(
               onTap: () => _goToUserProfile(context, _post),
-              child: Text(
-                widget.author.name,
-                style: kFontSize18FontWeight600TextStyle,
+              child: Row(
+                children: [
+                  Text(
+                    widget.author.name,
+                    style: kFontSize18FontWeight600TextStyle,
+                  ),
+                  UserBadges(user: widget.author, size: 15)
+                ],
               ),
             ),
             subtitle: _post.location.isNotEmpty ? Text(_post.location) : null,
@@ -375,10 +381,15 @@ class _PostViewState extends State<PostView> {
                     ),
                     child: GestureDetector(
                       onTap: () => _goToUserProfile(context, _post),
-                      child: Text(
-                        widget.author.name,
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      child: Row(
+                        children: [
+                          Text(
+                            widget.author.name,
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold),
+                          ),
+                          UserBadges(user: widget.author, size: 15)
+                        ],
                       ),
                     ),
                   ),

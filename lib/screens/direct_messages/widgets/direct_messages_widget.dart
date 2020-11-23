@@ -11,6 +11,7 @@ import 'package:instagram/services/api/database_service.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/user_badges.dart';
 import 'package:provider/provider.dart';
 
 class DirectMessagesWidget extends StatefulWidget {
@@ -100,10 +101,13 @@ class _DirectMessagesWidgetState extends State<DirectMessagesWidget> {
               : CachedNetworkImageProvider(
                   users[receiverIndex].profileImageUrl),
         ),
-        title: Text(
-          users[receiverIndex].name,
-          style: kFontSize18TextStyle,
-          overflow: TextOverflow.ellipsis,
+        title: Row(
+          children: [
+            Text(
+              users[receiverIndex].name,
+            ),
+            UserBadges(user: users[receiverIndex], size: 15),
+          ],
         ),
         trailing: FlatButton(
           child: Text(
@@ -134,9 +138,13 @@ class _DirectMessagesWidgetState extends State<DirectMessagesWidget> {
             ? AssetImage(placeHolderImageRef)
             : CachedNetworkImageProvider(users[receiverIndex].profileImageUrl),
       ),
-      title: Text(
-        users[receiverIndex].name,
-        overflow: TextOverflow.ellipsis,
+      title: Row(
+        children: [
+          Text(
+            users[receiverIndex].name,
+          ),
+          UserBadges(user: users[receiverIndex], size: 15),
+        ],
       ),
       subtitle: Container(
         height: 35,
