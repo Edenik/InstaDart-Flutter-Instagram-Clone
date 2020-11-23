@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ShowErrorDialog {
-  static void showAlertDialog(String errorMessage, BuildContext context) {
+  static void showAlertDialog(
+      {@required String errorMessage, @required BuildContext context}) {
     showDialog(
         context: context,
         builder: (_) {

@@ -129,7 +129,8 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
                 enableJavaScript: true,
               );
             } else {
-              ShowErrorDialog.showAlertDialog('Could not launch $url', context);
+              ShowErrorDialog.showAlertDialog(
+                  errorMessage: 'Could not launch $url', context: context);
             }
           },
         ),

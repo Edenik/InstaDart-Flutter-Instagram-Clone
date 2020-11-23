@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';
@@ -223,7 +224,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
         Divider(),
         ListTile(
-          leading: Icon(Icons.pin_drop),
+          leading: Icon(
+            Ionicons.location_sharp,
+          ),
           title: Container(
             width: 250.0,
             child: TextField(

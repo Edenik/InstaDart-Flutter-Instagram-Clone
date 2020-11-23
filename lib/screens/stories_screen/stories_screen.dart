@@ -2,9 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/stories_screen/widgets/animated_bar.dart';
-import 'package:instagram/screens/stories_screen/widgets/story_user_info.dart';
+import 'package:instagram/screens/stories_screen/widgets/story_info.dart';
 import 'package:instagram/services/services.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StoryScreen extends StatefulWidget {
   final List<Story> stories;
@@ -53,6 +54,7 @@ class _StoryScreenState extends State<StoryScreen>
             _currentIndex++;
             _loadStory(story: widget.stories[_currentIndex]);
           } else {
+            // if the stories ended...
             Navigator.of(context).pop(_currentIndex);
             // _currentIndex = 0;
             // _loadStory(story: widget.stories[_currentIndex]);
@@ -95,8 +97,8 @@ class _StoryScreenState extends State<StoryScreen>
           if (dy < 0) dy = -dy;
 
           if (velocity < 0) {
-            // widget.onSwipeUp();
             //swipe Up
+            _onSwipeUp();
           } else {
             //swipe down
             Navigator.of(context).pop(_currentIndex);
@@ -128,41 +130,59 @@ class _StoryScreenState extends State<StoryScreen>
               },
             ),
             Positioned(
-                top: 40.0,
-                left: 10.0,
-                right: 10.0,
-                child: Column(
-                  children: [
-                    Row(
-                      children: widget.stories
-                          .asMap()
-                          .map((i, e) {
-                            return MapEntry(
-                                i,
-                                AnimatedBar(
-                                  animationController: _animController,
-                                  position: i,
-                                  currentIndex: _currentIndex,
-                                ));
-                          })
-                          .values
-                          .toList(),
+              top: 40.0,
+              left: 10.0,
+              right: 10.0,
+              child: Column(
+                children: [
+                  Row(
+                    children: widget.stories
+                        .asMap()
+                        .map((i, e) {
+                          return MapEntry(
+                              i,
+                              AnimatedBar(
+                                animationController: _animController,
+                                position: i,
+                                currentIndex: _currentIndex,
+                              ));
+                        })
+                        .values
+                        .toList(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 1.5, vertical: 10.0),
+                    child: StoryInfo(
+                      onSwipeUp: () => _onSwipeUp(),
+                      height: size.height - 100,
+                      user: widget.user,
+                      story: widget.stories[_currentIndex],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 1.5, vertical: 10.0),
-                      child: StoryUserInfo(
-                        size: size,
-                        user: widget.user,
-                        story: widget.stories[_currentIndex],
-                      ),
-                    )
-                  ],
-                ))
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
     );
+  }
+
+  void _onSwipeUp() async {
+    if (widget.stories[_currentIndex].linkUrl != '') {
+      String url = widget.stories[_currentIndex].linkUrl;
+      if (await canLaunch(url)) {
+        await launch(
+          url,
+          forceSafariVC: true,
+          forceWebView: true,
+          enableJavaScript: true,
+        );
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
   }
 
   void _onTapDown(TapDownDetails details) {
@@ -191,7 +211,7 @@ class _StoryScreenState extends State<StoryScreen>
   void _loadStory({Story story, bool animateToPage = true}) {
     _animController.stop();
     _animController.reset();
-    _animController.duration = Duration(seconds: 10);
+    _animController.duration = Duration(seconds: story.duration ?? 10);
     _animController.forward();
 
     if (animateToPage) {

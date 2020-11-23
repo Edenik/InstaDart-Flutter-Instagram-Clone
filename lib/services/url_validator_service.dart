@@ -20,7 +20,8 @@ class UrlValidatorService {
         await http.head(url);
       } catch (err) {
         ShowErrorDialog.showAlertDialog(
-            'Please enter a valid Website Url!', context);
+            errorMessage: 'Please enter a valid Website Url!',
+            context: context);
         return null;
       }
       return url;

@@ -355,7 +355,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         enableJavaScript: true,
       );
     } else {
-      ShowErrorDialog.showAlertDialog('Could not launch $url', context);
+      ShowErrorDialog.showAlertDialog(
+          errorMessage: 'Could not launch $url', context: context);
     }
   }
 
@@ -482,12 +483,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(
                       width: 5,
                     ),
-                    // if (_profileUser?.isVerified)
-                    Image.asset(
-                      'assets/images/verifiedUserBadge.png',
-                      height: 20,
-                      width: 20,
-                    )
+                    if (_profileUser?.isVerified)
+                      Image.asset(
+                        'assets/images/verifiedUserBadge.png',
+                        height: 20,
+                        width: 20,
+                      )
                   ],
                 ),
               )

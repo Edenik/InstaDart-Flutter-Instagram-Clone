@@ -10,6 +10,8 @@ class Story {
   final Map<dynamic, dynamic> views;
   final String location;
   final String filter;
+  final String linkUrl;
+  final int duration;
 
   Story({
     this.id,
@@ -21,6 +23,8 @@ class Story {
     this.views,
     this.location,
     this.filter,
+    this.linkUrl,
+    this.duration,
   });
 
   factory Story.fromDoc(DocumentSnapshot doc) {
@@ -34,6 +38,8 @@ class Story {
       views: doc['views'],
       location: doc['location'],
       filter: doc['filter'],
+      linkUrl: doc['linkUrl'] ?? '',
+      duration: doc['duration'] ?? 10,
     );
   }
 }

@@ -13,6 +13,8 @@ class StoriesService {
       'views': story.views,
       'location': story.location,
       'filter': story.filter,
+      'duration': story.duration,
+      'linkUrl': story.linkUrl,
     });
   }
 

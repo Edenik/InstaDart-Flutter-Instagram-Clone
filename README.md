@@ -165,7 +165,7 @@ Latest Update : 21/11/20
 - [ ] Improve Caching of Profiles, Images, Etc.
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio
-- [ ] Stories - on Progress...
+- [ ] Stories - on Progress (really soon)...
 - [X] Stories Screen - Share Image to Direct Messaging
 - [ ] Clean up code
 - [ ] Save Favorite Posts
@@ -183,5 +183,5 @@ This app based on a tutorial by -
 [MarcusNG](https://marcusng.com/)
 
 <p align="center">
-<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FEdenik%2FInstaDart-Flutter-Instagram-Clone&count_bg=%232196F3&title_bg=%23555555&icon=dart.svg&icon_color=%23E7E7E7&title=Views&edge_flat=false"/></a>
+<img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FEdenik%2FInstaDart-Flutter-Instagram-Clone&count_bg=%232196F3&title_bg=%23555555&icon=dart.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
 </p>
