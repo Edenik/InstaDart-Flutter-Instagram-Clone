@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/screens/profile_screen/widgets/profile_screen_drawer.dart';
 import 'package:instagram/utilities/show_error_dialog.dart';
 import 'package:instagram/widgets/user_badges.dart';

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:instagram/models/models.dart';
@@ -186,8 +185,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       initialValue: _website,
                       style: kFontSize18TextStyle,
                       decoration: InputDecoration(
-                          icon: FaIcon(
-                            FontAwesomeIcons.link,
+                          icon: Icon(
+                            Icons.important_devices,
                             size: 30.0,
                           ),
                           labelText: 'Website'),

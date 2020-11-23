@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/screens/screens.dart';
-import 'package:instagram/utilities/show_error_dialog.dart';
 
 class CustomNavigation {
   static void navigateToUserProfile({

@@ -22,7 +22,6 @@ dependencies:
   firebase_messaging: ^6.0.9
   firebase_storage: ^3.0.6
   flutter_image_compress: ^0.7.0
-  font_awesome_flutter: ^8.10.0
   geocoder: ^0.2.1
   giphy_get: ^1.0.1
   http: ^0.12.2

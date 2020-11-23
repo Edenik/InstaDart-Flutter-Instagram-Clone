@@ -1,10 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
@@ -93,8 +93,8 @@ class _CameraScreenState extends State<CameraScreen> {
                   height: 34,
                   width: 34,
                   child: Center(
-                    child: FaIcon(
-                      FontAwesomeIcons.times,
+                    child: Icon(
+                      Ionicons.close_sharp,
                       color: Colors.white,
                       size: 20,
                     ),

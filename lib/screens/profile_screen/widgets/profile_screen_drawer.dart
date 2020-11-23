@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/models/user_data.dart';
 import 'package:instagram/screens/profile_screen/screens/deleted_posts_screen.dart';
@@ -7,6 +6,7 @@ import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/widgets/user_badges.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreenDrawer extends StatelessWidget {
@@ -60,7 +60,7 @@ class ProfileScreenDrawer extends StatelessWidget {
                 ),
               ),
               _buildDrawerOption(
-                Icon(Icons.delete),
+                Icon(Ionicons.trash_outline),
                 'Deleted Posts',
                 () => Navigator.push(
                   context,
@@ -78,27 +78,14 @@ class ProfileScreenDrawer extends StatelessWidget {
                   Icon(Icons.history_toggle_off), 'Your Activity', null),
               if (user.role == 'admin')
                 _buildDrawerOption(
-                    FaIcon(
-                      FontAwesomeIcons.userShield,
-                    ),
-                    'Admins Section',
-                    null),
-              _buildDrawerOption(Icon(Icons.bookmark), 'Saved', null),
-              // _buildDrawerOption(
-              //   Icon(Icons.bookmark),
-              //   'Splash Screen test',
-              //   () => Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (_) => SplashScreen(),
-              //     ),
-              //   ),
-              // ),
+                    Icon(Ionicons.key_outline), 'Admins Section', null),
+              _buildDrawerOption(
+                  Icon(Ionicons.bookmark_outline), 'Saved', null),
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: _buildDrawerOption(
-                    Icon(Icons.settings),
+                    Icon(Ionicons.settings_outline),
                     'Settings',
                     () => Navigator.push(
                       context,

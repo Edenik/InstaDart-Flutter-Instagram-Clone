@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/settings_screen/theme_screen.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/screens/settings_screen/widgets/about_app_dialog.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   String _currentUserId;
 
-  _buildOptionTile(FaIcon icon, String title, Function onTap) {
+  _buildOptionTile(Icon icon, String title, Function onTap) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       leading: icon,
@@ -40,17 +40,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: Column(
         children: [
-          _buildOptionTile(FaIcon(FontAwesomeIcons.userPlus),
+          _buildOptionTile(Icon(Ionicons.person_add_outline),
               'Follow and Invite Friends', null),
-          _buildOptionTile(FaIcon(FontAwesomeIcons.lock), 'Privacy', null),
+          _buildOptionTile(Icon(Ionicons.lock_closed_outline), 'Privacy', null),
           _buildOptionTile(
-              FaIcon(FontAwesomeIcons.infoCircle),
+              Icon(Ionicons.information_circle_outline),
               'About',
               () => showDialog(
                   context: context,
                   builder: (_) => AboutAppDialog(_currentUserId))),
           _buildOptionTile(
-              FaIcon(FontAwesomeIcons.palette),
+              Icon(Ionicons.color_palette_outline),
               'Theme',
               () => Navigator.push(
                     context,

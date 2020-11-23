@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instagram/screens/camera_screen/camera_screen.dart';
 import 'package:instagram/screens/direct_messages/direct_messages_screen.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';
@@ -192,25 +193,25 @@ class _HomeScreenState extends State<HomeScreen> {
               items: [
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.home,
+                    Ionicons.home_outline,
                     size: 32.0,
                   ),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.search,
+                    Ionicons.search_outline,
                     size: 32.0,
                   ),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.photo_camera,
+                    Ionicons.add_circle_outline,
                     size: 32.0,
                   ),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.notifications,
+                    Ionicons.notifications_outline,
                     size: 32.0,
                   ),
                 ),

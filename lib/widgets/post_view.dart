@@ -14,8 +14,8 @@ import 'package:instagram/utilities/zoomOverlay.dart';
 import 'package:instagram/widgets/heart_anime.dart';
 import 'package:instagram/widgets/user_badges.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:http/http.dart';
 import 'package:share/share.dart';
@@ -321,19 +321,20 @@ class _PostViewState extends State<PostView> {
                     children: [
                       IconButton(
                         icon: _isLiked
-                            ? FaIcon(
-                                FontAwesomeIcons.solidHeart,
+                            ? Icon(
+                                Ionicons.heart_sharp,
+                                size: 36,
                                 color: Colors.red,
                               )
-                            : FaIcon(FontAwesomeIcons.heart),
+                            : Icon(Ionicons.heart_outline, size: 36),
                         iconSize: 30.0,
                         onPressed: widget.postStatus == PostStatus.feedPost
                             ? _likePost
                             : () {},
                       ),
                       IconButton(
-                        icon: FaIcon(FontAwesomeIcons.comment),
-                        iconSize: 30.0,
+                        icon: Icon(Ionicons.chatbubble_ellipses_outline),
+                        iconSize: 28.0,
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -388,7 +389,10 @@ class _PostViewState extends State<PostView> {
                             style: TextStyle(
                                 fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
-                          UserBadges(user: widget.author, size: 15)
+                          UserBadges(
+                              user: widget.author,
+                              size: 15,
+                              secondSizedBox: false)
                         ],
                       ),
                     ),

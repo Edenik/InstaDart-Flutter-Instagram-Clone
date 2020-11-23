@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/stories_screen/stories_screen.dart';
 import 'package:instagram/utilities/constants.dart';
@@ -126,16 +125,16 @@ class _StoryCircleState extends State<StoryCircle> {
                   bottom: 5,
                   right: 0,
                   child: Container(
-                    padding: const EdgeInsets.all(1.5),
+                    padding: const EdgeInsets.all(1),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
                     child: Center(
-                      child: FaIcon(
-                        FontAwesomeIcons.plusCircle,
+                      child: Icon(
+                        Icons.add_circle,
                         color: Colors.blue,
-                        size: 18,
+                        size: 21,
                       ),
                     ),
                   ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/show_error_dialog.dart';
 import 'package:instagram/widgets/instaDart_richText.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:instagram/services/services.dart';
@@ -61,10 +61,23 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           InstaDartRichText(kBillabongFamilyTextStyle.copyWith(fontSize: 45)),
-          Text(
-            'Developed With ♥ By:',
-            style: kFontSize18FontWeight600TextStyle.copyWith(
-                color: Theme.of(context).accentColor.withOpacity(0.8)),
+          Row(
+            children: [
+              Text(
+                'Developed With ♥ & ',
+                style: kFontSize18FontWeight600TextStyle.copyWith(
+                    color: Theme.of(context).accentColor.withOpacity(0.8)),
+              ),
+              Icon(
+                Ionicons.logo_firebase,
+                color: Colors.amber,
+              ),
+              Text(
+                ' By:',
+                style: kFontSize18FontWeight600TextStyle.copyWith(
+                    color: Theme.of(context).accentColor.withOpacity(0.8)),
+              ),
+            ],
           ),
           SizedBox(height: 10),
           Container(
@@ -89,23 +102,18 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
               ),
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 5),
           Text(
             'Eden Nahum',
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 5),
           Center(
             child: Text(
               'I hope you Enjoyed here :)',
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(height: 10),
         ],
       ),
       children: <Widget>[
@@ -116,7 +124,7 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
                 style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
+                  fontSize: 22.0,
                 )),
           ),
           onPressed: () async {
@@ -139,7 +147,7 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FaIcon(FontAwesomeIcons.github),
+              Icon(Ionicons.logo_github),
               Text(
                 ' GitHub Repo',
                 style: kFontSize18TextStyle.copyWith(
@@ -163,8 +171,9 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
             Navigator.pop(context);
           },
         ),
-        if (!_isLoading && !_isFollowing) Divider(),
-        !_isFollowing && !_isLoading
+        if (!_isLoading && !_isFollowing && widget.currentUserId != kAdminUId)
+          Divider(),
+        !_isFollowing && !_isLoading && widget.currentUserId != kAdminUId
             ? SimpleDialogOption(
                 child: Center(
                   child: Text(
@@ -198,7 +207,7 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              FaIcon(FontAwesomeIcons.paperPlane),
+              Icon(Ionicons.chatbox_ellipses_outline),
             ],
           ),
           onPressed: _reportABug,
