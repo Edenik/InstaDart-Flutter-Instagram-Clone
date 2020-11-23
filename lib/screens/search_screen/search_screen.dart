@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram/utilities/themes.dart';
+import 'package:instagram/widgets/user_badges.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';
@@ -34,7 +35,9 @@ class _SearchScreenState extends State<SearchScreen> {
             ? AssetImage(placeHolderImageRef)
             : CachedNetworkImageProvider(user.profileImageUrl),
       ),
-      title: Text(user.name),
+      title: Row(
+        children: [Text(user.name), UserBadges(user: user, size: 15)],
+      ),
       trailing: widget.searchFrom == SearchFrom.createStoryScreen
           ? FlatButton(
               child: Text(

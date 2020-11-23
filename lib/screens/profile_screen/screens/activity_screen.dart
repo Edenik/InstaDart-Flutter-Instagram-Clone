@@ -61,7 +61,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ? Row(
                   children: <Widget>[
                     Text('${user.name}', style: kFontWeightBoldTextStyle),
-                    UserBadges(user: user, size: 15),
+                    SizedBox(width: 5),
+                    UserBadges(user: user, size: 15, firstSizedBox: false),
                     Expanded(
                       child: Text(
                         'started following you',
@@ -74,7 +75,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   ? Row(
                       children: <Widget>[
                         Text('${user.name}', style: kFontWeightBoldTextStyle),
-                        UserBadges(user: user, size: 15),
+                        SizedBox(width: 5),
+                        UserBadges(user: user, size: 15, firstSizedBox: false),
                         Expanded(
                             child: Text(
                           'commented: "${activity.comment}',
@@ -85,7 +87,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   : Row(
                       children: <Widget>[
                         Text('${user.name}', style: kFontWeightBoldTextStyle),
-                        UserBadges(user: user, size: 15),
+                        SizedBox(width: 5),
+                        UserBadges(user: user, size: 15, firstSizedBox: false),
                         Expanded(
                           child: Text(
                             'liked your post',

@@ -5,13 +5,16 @@ import 'package:instagram/models/models.dart';
 class UserBadges extends StatelessWidget {
   final User user;
   final double size;
-  UserBadges({@required this.user, @required this.size});
+  final bool firstSizedBox;
+  UserBadges(
+      {@required this.user, @required this.size, this.firstSizedBox = true});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        if (user?.isVerified) SizedBox(width: 5),
+        if (user?.isVerified == true && this.firstSizedBox == true)
+          SizedBox(width: 5),
         if (user?.isVerified)
           Image.asset(
             'assets/images/verifiedUserBadge.png',
