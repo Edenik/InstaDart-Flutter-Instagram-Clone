@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:instagram/services/location_service.dart';
+import 'package:instagram/services/core/location_service.dart';
 import 'package:ionicons/ionicons.dart';
 
 class LocationForm extends StatefulWidget {
   final TextEditingController controller;
   final Size screenSize;
-  LocationForm({@required this.controller, @required this.screenSize});
+  LocationForm({
+    @required this.controller,
+    @required this.screenSize,
+  });
   @override
   _LocationFormState createState() => _LocationFormState();
 }
 
 class _LocationFormState extends State<LocationForm> {
   Address _address;
-  Map<String, double> currentLocation = Map();
+  Map<String, double> _currentLocation = Map();
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() => _isLoading = true);
     //variables with location assigned as 0.0
-    currentLocation['latitude'] = 0.0;
-    currentLocation['longitude'] = 0.0;
+    _currentLocation['latitude'] = 0.0;
+    _currentLocation['longitude'] = 0.0;
     initPlatformState(); //method to call location
   }
 
@@ -30,6 +35,7 @@ class _LocationFormState extends State<LocationForm> {
     if (mounted) {
       setState(() {
         _address = first;
+        _isLoading = false;
       });
     }
   }
@@ -60,9 +66,10 @@ class _LocationFormState extends State<LocationForm> {
           ),
         ),
         Divider(),
-        (_address == null)
-            ? SizedBox.shrink()
-            : SingleChildScrollView(
+        if (_address != null)
+          Column(
+            children: [
+              SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.only(right: 5.0, left: 5.0),
                 child: Row(
@@ -76,7 +83,26 @@ class _LocationFormState extends State<LocationForm> {
                   ],
                 ),
               ),
-        (_address == null) ? SizedBox.shrink() : Divider(),
+              Divider()
+            ],
+          ),
+        if (_isLoading)
+          Column(
+            children: [
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Center(
+                      child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    height: 20.0,
+                    width: 20.0,
+                  )),
+                ),
+              ),
+              Divider()
+            ],
+          ),
       ],
     );
   }

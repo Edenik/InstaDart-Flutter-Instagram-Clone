@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
-import 'package:instagram/services/url_validator_service.dart';
+import 'package:instagram/services/core/url_validator_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
 

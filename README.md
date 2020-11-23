@@ -87,6 +87,18 @@ Latest Update : 21/11/20
 * Push notifications - For Comments on posts, Likes on post, Direct messages, New followers and more..
 
 * Add Filters to Posts + Stories
+
+* Custom Camera Screen
+
+* Stories with filters, text, links and duration settings
+
+* Verified Users
+
+* Admin Users
+
+* Zoom IN & OUT on posts images.
+
+* Share Images from create stories screen to messages.
   
 
 ## Screenshots
@@ -125,7 +137,6 @@ Latest Update : 21/11/20
 * [Google Sign In](https://github.com/flutter/plugins/tree/master/packages/google_sign_in)
 * [UUID](https://github.com/Daegalus/dart-uuid)
 * [Path Provider](https://github.com/flutter/plugins/tree/master/packages/path_provider)
-* [Font Awesome](https://github.com/brianegan/font_awesome_flutter)
 * [Shared Preferences](https://github.com/flutter/plugins/blob/master/packages/shared_preferences)
 * [Cached Network Image](https://github.com/renefloor/flutter_cached_network_image)
 * [Animator](https://github.com/GIfatahTH/animator)
@@ -165,12 +176,13 @@ Latest Update : 21/11/20
 - [ ] Improve Caching of Profiles, Images, Etc.
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio
-- [ ] Stories - on Progress (really soon)...
+- [X] Stories - show stories on user profile...
 - [X] Verified Users - on Progress
 - [X] User Roles - on Progress
 - [X] Stories Screen - Share Image to Direct Messaging
-- [ ] Clean up code
+- [ ] Clean up code - on Progress
 - [ ] Save Favorite Posts
+- [ ] Save recent search
 - [X] Better Navigation Transitions
 - [ ] iOS Support
 

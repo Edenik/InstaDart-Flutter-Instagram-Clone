@@ -6,8 +6,8 @@ import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/repo_const.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/screens/feed_screen/widgets/stories_widget.dart';
-import 'package:instagram/widgets/instaDart_richText.dart';
-import 'package:instagram/widgets/post_view.dart';
+import 'package:instagram/common_widgets/instaDart_richText.dart';
+import 'package:instagram/common_widgets/post_view.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
@@ -109,7 +109,7 @@ class _FeedScreenState extends State<FeedScreen> {
             InstaDartRichText(kBillabongFamilyTextStyle.copyWith(fontSize: 40)),
         actions: [
           IconButton(
-              icon: Icon(Ionicons.chatbubbles_sharp, color: Colors.blue),
+              icon: Icon(Ionicons.chatbubbles_sharp),
               onPressed: widget.goToDirectMessages),
         ],
       ),

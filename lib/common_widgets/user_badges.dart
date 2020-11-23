@@ -14,17 +14,23 @@ class UserBadges extends StatelessWidget {
       children: <Widget>[
         if (user?.isVerified == true) SizedBox(width: 5),
         if (user?.isVerified)
-          Image.asset(
-            'assets/images/verified_user_badge.png',
-            height: size + 2,
-            width: size + 2,
+          Tooltip(
+            message: 'User is Verified',
+            child: Image.asset(
+              'assets/images/verified_user_badge.png',
+              height: size + 2,
+              width: size + 2,
+            ),
           ),
-        if (user?.isVerified) SizedBox(width: 5),
+        if (user.role == 'admin') SizedBox(width: 5),
         if (user.role == 'admin')
-          Image.asset(
-            'assets/images/admin_badge.png',
-            height: size + 4,
-            width: size + 4,
+          Tooltip(
+            message: 'User is Admin',
+            child: Image.asset(
+              'assets/images/admin_badge.png',
+              height: size + 4,
+              width: size + 4,
+            ),
           ),
         if (user.role == 'admin' && this.secondSizedBox == true)
           SizedBox(width: 5),

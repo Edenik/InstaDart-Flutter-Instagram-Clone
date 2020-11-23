@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/instaDart_richText.dart';
+import 'package:instagram/common_widgets/instaDart_richText.dart';
 
 class SignupScreen extends StatefulWidget {
   static final String id = 'signup_screen';

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
-import 'package:instagram/screens/direct_messages/screens/full_screen_image.dart';
+import 'package:instagram/screens/direct_messages/nested_screens/full_screen_image.dart';
 import 'package:instagram/services/api/chat_service.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/widgets/heart_anime.dart';
+import 'package:instagram/common_widgets/heart_anime.dart';
 import 'package:provider/provider.dart';
 
 class MessageBubble extends StatefulWidget {

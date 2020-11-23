@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/user_badges.dart';
+import 'package:instagram/common_widgets/user_badges.dart';
 import 'package:provider/provider.dart';
 
 import 'package:instagram/models/models.dart';

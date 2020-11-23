@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/instaDart_richText.dart';
+import 'package:instagram/common_widgets/instaDart_richText.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = 'login_screen';

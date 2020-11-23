@@ -6,7 +6,7 @@ import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/user_badges.dart';
+import 'package:instagram/common_widgets/user_badges.dart';
 import 'package:intl/intl.dart';
 
 class FollowersScreen extends StatefulWidget {

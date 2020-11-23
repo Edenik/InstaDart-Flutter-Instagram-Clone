@@ -5,13 +5,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
-import 'package:instagram/screens/direct_messages/screens/chat_screen.dart';
+import 'package:instagram/screens/direct_messages/nested_screens/chat_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/services/api/database_service.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/user_badges.dart';
+import 'package:instagram/common_widgets/user_badges.dart';
 import 'package:provider/provider.dart';
 
 class DirectMessagesWidget extends StatefulWidget {

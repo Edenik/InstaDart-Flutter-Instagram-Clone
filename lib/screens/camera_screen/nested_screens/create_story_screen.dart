@@ -13,7 +13,7 @@ import 'package:instagram/screens/camera_screen/widgets/location_form.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/screens/stories_screen/widgets/circular_icon_button.dart';
 import 'package:instagram/services/services.dart';
-import 'package:instagram/services/url_validator_service.dart';
+import 'package:instagram/services/core/url_validator_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/filters.dart';
@@ -270,7 +270,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

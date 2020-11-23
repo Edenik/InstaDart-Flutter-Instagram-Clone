@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/widgets/post_view.dart';
+import 'package:instagram/common_widgets/post_view.dart';
 
 class DeletedPostsScreen extends StatefulWidget {
   final String currentUserId;

@@ -4,7 +4,7 @@ import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/show_error_dialog.dart';
-import 'package:instagram/widgets/instaDart_richText.dart';
+import 'package:instagram/common_widgets/instaDart_richText.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 

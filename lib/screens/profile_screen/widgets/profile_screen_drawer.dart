@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/models/user_data.dart';
-import 'package:instagram/screens/profile_screen/screens/deleted_posts_screen.dart';
+import 'package:instagram/screens/profile_screen/nested_screens/deleted_posts_screen.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/user_badges.dart';
+import 'package:instagram/common_widgets/user_badges.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 

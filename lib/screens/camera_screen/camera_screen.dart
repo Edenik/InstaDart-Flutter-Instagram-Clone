@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/screens/screens.dart';
+import 'package:instagram/screens/stories_screen/widgets/circular_icon_button.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:path_provider/path_provider.dart';
@@ -83,23 +84,13 @@ class _CameraScreenState extends State<CameraScreen> {
             alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.all(30.0),
-              child: GestureDetector(
-                onTap: widget.backToHomeScreen,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black45,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  height: 34,
-                  width: 34,
-                  child: Center(
-                    child: Icon(
-                      Ionicons.close_sharp,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
+              child: CircularIconButton(
+                icon: Icon(
+                  Ionicons.close_sharp,
+                  color: Colors.white,
+                  size: 22,
                 ),
+                onTap: widget.backToHomeScreen,
               ),
             ),
           ),

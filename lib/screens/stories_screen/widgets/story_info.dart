@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/utilities/constants.dart';
-import 'package:instagram/widgets/user_badges.dart';
+import 'package:instagram/common_widgets/user_badges.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

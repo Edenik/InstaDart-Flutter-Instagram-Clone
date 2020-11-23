@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:instagram/screens/camera_screen/screens/create_post_screen.dart';
+import 'package:instagram/screens/camera_screen/nested_screens/create_post_screen.dart';
 import 'dart:ui' as ui;
 
 import 'package:instagram/utilities/filters.dart';

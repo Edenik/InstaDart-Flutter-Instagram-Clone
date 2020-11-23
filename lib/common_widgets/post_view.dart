@@ -11,8 +11,8 @@ import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/utilities/zoomOverlay.dart';
-import 'package:instagram/widgets/heart_anime.dart';
-import 'package:instagram/widgets/user_badges.dart';
+import 'package:instagram/common_widgets/heart_anime.dart';
+import 'package:instagram/common_widgets/user_badges.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -129,7 +129,6 @@ class _PostViewState extends State<PostView> {
   }
 
   _iosBottomSheet() {
-    // TODO: Update this bottom sheet
     showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {

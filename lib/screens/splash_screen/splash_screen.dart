@@ -1,7 +1,7 @@
 // import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:instagram/utilities/themes.dart';
-import 'package:instagram/widgets/instaDart_richText.dart';
+import 'package:instagram/common_widgets/instaDart_richText.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SplashScreen extends StatefulWidget {
