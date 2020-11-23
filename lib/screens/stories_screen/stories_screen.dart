@@ -117,6 +117,13 @@ class _StoryScreenState extends State<StoryScreen>
                 return CachedNetworkImage(
                   imageUrl: story.imageUrl,
                   fit: BoxFit.cover,
+                  fadeInDuration: Duration(milliseconds: 500),
+                  progressIndicatorBuilder: (context, url, downloadProgress) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                    );
+                  },
                 );
               },
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instagram/screens/profile_screen/widgets/profile_screen_drawer.dart';
+import 'package:instagram/utilities/show_error_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ import 'package:instagram/services/services.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/widgets/post_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String userId;
@@ -109,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  _followUser() {
+  void _followUser() {
     DatabaseService.followUser(
       currentUserId: widget.currentUserId,
       userId: widget.userId,
@@ -122,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  _displayButton(User user) {
+  Widget _displayButton(User user) {
     return user.id == widget.currentUserId
         ? Container(
             width: double.infinity,
@@ -194,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
   }
 
-  _buildProfileInfo(User user) {
+  Column _buildProfileInfo(User user) {
     return Column(
       children: <Widget>[
         Padding(
@@ -308,14 +310,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: kFontSize18FontWeight600TextStyle.copyWith(
                     fontWeight: FontWeight.bold),
               ),
+              if (user.website != '') SizedBox(height: 5.0),
+              if (user.website != '')
+                GestureDetector(
+                  onTap: () => _goToUrl(user.website),
+                  child: Container(
+                    height: 18,
+                    width: double.infinity,
+                    child: Text(
+                      user.website
+                          .replaceAll('https://', '')
+                          .replaceAll('http://', '')
+                          .replaceAll('www.', ''),
+                      style: kBlueColorTextStyle,
+                    ),
+                  ),
+                ),
               SizedBox(height: 5.0),
               Container(
-                height: 80.0,
                 child: Text(
                   user.bio,
                   style: TextStyle(fontSize: 15.0),
                 ),
               ),
+              SizedBox(height: 5.0),
               _displayButton(user),
               Divider(
                 color: Theme.of(context).dividerColor,
@@ -328,7 +346,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  _buildToggleButtons() {
+  void _goToUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: true,
+        forceWebView: true,
+        enableJavaScript: true,
+      );
+    } else {
+      ShowErrorDialog.showAlertDialog('Could not launch $url', context);
+    }
+  }
+
+  Row _buildToggleButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -356,7 +387,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  _buildTilePost(Post post) {
+  GridTile _buildTilePost(Post post) {
     return GridTile(
         child: GestureDetector(
       onTap: () => Navigator.push(
@@ -393,7 +424,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ));
   }
 
-  _buildDisplayPosts() {
+  Widget _buildDisplayPosts() {
     if (_displayPosts == 0) {
       // Grid
       List<GridTile> tiles = [];
@@ -436,23 +467,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
             widget.isCameFromBottomNavigation ? false : true,
 
         title: _profileUser != null
-            ? Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      _profileUser.name,
-                      overflow: TextOverflow.clip,
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      child: Text(
+                        _profileUser.name,
+                        overflow: TextOverflow.clip,
+                      ),
                     ),
-                  ),
-                  // SizedBox(
-                  //   width: 5,
-                  // ),
-                  // Image.asset(
-                  //   'assets/images/verifiedUserBadge.png',
-                  //   height: 20,
-                  //   width: 20,
-                  // )
-                ],
+                    SizedBox(
+                      width: 5,
+                    ),
+                    // if (_profileUser?.isVerified)
+                    Image.asset(
+                      'assets/images/verifiedUserBadge.png',
+                      height: 20,
+                      width: 20,
+                    )
+                  ],
+                ),
               )
             : SizedBox.shrink(),
       ),

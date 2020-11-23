@@ -73,3 +73,5 @@ const kBillabongFamilyTextStyle =
 TextStyle kHintColorStyle(BuildContext context) {
   return TextStyle(color: Theme.of(context).hintColor);
 }
+
+const kBlueColorTextStyle = TextStyle(color: Colors.blue);

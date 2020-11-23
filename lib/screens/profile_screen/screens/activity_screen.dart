@@ -97,6 +97,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ? SizedBox.shrink()
               : CachedNetworkImage(
                   imageUrl: activity.postImageUrl,
+                  fadeInDuration: Duration(milliseconds: 500),
                   height: 40.0,
                   width: 40.0,
                   fit: BoxFit.cover,

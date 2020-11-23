@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/direct_messages/screens/full_screen_image.dart';
 import 'package:instagram/services/api/chat_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/widgets/heart_anime.dart';
@@ -74,39 +75,11 @@ class _MessageBubbleState extends State<MessageBubble> {
       );
     }
 
-    _imageFullScreen() {
+    _imageFullScreen(url) {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => Scaffold(
-                body: Stack(
-              children: [
-                Container(
-                  child: Hero(
-                    tag: widget.message.imageUrl,
-                    child: Image(
-                      image:
-                          CachedNetworkImageProvider(widget.message.imageUrl),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 40.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white54,
-                        borderRadius: BorderRadius.circular(30)),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      iconSize: 30.0,
-                      color: Colors.black,
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                ),
-              ],
-            )),
+            builder: (_) => FullScreenImage(url),
           ));
     }
 
@@ -116,25 +89,32 @@ class _MessageBubbleState extends State<MessageBubble> {
         onDoubleTap: widget.message.senderId == currentUser.id
             ? null
             : () => _likeUnLikeMessage(currentUser.id),
-        onTap: _imageFullScreen,
+        onTap: () => _imageFullScreen(widget.message.imageUrl),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Container(
-              height: size.height * 0.2,
+              height: size.height * 0.4,
               width: size.width * 0.6,
-              child: Hero(
-                tag: widget.message.imageUrl,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).accentColor.withOpacity(0.7)),
-                    borderRadius: BorderRadius.circular(20.0),
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image:
-                          CachedNetworkImageProvider(widget.message.imageUrl),
-                    ),
+              decoration: BoxDecoration(
+                border:
+                    Border.all(width: 1, color: Theme.of(context).accentColor),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Hero(
+                  tag: widget.message.imageUrl,
+                  child: CachedNetworkImage(
+                    progressIndicatorBuilder: (context, url, downloadProgress) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                            value: downloadProgress.progress),
+                      );
+                    },
+                    fadeInDuration: Duration(milliseconds: 500),
+                    imageUrl: widget.message.imageUrl,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -151,17 +131,32 @@ class _MessageBubbleState extends State<MessageBubble> {
         onDoubleTap: widget.message.senderId == currentUser.id
             ? null
             : () => _likeUnLikeMessage(currentUser.id),
+        onTap: () => _imageFullScreen(widget.message.giphyUrl),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Container(
-              height: size.height * 0.2,
+              height: size.height * 0.3,
               width: size.width * 0.6,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
+              decoration: BoxDecoration(
+                border:
+                    Border.all(width: 1, color: Theme.of(context).accentColor),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Hero(
+                  tag: widget.message.giphyUrl,
+                  child: CachedNetworkImage(
+                    progressIndicatorBuilder: (context, url, downloadProgress) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                            value: downloadProgress.progress),
+                      );
+                    },
+                    fadeInDuration: Duration(milliseconds: 500),
+                    imageUrl: widget.message.giphyUrl,
                     fit: BoxFit.contain,
-                    image: CachedNetworkImageProvider(widget.message.giphyUrl),
                   ),
                 ),
               ),

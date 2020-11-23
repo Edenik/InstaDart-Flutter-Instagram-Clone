@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/screens/screens.dart';
+import 'package:instagram/utilities/show_error_dialog.dart';
 
 class CustomNavigation {
   static void navigateToUserProfile({
@@ -20,6 +21,12 @@ class CustomNavigation {
       ),
     );
   }
+
+  // static void navigateToShowErrorDialog(
+  //     BuildContext context, String errorMessage) {
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: (_) => ShowErrorDialog(errorMessage)));
+  // }
 
   static void navigateToHomeScreen(BuildContext context, String currentUserId) {
     Navigator.pushAndRemoveUntil(

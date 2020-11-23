@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:instagram/models/models.dart';
 import 'package:instagram/services/services.dart';
+import 'package:instagram/services/url_validator_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/themes.dart';
 
@@ -23,6 +26,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   String _bio = '';
+  String _website = '';
   File _profileImage;
   final picker = ImagePicker();
   bool _isLoading = false;
@@ -32,6 +36,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     _name = widget.user.name;
     _bio = widget.user.bio;
+    _website = widget.user.website;
   }
 
   _handleImageFromGallery() async {
@@ -49,9 +54,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (_formKey.currentState.validate() && !_isLoading) {
       _formKey.currentState.save();
 
-      setState(() {
-        _isLoading = true;
-      });
+      setState(() => _isLoading = true);
+      String url;
+
+      if (_website.trim() != '') {
+        url = await UrlValidatorService.isUrlValid(context, _website.trim());
+        if (url == null) {
+          setState(() => _isLoading = false);
+          return;
+        }
+      }
 
       //Update user in database
       String _profileImageUrl = '';
@@ -66,11 +78,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
 
       User user = User(
-        id: widget.user.id,
-        name: _name,
-        profileImageUrl: _profileImageUrl,
-        bio: _bio,
-      );
+          id: widget.user.id,
+          name: _name.trim(),
+          profileImageUrl: _profileImageUrl,
+          bio: _bio.trim(),
+          website: url);
 
       //Database Update
       DatabaseService.updateUser(user);
@@ -137,6 +149,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     TextFormField(
                       initialValue: _name,
+                      maxLength: 20,
+                      textCapitalization: TextCapitalization.words,
                       style: kFontSize18TextStyle,
                       decoration: InputDecoration(
                           icon: Icon(
@@ -146,7 +160,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           labelText: 'Name'),
                       validator: (input) => input.trim().length < 1
                           ? 'Please enter a valid name'
-                          : null,
+                          : input.trim().length > 20
+                              ? 'Please enter name less than 20 characters'
+                              : null,
                       onSaved: (input) => _name = input,
                     ),
                     TextFormField(
@@ -165,6 +181,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ? 'Please enter a bio less than 150 characters'
                           : null,
                       onSaved: (input) => _bio = input,
+                    ),
+                    TextFormField(
+                      initialValue: _website,
+                      style: kFontSize18TextStyle,
+                      decoration: InputDecoration(
+                          icon: FaIcon(
+                            FontAwesomeIcons.link,
+                            size: 30.0,
+                          ),
+                          labelText: 'Website'),
+                      onSaved: (input) => _website = input,
                     ),
                     Container(
                       margin: const EdgeInsets.all(40.0),

@@ -269,7 +269,9 @@ class _PostViewState extends State<PostView> {
                 backgroundColor: Colors.grey,
                 backgroundImage: widget.author.profileImageUrl.isEmpty
                     ? AssetImage(placeHolderImageRef)
-                    : CachedNetworkImageProvider(widget.author.profileImageUrl),
+                    : CachedNetworkImageProvider(
+                        widget.author.profileImageUrl,
+                      ),
               ),
             ),
             title: GestureDetector(
@@ -294,7 +296,9 @@ class _PostViewState extends State<PostView> {
                   height: MediaQuery.of(context).size.width,
                   child: ZoomOverlay(
                       twoTouchOnly: true,
-                      child: CachedNetworkImage(imageUrl: _post.imageUrl))),
+                      child: CachedNetworkImage(
+                          fadeInDuration: Duration(milliseconds: 500),
+                          imageUrl: _post.imageUrl))),
               _heartAnim ? HeartAnime(100.0) : SizedBox.shrink(),
             ],
           ),

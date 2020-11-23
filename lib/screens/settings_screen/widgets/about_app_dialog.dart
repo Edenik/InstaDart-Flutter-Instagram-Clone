@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram/models/models.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
+import 'package:instagram/utilities/show_error_dialog.dart';
 import 'package:instagram/widgets/instaDart_richText.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -128,9 +129,8 @@ class _AboutAppDialogState extends State<AboutAppDialog> {
                 enableJavaScript: true,
               );
             } else {
-              throw 'Could not launch $url';
+              ShowErrorDialog.showAlertDialog('Could not launch $url', context);
             }
-            Navigator.pop(context);
           },
         ),
         Divider(),
