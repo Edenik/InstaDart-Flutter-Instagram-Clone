@@ -1,6 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/screens/screens.dart';
+import 'package:instagram/utilities/show_error_dialog.dart';
 
 class CustomNavigation {
   static void navigateToUserProfile({
@@ -16,6 +18,8 @@ class CustomNavigation {
           isCameFromBottomNavigation: isCameFromBottomNavigation,
           currentUserId: currentUserId,
           userId: userId,
+          goToCameraScreen: () =>
+              navigateToHomeScreen(context, currentUserId, initialPage: 0),
         ),
       ),
     );
@@ -26,14 +30,49 @@ class CustomNavigation {
   //   Navigator.push(context,
   //       MaterialPageRoute(builder: (_) => ShowErrorDialog(errorMessage)));
   // }
+  static Future<List<CameraDescription>> getCameras(
+      BuildContext context) async {
+    List<CameraDescription> _cameras;
+    try {
+      _cameras = await availableCameras();
+    } on CameraException catch (_) {
+      ShowErrorDialog.showAlertDialog(
+          errorMessage: 'Cant get cameras!', context: context);
+    }
 
-  static void navigateToHomeScreen(BuildContext context, String currentUserId) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (_) => HomeScreen(currentUserId),
-      ),
-      (Route<dynamic> route) => false,
-    );
+    return _cameras;
+  }
+
+  static void navigateToHomeScreen(BuildContext context, String currentUserId,
+      {int initialPage = 1}) async {
+    List<CameraDescription> _cameras;
+    if (initialPage == 0) {
+      _cameras = await getCameras(context);
+      if (_cameras == null) {
+        return;
+      }
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => HomeScreen(
+            currentUserId: currentUserId,
+            initialPage: initialPage,
+            cameras: _cameras,
+          ),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => HomeScreen(
+            currentUserId: currentUserId,
+            initialPage: initialPage,
+          ),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    }
   }
 }

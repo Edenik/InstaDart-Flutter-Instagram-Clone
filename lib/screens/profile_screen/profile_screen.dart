@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instagram/screens/feed_screen/widgets/blank_story_circle.dart';
 import 'package:instagram/screens/profile_screen/widgets/profile_screen_drawer.dart';
 import 'package:instagram/utilities/show_error_dialog.dart';
 import 'package:instagram/common_widgets/user_badges.dart';
@@ -19,11 +20,13 @@ class ProfileScreen extends StatefulWidget {
   final String currentUserId;
   final Function onProfileEdited;
   final bool isCameFromBottomNavigation;
+  final Function goToCameraScreen;
 
   ProfileScreen({
     this.userId,
     this.currentUserId,
     this.onProfileEdited,
+    @required this.goToCameraScreen,
     @required this.isCameFromBottomNavigation,
   });
 
@@ -204,12 +207,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0),
           child: Row(
             children: <Widget>[
-              CircleAvatar(
-                radius: 40.0,
-                backgroundColor: Colors.grey,
-                backgroundImage: user.profileImageUrl.isEmpty
-                    ? AssetImage(placeHolderImageRef)
-                    : CachedNetworkImageProvider(user.profileImageUrl),
+              // CircleAvatar(
+              //   radius: 40.0,
+              //   backgroundColor: Colors.grey,
+              //   backgroundImage: user.profileImageUrl.isEmpty
+              //       ? AssetImage(placeHolderImageRef)
+              //       : CachedNetworkImageProvider(user.profileImageUrl),
+              // ),
+              Container(
+                width: 110,
+                height: 110,
+                child: BlankStoryCircle(
+                  user: user,
+                  goToCameraScreen: widget.goToCameraScreen,
+                  size: 90,
+                  showUserName: false,
+                ),
               ),
               Expanded(
                 child: Column(

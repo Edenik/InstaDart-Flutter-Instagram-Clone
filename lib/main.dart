@@ -59,7 +59,9 @@ class _MyAppState extends State<MyApp> {
         if (snapshot.hasData && _isTimerDone) {
           Provider.of<UserData>(context, listen: false).currentUserId =
               snapshot.data.uid;
-          return HomeScreen(snapshot.data.uid);
+          return HomeScreen(
+            currentUserId: snapshot.data.uid,
+          );
         } else {
           return LoginScreen();
         }

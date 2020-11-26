@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instagram/screens/camera_screen/camera_screen.dart';
 import 'package:instagram/screens/direct_messages/direct_messages_screen.dart';
+import 'package:instagram/utilities/show_error_dialog.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,9 @@ import 'package:instagram/utilities/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   final String currentUserId;
-  HomeScreen(this.currentUserId);
+  final int initialPage;
+  final List<CameraDescription> cameras;
+  HomeScreen({this.currentUserId, this.initialPage = 1, this.cameras});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -35,9 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _getCurrentUser();
+    _getCameras();
+
     _initPageView();
     _listenToNotifications();
-    getCameras();
     AuthService.updateToken();
   }
 
@@ -47,17 +51,24 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  Future<Null> getCameras() async {
-    try {
-      _cameras = await availableCameras();
-    } on CameraException catch (e) {
-      //logError(e.code, e.description);
+  Future<Null> _getCameras() async {
+    if (widget.cameras != null) {
+      setState(() {
+        _cameras = widget.cameras;
+      });
+    } else {
+      try {
+        _cameras = await availableCameras();
+      } on CameraException catch (_) {
+        ShowErrorDialog.showAlertDialog(
+            errorMessage: 'Cant get cameras!', context: context);
+      }
     }
   }
 
-  void _initPageView() {
-    _pageController = PageController(initialPage: 1);
-    setState(() => _currentPage = 1);
+  void _initPageView() async {
+    _pageController = PageController(initialPage: widget.initialPage);
+    setState(() => _currentPage = widget.initialPage);
   }
 
   void _listenToNotifications() {
@@ -138,6 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
         await DatabaseService.getUserWithId(widget.currentUserId);
 
     Provider.of<UserData>(context, listen: false).currentUser = currentUser;
+
+    print('i have the current user now');
     setState(() => _currentUser = currentUser);
     AuthService.updateTokenWithUser(currentUser);
   }
@@ -158,6 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
         currentUser: _currentUser,
       ),
       ProfileScreen(
+        goToCameraScreen: _goToCameraScreen,
         isCameFromBottomNavigation: true,
         onProfileEdited: _getCurrentUser,
         userId: widget.currentUserId,

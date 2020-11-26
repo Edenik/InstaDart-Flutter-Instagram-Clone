@@ -8,30 +8,24 @@ class StoryCircle extends StatefulWidget {
   final List<Story> userStories;
   final String currentUserId;
   final User user;
-  final Function goToCameraScreen;
+  final double size;
+  final bool showUserName;
 
-  StoryCircle({
-    this.userStories,
-    this.user,
-    this.currentUserId,
-    this.goToCameraScreen,
-  });
+  StoryCircle(
+      {@required this.userStories,
+      @required this.user,
+      @required this.currentUserId,
+      this.size = 60,
+      this.showUserName = true});
   @override
   _StoryCircleState createState() => _StoryCircleState();
 }
 
 class _StoryCircleState extends State<StoryCircle> {
   int _seenStories = 0;
-  bool _isCurrentUserHasStories = true;
   @override
   void initState() {
     super.initState();
-
-    if (widget.userStories[0].id?.isEmpty == null) {
-      // Checks if the story circle came with real stories..
-      // If not, its the current user circle avatar without stories.
-      setState(() => _isCurrentUserHasStories = false);
-    }
 
     _checkForSeenStories();
   }
@@ -59,95 +53,59 @@ class _StoryCircleState extends State<StoryCircle> {
   Widget build(BuildContext context) {
     Color circleColor;
 
-    if (widget.currentUserId == widget.userStories[0].authorId) {
-      if (!_isCurrentUserHasStories ||
-          _seenStories == widget.userStories.length) {
-        circleColor = Colors.grey;
-      } else {
-        circleColor = Colors.blue;
-      }
+    if (_seenStories == widget.userStories.length) {
+      circleColor = Colors.grey;
     } else {
-      if (_seenStories == widget.userStories.length) {
-        circleColor = Colors.grey;
-      } else {
-        circleColor = Colors.blue;
-      }
+      circleColor = Colors.blue;
     }
     return Container(
-      width: 70,
+      width: widget.size + 10,
       margin: const EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Stack(
-            children: [
-              Container(
-                margin: EdgeInsets.all(5.0),
-                height: 60.0,
-                width: 60.0,
-                padding: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 3.0, color: circleColor),
-                ),
-                child: GestureDetector(
-                  onTap: () => !_isCurrentUserHasStories &&
-                          widget.user.id == widget.currentUserId
-                      ? widget.goToCameraScreen()
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => StoryScreen(
-                              stories: widget.userStories,
-                              user: widget.user,
-                              seenStories: _seenStories,
-                            ),
-                          ),
-                        ).then((value) {
-                          _updateSeenStories(value);
-                        }),
-                  child: ClipOval(
-                    child: Image(
-                      image: widget.user.profileImageUrl.isEmpty
-                          ? AssetImage(placeHolderImageRef)
-                          : CachedNetworkImageProvider(
-                              widget.user.profileImageUrl),
-                      height: 60.0,
-                      width: 60.0,
-                      fit: BoxFit.cover,
-                    ),
+          Container(
+            margin: EdgeInsets.all(5.0),
+            height: 60.0,
+            width: 60.0,
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(width: 3.0, color: circleColor),
+            ),
+            child: GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => StoryScreen(
+                    stories: widget.userStories,
+                    user: widget.user,
+                    seenStories: _seenStories,
                   ),
+                ),
+              ).then((value) {
+                _updateSeenStories(value);
+              }),
+              child: ClipOval(
+                child: Image(
+                  image: widget.user.profileImageUrl.isEmpty
+                      ? AssetImage(placeHolderImageRef)
+                      : CachedNetworkImageProvider(widget.user.profileImageUrl),
+                  height: widget.size,
+                  width: widget.size,
+                  fit: BoxFit.cover,
                 ),
               ),
-              if (_isCurrentUserHasStories == false &&
-                  widget.currentUserId == widget.userStories[0].authorId)
-                Positioned(
-                  bottom: 5,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.add_circle,
-                        color: Colors.blue,
-                        size: 21,
-                      ),
-                    ),
-                  ),
-                )
-            ],
-          ),
-          Expanded(
-            child: Text(
-              widget.user.name,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.clip,
             ),
-          )
+          ),
+          if (widget.showUserName)
+            Expanded(
+              child: Text(
+                widget.user.name,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.clip,
+              ),
+            )
         ],
       ),
     );

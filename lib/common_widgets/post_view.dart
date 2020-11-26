@@ -105,7 +105,10 @@ class _PostViewState extends State<PostView> {
   _goToHomeScreen(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (_) => HomeScreen(widget.currentUserId)),
+      MaterialPageRoute(
+          builder: (_) => HomeScreen(
+                currentUserId: widget.currentUserId,
+              )),
       (Route<dynamic> route) => false,
     );
   }

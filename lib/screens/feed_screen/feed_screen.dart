@@ -39,6 +39,7 @@ class _FeedScreenState extends State<FeedScreen> {
     _setupStories();
 
     setState(() => _isLoadingFeed = true);
+
     List<Post> posts = await DatabaseService.getFeedPosts(
       widget.currentUserId,
     );
@@ -60,6 +61,14 @@ class _FeedScreenState extends State<FeedScreen> {
     if (!mounted) return;
     User currentUser =
         Provider.of<UserData>(context, listen: false).currentUser;
+
+    // List<Story> currentUserStories =
+    //     await StoriesService.getStoriesByUserId(currentUser.id, true);
+
+    // if (currentUserStories != null) {
+    //   // Add current user to the first story circle
+    //   followingUsers.insert(0, currentUser);
+    // }
 
     /* A method to add Admin stories to each user */
     if (currentUser.id != kAdminUId) {
@@ -87,9 +96,6 @@ class _FeedScreenState extends State<FeedScreen> {
       }
     }
     /* End of method to add Admin stories to each user */
-
-    // Add current user to the first story circle
-    followingUsers.insert(0, currentUser);
 
     if (mounted) {
       setState(() {
@@ -129,7 +135,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             ),
                           )
                         : StoriesWidget(_followingUsersWithStories,
-                            widget.currentUserId, widget.goToCameraScreen),
+                            widget.goToCameraScreen),
                     SizedBox(height: 5),
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),

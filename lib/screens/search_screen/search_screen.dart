@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/themes.dart';
 import 'package:instagram/common_widgets/user_badges.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (_) => ProfileScreen(
+                    goToCameraScreen: () =>
+                        CustomNavigation.navigateToHomeScreen(
+                            context,
+                            Provider.of<UserData>(context, listen: false)
+                                .currentUserId,
+                            initialPage: 0),
                     isCameFromBottomNavigation: false,
                     userId: user.id,
                     currentUserId: Provider.of<UserData>(context, listen: false)
