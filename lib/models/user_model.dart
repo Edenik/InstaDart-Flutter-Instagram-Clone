@@ -15,6 +15,7 @@ class User {
   final String role;
   final bool isVerified;
   final String website;
+  final Timestamp timeCreated;
 
   User({
     this.id,
@@ -26,6 +27,7 @@ class User {
     this.isVerified,
     this.website,
     this.role,
+    this.timeCreated,
   });
 
   factory User.fromDoc(DocumentSnapshot doc) {
@@ -39,6 +41,7 @@ class User {
       isVerified: doc['isVerified'] ?? false,
       website: doc['website'] ?? '',
       role: doc['role'] ?? 'user',
+      timeCreated: doc['timeCreated'],
     );
   }
 }

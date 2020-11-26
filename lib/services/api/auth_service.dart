@@ -30,6 +30,7 @@ class AuthService {
           'token': token,
           'isVerified': false,
           'role': 'user',
+          'timeCreated': Timestamp.now(),
         });
       }
       Provider.of<UserData>(context, listen: false).currentUserId =
