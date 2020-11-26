@@ -35,16 +35,22 @@ class _StoriesWidgetState extends State<StoriesWidget> {
       _currentUser = Provider.of<UserData>(context, listen: false).currentUser;
     });
 
-    if (widget.users.contains(_currentUser)) {
-      setState(() => _isCurrentUserHasStories = true);
-    }
-    print(_currentUser.name);
-    print(_currentUser.id);
     if (!mounted) return;
 
     List<User> followingUsersWithStories = [];
 
     List<Story> stories = [];
+
+    List<Story> currentUserStories =
+        await StoriesService.getStoriesByUserId(_currentUser.id, true);
+
+    if (currentUserStories != null) {
+      followingUsersWithStories.add(_currentUser);
+      stories = currentUserStories;
+      if (!mounted) return;
+      setState(() => _isCurrentUserHasStories = true);
+    }
+
     for (User user in widget.users) {
       List<Story> userStories =
           await StoriesService.getStoriesByUserId(user.id, true);
@@ -55,20 +61,6 @@ class _StoriesWidgetState extends State<StoriesWidget> {
 
         for (Story story in userStories) {
           stories.add(story);
-        }
-      } else {
-        if (_currentUser.id == user.id) {
-          print('current user has no stories');
-          Story story = Story(
-            authorId: _currentUser.id,
-            views: {},
-          );
-          followingUsersWithStories.insert(0, user);
-          stories.insert(0, story);
-        } else {
-          // Story story = Story(authorId: widget.currentUserId);
-          // followingUsersWithStories.insert(0, user);
-          // stories.insert(0, story);
         }
       }
     }
@@ -82,7 +74,6 @@ class _StoriesWidgetState extends State<StoriesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('is current user has stories: $_isCurrentUserHasStories');
     return !_isLoading
         ? Container(
             height: 88.0,

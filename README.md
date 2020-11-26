@@ -17,7 +17,7 @@ width="250">
 </a>
 </p>
  <p align="center">
-Latest Update : 21/11/20
+Latest Update : 26/11/20
 </p>
 
 
@@ -176,7 +176,7 @@ Latest Update : 21/11/20
 - [ ] Improve Caching of Profiles, Images, Etc.
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio
-- [X] Stories - show stories on user profile...
+- [X] Stories - Works :) ...
 - [X] Verified Users - on Progress
 - [X] User Roles - on Progress
 - [X] Stories Screen - Share Image to Direct Messaging
@@ -185,6 +185,7 @@ Latest Update : 21/11/20
 - [ ] Save recent search
 - [X] Better Navigation Transitions
 - [ ] iOS Support
+- [ ] Add Multi Stories pageview with transition effect
 
   
 

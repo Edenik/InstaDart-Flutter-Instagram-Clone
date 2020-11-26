@@ -65,9 +65,10 @@ class _FeedScreenState extends State<FeedScreen> {
     // List<Story> currentUserStories =
     //     await StoriesService.getStoriesByUserId(currentUser.id, true);
 
+    // Add current user to the first story circle
+    // followingUsers.insert(0, currentUser);
+
     // if (currentUserStories != null) {
-    //   // Add current user to the first story circle
-    //   followingUsers.insert(0, currentUser);
     // }
 
     /* A method to add Admin stories to each user */

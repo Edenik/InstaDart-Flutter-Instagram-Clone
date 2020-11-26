@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instagram/screens/feed_screen/widgets/blank_story_circle.dart';
+import 'package:instagram/screens/feed_screen/widgets/story_circle.dart';
 import 'package:instagram/screens/profile_screen/widgets/profile_screen_drawer.dart';
 import 'package:instagram/utilities/show_error_dialog.dart';
 import 'package:instagram/common_widgets/user_badges.dart';
@@ -41,10 +42,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<Post> _posts = [];
   int _displayPosts = 0; // 0 - grid, 1 - column
   User _profileUser;
+  List<Story> _userStories;
 
   @override
   initState() {
     super.initState();
+    _setupUserStories();
     _setupIsFollowing();
     _setupFollowers();
     _setupFollowing();
@@ -95,6 +98,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Provider.of<UserData>(context, listen: false).currentUserId) {
       AuthService.updateTokenWithUser(profileUser);
       Provider.of<UserData>(context, listen: false).currentUser = profileUser;
+    }
+  }
+
+  _setupUserStories() async {
+    List<Story> userStories =
+        await StoriesService.getStoriesByUserId(widget.userId, true);
+    if (!mounted) return;
+
+    if (userStories != null) {
+      setState(() {
+        _userStories = userStories;
+      });
     }
   }
 
@@ -217,12 +232,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 width: 110,
                 height: 110,
-                child: BlankStoryCircle(
-                  user: user,
-                  goToCameraScreen: widget.goToCameraScreen,
-                  size: 90,
-                  showUserName: false,
-                ),
+                child: _userStories == null
+                    ? BlankStoryCircle(
+                        user: user,
+                        goToCameraScreen: widget.goToCameraScreen,
+                        size: 90,
+                        showUserName: false,
+                      )
+                    : StoryCircle(
+                        userStories: _userStories,
+                        user: _profileUser,
+                        currentUserId: widget.currentUserId,
+                        showUserName: false,
+                        size: 90,
+                      ),
               ),
               Expanded(
                 child: Column(

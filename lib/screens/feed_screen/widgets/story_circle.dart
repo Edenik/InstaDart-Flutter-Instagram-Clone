@@ -11,12 +11,13 @@ class StoryCircle extends StatefulWidget {
   final double size;
   final bool showUserName;
 
-  StoryCircle(
-      {@required this.userStories,
-      @required this.user,
-      @required this.currentUserId,
-      this.size = 60,
-      this.showUserName = true});
+  StoryCircle({
+    @required this.userStories,
+    @required this.user,
+    @required this.currentUserId,
+    this.size = 60,
+    this.showUserName = true,
+  });
   @override
   _StoryCircleState createState() => _StoryCircleState();
 }
@@ -66,8 +67,8 @@ class _StoryCircleState extends State<StoryCircle> {
         children: [
           Container(
             margin: EdgeInsets.all(5.0),
-            height: 60.0,
-            width: 60.0,
+            height: widget.size,
+            width: widget.size,
             padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               shape: BoxShape.circle,

@@ -21,7 +21,6 @@ class BlankStoryCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUser = Provider.of<UserData>(context).currentUser;
     bool isCurrentUser = currentUser.id == user.id ? true : false;
-    print('isCurrentUser: $isCurrentUser');
     return Container(
       width: size + 10,
       margin: const EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
@@ -40,7 +39,7 @@ class BlankStoryCircle extends StatelessWidget {
                   border: Border.all(width: 3.0, color: Colors.grey),
                 ),
                 child: GestureDetector(
-                  onTap: goToCameraScreen,
+                  onTap: isCurrentUser ? goToCameraScreen : () {},
                   child: ClipOval(
                     child: Image(
                       image: user.profileImageUrl.isEmpty
@@ -67,7 +66,7 @@ class BlankStoryCircle extends StatelessWidget {
                       child: Icon(
                         Icons.add_circle,
                         color: Colors.blue,
-                        size: 21,
+                        size: size == 60 ? 21 : 30,
                       ),
                     ),
                   ),
