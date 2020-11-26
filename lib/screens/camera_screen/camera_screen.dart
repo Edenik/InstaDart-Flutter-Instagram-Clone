@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/screens/stories_screen/widgets/circular_icon_button.dart';
 import 'package:instagram/utilities/constants.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
@@ -85,6 +86,7 @@ class _CameraScreenState extends State<CameraScreen> {
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: CircularIconButton(
+                splashColor: kBlueColorWithOpacity,
                 icon: Icon(
                   Ionicons.close_sharp,
                   color: Colors.white,

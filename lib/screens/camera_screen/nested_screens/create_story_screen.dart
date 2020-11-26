@@ -12,14 +12,17 @@ import 'package:instagram/screens/camera_screen/widgets/duration_form.dart';
 import 'package:instagram/screens/camera_screen/widgets/location_form.dart';
 import 'package:instagram/screens/screens.dart';
 import 'package:instagram/screens/stories_screen/widgets/circular_icon_button.dart';
+import 'package:instagram/services/core/liquid_swipe_pages.dart';
 import 'package:instagram/services/services.dart';
 import 'package:instagram/services/core/url_validator_service.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/utilities/custom_navigation.dart';
 import 'package:instagram/utilities/filters.dart';
 import 'package:instagram/utilities/show_error_dialog.dart';
+import 'package:instagram/utilities/themes.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
+import 'package:liquid_swipe/liquid_swipe.dart';
 
 class CreateStoryScreen extends StatefulWidget {
   final File imageFile;
@@ -32,9 +35,10 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
   final GlobalKey _globalKey = GlobalKey();
   String _filterTitle = '';
   bool _newFilterTitle = false;
-  PageController _pageController = PageController();
+  // PageController _pageController = PageController();
   int _selectedFilterIndex = 0;
   bool _isLoading = false;
+  LiquidController _liquidController = LiquidController();
 
   TextEditingController _captionController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
@@ -46,11 +50,11 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
   String _storyLocation = '';
   String _storyLink = '';
   int _storyDuration = 10;
-  Size screenSize;
+  Size _screenSize;
+  List<Container> _filterPages;
 
   @override
   void dispose() {
-    _pageController?.dispose();
     _captionController?.dispose();
     _locationController?.dispose();
     _linkController?.dispose();
@@ -60,12 +64,13 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
   @override
   Widget build(BuildContext context) {
     final User _currentUser = Provider.of<UserData>(context).currentUser;
-    final Image image = Image.file(
-      widget.imageFile,
-      fit: BoxFit.cover,
-    );
+
     setState(() {
-      screenSize = MediaQuery.of(context).size;
+      _screenSize = MediaQuery.of(context).size;
+      _filterPages = LiquidSwipePagesService.getImageFilteredPaged(
+          imageFile: widget.imageFile,
+          height: _screenSize.height,
+          width: _screenSize.width);
     });
 
     return Scaffold(
@@ -76,20 +81,17 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
             child: RepaintBoundary(
               key: _globalKey,
               child: Container(
-                child: PageView.builder(
-                    controller: _pageController,
-                    onPageChanged: (value) {
-                      setState(() => _selectedFilterIndex = value);
-                      _setFilterTitle(value);
-                    },
-                    itemCount: filters.length,
-                    itemBuilder: (context, index) {
-                      return ColorFiltered(
-                        colorFilter:
-                            ColorFilter.matrix(filters[index].matrixValues),
-                        child: image,
-                      );
-                    }),
+                child: LiquidSwipe(
+                  pages: _filterPages,
+                  onPageChangeCallback: (value) {
+                    setState(() => _selectedFilterIndex = value);
+                    _setFilterTitle(value);
+                  },
+                  waveType: WaveType.liquidReveal,
+                  liquidController: _liquidController,
+                  ignoreUserGestureWhileAnimating: true,
+                  enableLoop: true,
+                ),
               ),
             ),
           ),
@@ -275,6 +277,8 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CircularIconButton(
+              backColor: Colors.black26,
+              splashColor: kBlueColorWithOpacity,
               icon: Icon(
                 Ionicons.close_sharp,
                 color: Colors.white,
@@ -295,6 +299,20 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                       // if current filter is not the first filter (no filter)
                       ? CircularIconButton(
                           padding: const EdgeInsets.only(right: 8),
+                          backColor: _selectedFilterIndex != 0 ||
+                                  _storyCaption != '' ||
+                                  _storyLink != '' ||
+                                  _storyLocation != '' ||
+                                  _storyDuration != 10
+                              ? kBlueColorWithOpacity
+                              : Colors.black26,
+                          splashColor: _selectedFilterIndex != 0 ||
+                                  _storyCaption != '' ||
+                                  _storyLink != '' ||
+                                  _storyLocation != '' ||
+                                  _storyDuration != 10
+                              ? Colors.black26
+                              : kBlueColorWithOpacity,
                           icon: Icon(
                             Ionicons.refresh_sharp,
                             color: Colors.white,
@@ -310,14 +328,18 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                             _captionController.clear();
                             _locationController.clear();
                             _linkController.clear();
-                            _pageController.jumpToPage(0);
+                            _liquidController.jumpToPage(page: 0);
                           },
                         )
                       : SizedBox.shrink(),
                   CircularIconButton(
                     padding: const EdgeInsets.only(right: 8),
-                    backColor:
-                        _storyDuration == 10 ? Colors.black45 : Colors.blue,
+                    backColor: _storyDuration == 10
+                        ? Colors.black26
+                        : kBlueColorWithOpacity,
+                    splashColor: _storyDuration != 10
+                        ? Colors.black26
+                        : kBlueColorWithOpacity,
                     icon: Icon(
                       Ionicons.timer_outline,
                       color: Colors.white,
@@ -331,7 +353,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                         },
                         widget: DurationForm(
                             currentUser: currentuser,
-                            screenSize: screenSize,
+                            screenSize: _screenSize,
                             onChange: (double value) {
                               _duration = value.toInt();
                             },
@@ -339,7 +361,12 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                   ),
                   CircularIconButton(
                     padding: const EdgeInsets.only(right: 8),
-                    backColor: _storyLink != '' ? Colors.blue : Colors.black45,
+                    backColor: _storyLink != ''
+                        ? kBlueColorWithOpacity
+                        : Colors.black26,
+                    splashColor: _storyLink == ''
+                        ? kBlueColorWithOpacity
+                        : Colors.black26,
                     icon: Icon(
                       Ionicons.link_sharp,
                       color: Colors.white,
@@ -359,14 +386,18 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                         maxLength: 300,
                         hintText: 'Link',
                         controller: _linkController,
-                        screenSize: screenSize,
+                        screenSize: _screenSize,
                       ),
                     ),
                   ),
                   CircularIconButton(
                     padding: const EdgeInsets.only(right: 8),
-                    backColor:
-                        _storyLocation != '' ? Colors.blue : Colors.black45,
+                    backColor: _storyLocation != ''
+                        ? kBlueColorWithOpacity
+                        : Colors.black26,
+                    splashColor: _storyLocation == ''
+                        ? kBlueColorWithOpacity
+                        : Colors.black26,
                     icon: Icon(
                       Ionicons.location_sharp,
                       color: Colors.white,
@@ -379,13 +410,17 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                           });
                         },
                         widget: LocationForm(
-                          screenSize: screenSize,
+                          screenSize: _screenSize,
                           controller: _locationController,
                         )),
                   ),
                   CircularIconButton(
-                    backColor:
-                        _storyCaption != '' ? Colors.blue : Colors.black45,
+                    backColor: _storyCaption != ''
+                        ? kBlueColorWithOpacity
+                        : Colors.black26,
+                    splashColor: _storyCaption == ''
+                        ? kBlueColorWithOpacity
+                        : Colors.black26,
                     icon: Icon(
                       Ionicons.text_sharp,
                       color: Colors.white,
@@ -401,7 +436,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                         maxLength: 40,
                         hintText: 'Caption',
                         controller: _captionController,
-                        screenSize: screenSize,
+                        screenSize: _screenSize,
                       ),
                     ),
                   ),
@@ -418,8 +453,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
     if (!_isLoading && widget.imageFile != null) {
       setState(() => _isLoading = true);
       File imageFile =
-          await FilteredImageConverter.convertFilteredImageToImageFile(
-              globalKey: _globalKey);
+          await FilteredImageConverter.convert(globalKey: _globalKey);
       if (imageFile == null) {
         ShowErrorDialog.showAlertDialog(
             errorMessage: 'Could not convert image.', context: context);
@@ -460,8 +494,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
 
   void _shareImageToMessages() async {
     File imageFile =
-        await FilteredImageConverter.convertFilteredImageToImageFile(
-            globalKey: _globalKey);
+        await FilteredImageConverter.convert(globalKey: _globalKey);
     if (imageFile == null) {
       ShowErrorDialog.showAlertDialog(
           errorMessage: 'Could not convert image.', context: context);

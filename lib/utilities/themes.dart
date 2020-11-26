@@ -75,3 +75,4 @@ TextStyle kHintColorStyle(BuildContext context) {
 }
 
 const kBlueColorTextStyle = TextStyle(color: Colors.blue);
+final Color kBlueColorWithOpacity = Colors.blue.withOpacity(0.8);

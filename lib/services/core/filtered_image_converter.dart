@@ -10,8 +10,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 class FilteredImageConverter {
-  static Future<File> convertFilteredImageToImageFile(
-      {GlobalKey globalKey}) async {
+  static Future<File> convert({GlobalKey globalKey}) async {
     RenderRepaintBoundary repaintBoundary =
         globalKey.currentContext.findRenderObject();
     ui.Image boxImage = await repaintBoundary.toImage(pixelRatio: 1);

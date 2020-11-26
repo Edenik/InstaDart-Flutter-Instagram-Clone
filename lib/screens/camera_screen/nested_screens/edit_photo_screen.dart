@@ -1,15 +1,13 @@
-import 'dart:typed_data';
+import 'dart:async';
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:instagram/screens/camera_screen/nested_screens/create_post_screen.dart';
-import 'dart:ui' as ui;
+import 'package:instagram/services/core/filtered_image_converter.dart';
+import 'package:instagram/services/core/liquid_swipe_pages.dart';
 
 import 'package:instagram/utilities/filters.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:liquid_swipe/liquid_swipe.dart';
 
 class EditPhotoScreen extends StatefulWidget {
   final File imageFile;
@@ -22,13 +20,16 @@ class _EditPhotoScreenState extends State<EditPhotoScreen>
     with TickerProviderStateMixin {
   final GlobalKey _globalKey = GlobalKey();
   TabController _tabController;
+  LiquidController _liquidController = LiquidController();
+  List<Container> _filterPages;
+  String _filterTitle = '';
+  bool _newFilterTitle = false;
 
   int _selectedIndex = 0;
 
   @override
   void initState() {
     _tabController = TabController(length: 1, vsync: this);
-
     super.initState();
   }
 
@@ -38,53 +39,15 @@ class _EditPhotoScreenState extends State<EditPhotoScreen>
     super.dispose();
   }
 
-  void convertFilteredImageToImageFile() async {
-    RenderRepaintBoundary repaintBoundary =
-        _globalKey.currentContext.findRenderObject();
-    ui.Image boxImage = await repaintBoundary.toImage(pixelRatio: 1);
-    ByteData byteData =
-        await boxImage.toByteData(format: ui.ImageByteFormat.png);
-    String tempPath = (await getTemporaryDirectory()).path;
-    File file = File('$tempPath/${Timestamp.now().toString()}.png');
-    await file.writeAsBytes(byteData.buffer
-        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-
-    Navigator.of(_globalKey.currentContext).push(MaterialPageRoute(
-        builder: (context) => CreatePostScreen(
-              imageFile: file,
-            )));
-  }
-
-  _buildFilterThumbnail(int index, Image image) {
-    return Container(
-      padding: const EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        border: Border.all(
-            color: _selectedIndex == index
-                ? Colors.blue
-                : Theme.of(context).primaryColor,
-            width: 4.0),
-      ),
-      child: ColorFiltered(
-        colorFilter: ColorFilter.matrix(filters[index].matrixValues),
-        child: Container(
-          height: 80,
-          width: 80,
-          child: image,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    final Image image = Image.file(
-      widget.imageFile,
-      width: size.width,
-      fit: BoxFit.cover,
-    );
+    setState(() {
+      _filterPages = LiquidSwipePagesService.getImageFilteredPaged(
+          imageFile: widget.imageFile, height: size.width, width: size.width);
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -104,19 +67,29 @@ class _EditPhotoScreenState extends State<EditPhotoScreen>
       body: Column(
         children: [
           RepaintBoundary(
-            key: _globalKey,
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: size.width,
-                maxHeight: size.width,
-              ),
-              child: ColorFiltered(
-                colorFilter:
-                    ColorFilter.matrix(filters[_selectedIndex].matrixValues),
-                child: image,
-              ),
-            ),
-          ),
+              key: _globalKey,
+              child: Stack(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: size.width,
+                      maxHeight: size.width,
+                    ),
+                    child: LiquidSwipe(
+                      pages: _filterPages,
+                      onPageChangeCallback: (value) {
+                        setState(() => _selectedIndex = value);
+                        _setFilterTitle(value);
+                      },
+                      waveType: WaveType.liquidReveal,
+                      liquidController: _liquidController,
+                      ignoreUserGestureWhileAnimating: true,
+                      enableLoop: true,
+                    ),
+                  ),
+                  if (_newFilterTitle) _displayStoryTitle(size),
+                ],
+              )),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -138,7 +111,7 @@ class _EditPhotoScreenState extends State<EditPhotoScreen>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  _buildFilterThumbnail(index, image),
+                                  _buildFilterThumbnail(index, size),
                                   SizedBox(
                                     height: 5.0,
                                   ),
@@ -148,7 +121,10 @@ class _EditPhotoScreenState extends State<EditPhotoScreen>
                                 ],
                               ),
                             ),
-                            onTap: () => setState(() => _selectedIndex = index),
+                            onTap: () {
+                              setState(() => _selectedIndex = index);
+                              _liquidController.jumpToPage(page: index);
+                            },
                           );
                         }),
                   ),
@@ -174,6 +150,70 @@ class _EditPhotoScreenState extends State<EditPhotoScreen>
             ),
           )
         ],
+      ),
+    );
+  }
+
+  void convertFilteredImageToImageFile() async {
+    File file = await FilteredImageConverter.convert(globalKey: _globalKey);
+    Navigator.of(_globalKey.currentContext).push(
+      MaterialPageRoute(
+        builder: (context) => CreatePostScreen(
+          imageFile: file,
+        ),
+      ),
+    );
+  }
+
+  Container _buildFilterThumbnail(int index, Size size) {
+    final Image image = Image.file(
+      widget.imageFile,
+      width: size.width,
+      fit: BoxFit.cover,
+    );
+
+    return Container(
+      padding: const EdgeInsets.all(4.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: _selectedIndex == index
+                ? Colors.blue
+                : Theme.of(context).primaryColor,
+            width: 4.0),
+      ),
+      child: ColorFiltered(
+        colorFilter: ColorFilter.matrix(filters[index].matrixValues),
+        child: Container(
+          height: 80,
+          width: 80,
+          child: image,
+        ),
+      ),
+    );
+  }
+
+  void _setFilterTitle(title) {
+    setState(() {
+      _filterTitle = filters[title].name;
+      _newFilterTitle = true;
+    });
+    Timer(Duration(milliseconds: 1000), () {
+      if (_filterTitle == filters[title].name) {
+        setState(() => _newFilterTitle = false);
+      }
+    });
+  }
+
+  Align _displayStoryTitle(Size screenSize) {
+    return Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: EdgeInsets.only(top: screenSize.width * 0.49),
+        child: Text(
+          _filterTitle,
+          style: TextStyle(
+              fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
       ),
     );
   }

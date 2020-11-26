@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/utilities/themes.dart';
 
 class CircularIconButton extends StatelessWidget {
   final Function onTap;
@@ -12,8 +13,8 @@ class CircularIconButton extends StatelessWidget {
       {this.icon,
       this.onTap,
       this.containerRadius = 36,
-      this.backColor = Colors.black45,
-      this.splashColor = Colors.blue,
+      this.backColor = Colors.black26,
+      this.splashColor,
       this.padding = const EdgeInsets.all(0)});
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class CircularIconButton extends StatelessWidget {
           child: Material(
             color: backColor, // button color
             child: InkWell(
-              splashColor: backColor == Colors.blue
+              splashColor: backColor == kBlueColorWithOpacity
                   ? backColor
                   : splashColor, // inkwell color
               child: SizedBox(

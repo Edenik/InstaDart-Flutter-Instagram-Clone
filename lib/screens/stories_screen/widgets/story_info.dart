@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/models.dart';
+import 'package:instagram/screens/stories_screen/widgets/swipe_up.dart';
 import 'package:instagram/utilities/constants.dart';
 import 'package:instagram/common_widgets/user_badges.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class StoryInfo extends StatelessWidget {
@@ -11,13 +11,12 @@ class StoryInfo extends StatelessWidget {
   final Story story;
   final double height;
   final Function onSwipeUp;
-  const StoryInfo(
-      {Key key,
-      @required this.user,
-      @required this.story,
-      @required this.height,
-      @required this.onSwipeUp})
-      : super(key: key);
+  const StoryInfo({
+    @required this.user,
+    @required this.story,
+    @required this.height,
+    @required this.onSwipeUp,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,36 +26,19 @@ class StoryInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildUserInfo(),
-          story.caption != ''
-              ? Center(
-                  child: Text(
-                    story.caption,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 30, color: Colors.white),
-                  ),
-                )
-              : const SizedBox.shrink(),
-          const SizedBox.shrink(),
-          story.linkUrl != ''
-              ? GestureDetector(
-                  onTap: onSwipeUp,
-                  child: Column(
-                    children: [
-                      Icon(
-                        Ionicons.arrow_up_circle,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      Text(
-                        'Swipe Up',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                )
-              : const SizedBox.shrink(),
+          if (story.caption != '') _buildStoryCaption(),
+          if (story.linkUrl != '') SwipeUp(onSwipeUp: onSwipeUp),
         ],
+      ),
+    );
+  }
+
+  _buildStoryCaption() {
+    return Center(
+      child: Text(
+        story.caption,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 30, color: Colors.white),
       ),
     );
   }
