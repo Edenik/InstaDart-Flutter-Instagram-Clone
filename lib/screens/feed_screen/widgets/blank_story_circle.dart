@@ -8,7 +8,6 @@ class BlankStoryCircle extends StatelessWidget {
   final User user;
   final Function goToCameraScreen;
   final double size;
-
   final bool showUserName;
 
   BlankStoryCircle({
@@ -34,10 +33,12 @@ class BlankStoryCircle extends StatelessWidget {
                 height: size,
                 width: size,
                 padding: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 3.0, color: Colors.grey),
-                ),
+                decoration: isCurrentUser
+                    ? BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(width: 3.0, color: Colors.grey),
+                      )
+                    : null,
                 child: GestureDetector(
                   onTap: isCurrentUser ? goToCameraScreen : () {},
                   child: ClipOval(
