@@ -42,6 +42,19 @@ class AuthService {
     }
   }
 
+  static Future<void> signUp(
+      BuildContext context, String email, String password) async {
+    try {
+      AuthResult authResult = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      FirebaseUser signedInUser = authResult.user;
+    } on PlatformException catch (err) {
+      throw (err);
+    }
+  }
+
   static Future<void> loginUser(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);

@@ -17,7 +17,7 @@ width="250">
 </a>
 </p>
  <p align="center">
-Latest Update : 26/11/20
+Latest Update : 28/11/20
 </p>
 
 
@@ -104,11 +104,11 @@ Latest Update : 26/11/20
 ## Screenshots
 <p align="center">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Login%20Screen%20+%20Error%20Handling.gif?raw=true" alt="Login Screen + Error Handling" width="250">
-<img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Signup%20Screen%20+%20Error%20Handling.gif?raw=true" alt="Signup  Screen + Error Handling" width="250">
+<img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Signup%20Screen.gif?raw=true" alt="Signup  Screen" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Feed%20Screen%20+%20Search%20Screen%20+%20Profile%20Screen.gif?raw=true" alt="Feed Screen + Search Screen + Profile Screen" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Upload%20New%20Post.gif?raw=true" alt="Upload New Post" width="250">
+<img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Upload%20New%20Story.gif?raw=true" alt="Upload New Story" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Direct%20Messaging.gif?raw=true" alt="Direct Messaging" width="250">
-<img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Receiving%20Notifications.gif?raw=true" alt="Receiving Notifications" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Messaging%20Giphy.gif?raw=true" alt="Direct Messaging" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Light-Dark%20Mode.gif?raw=true" alt="Light / Dark Mode" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/About%20App%20Dialog.gif?raw=true" alt="About App Dialog" width="250">
@@ -117,7 +117,6 @@ Latest Update : 26/11/20
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Edit%20Post.gif?raw=true" alt="Edit Post" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Edit%20Profile%20Screen.gif?raw=true" alt="Edit Profile Screen" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Followers-Following%20Screen.gif?raw=true" alt="Followers-Following Screen" width="250">
-<img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Like%20+%20Comment%20on%20Post.gif?raw=true" alt="Like + Comment on Post" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Share%20Post%20To%20Another%20Apps.gif?raw=true" alt="Share Post To Another Apps" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Turn%20Off%20Commenting.gif?raw=true" alt="Turn Off Commenting" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Activity%20Screen.gif?raw=true" alt="Activity Screen" width="250">

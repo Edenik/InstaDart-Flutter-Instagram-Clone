@@ -160,6 +160,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 email: user.email,
                                 profileImageUrl: updateUser.profileImageUrl,
                                 bio: updateUser.bio,
+                                isVerified: updateUser.isVerified,
+                                role: updateUser.role,
+                                website: updateUser.website,
                               );
 
                               setState(() {

@@ -81,6 +81,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           name: _name.trim(),
           profileImageUrl: _profileImageUrl,
           bio: _bio.trim(),
+          role: widget.user.role,
+          isVerified: widget.user.isVerified,
           website: url);
 
       //Database Update
