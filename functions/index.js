@@ -295,7 +295,6 @@ exports.onCreateUser = functions.auth.user().onCreate((user) => {
     timestamp,
     isViewedByAdmin,
     isPassedVerification,
-    isBanned,
   };
 
   admin
@@ -305,4 +304,49 @@ exports.onCreateUser = functions.auth.user().onCreate((user) => {
     .set(newUserActivity)
     .then((result) => functions.logger.log(result))
     .catch((err) => functions.logger.warn(err));
+
+  admin
+    .firestore()
+    .collection("users")
+    .doc(`${user.uid}`)
+    .set({ isBanned }, { merge: true })
+    .then((result) => functions.logger.log(result))
+    .catch((err) => functions.logger.warn(err));
 });
+
+exports.onUpdateUser = functions.firestore
+  .document("users/{userId}")
+  .onUpdate((change, context) => {
+    const newValue = change.after.data();
+    const previousValue = change.before.data();
+    if (newValue.isBanned && !previousValue.isBanned) {
+      disableUser(context.params.userId, true);
+    } else if (!newValue.isBanned && previousValue.isBanned) {
+      disableUser(context.params.userId, false);
+    }
+  });
+
+const disableUser = (userId, bool) => {
+  functions.app.admin
+    .auth()
+    .updateUser(userId, { disabled: bool })
+    .then((result) => functions.logger.log(result))
+    .catch((err) => functions.logger.warn(err));
+};
+
+const updateMultiDocs = (collection, updateOBJ) => {
+  const collecRef = admin.firestore().collection(collection);
+  return collecRef.get().then((snapshot) => {
+    const promises = [];
+
+    snapshot.forEach((doc) => {
+      const ref = doc.ref;
+
+      promises.push(ref.update(updateOBJ));
+    });
+
+    return Promise.all(promises)
+      .then((result) => functions.logger.log(result))
+      .catch((err) => functions.logger.warn(err));
+  });
+};

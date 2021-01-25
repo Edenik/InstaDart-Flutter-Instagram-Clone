@@ -7,6 +7,7 @@ class User {
   final String email;
   final String bio;
   final String token;
+  final bool isBanned;
   // final List<String> favoritePosts;
   // final List<String> blockedUsers;
   // final List<String> hideStoryFromUsers;
@@ -24,6 +25,7 @@ class User {
     this.email,
     this.bio,
     this.token,
+    this.isBanned,
     this.isVerified,
     this.website,
     this.role,
@@ -39,6 +41,7 @@ class User {
       bio: doc['bio'] ?? '',
       token: doc['token'] ?? '',
       isVerified: doc['isVerified'] ?? false,
+      isBanned: doc['isBanned'],
       website: doc['website'] ?? '',
       role: doc['role'] ?? 'user',
       timeCreated: doc['timeCreated'],
