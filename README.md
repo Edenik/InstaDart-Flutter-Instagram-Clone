@@ -1,8 +1,6 @@
-
 # InstaDart - Instagram Clone
-A working Instagram clone written with Dart & Flutter using Firebase as backend.
 
- 
+A working Instagram clone written with Dart & Flutter using Firebase as backend.
 
  <p align="center">
 <a href="https://github.com/Edenik/Flutter-Instagram-Clone/raw/main/media/app-release.apk">
@@ -17,91 +15,83 @@ width="250">
 </a>
 </p>
  <p align="center">
-Latest Update : 28/11/20
+Latest Update : 25/01/21
 </p>
-
-
-  
-
-
-
-  
-  
 
 ## Features
 
-* Firebase auth Signup + Login
+- Firebase auth Signup + Login
 
-* Custom photo feed based on who you follow
+- Custom photo feed based on who you follow
 
-* Post photo posts from camera or gallery
+- Post photo posts from camera or gallery
 
-* Like posts 
+- Like posts
 
-* Comment on posts 
+- Comment on posts
 
-* View all comments on a post
+- View all comments on a post
 
-* Delete current user posts
+- Delete current user posts
 
-* Show posts on profile again after deleted
+- Show posts on profile again after deleted
 
-* Archive current user posts
+- Archive current user posts
 
-* Show post on profile again after archiver
+- Show post on profile again after archiver
 
-* Edit current user posts
+- Edit current user posts
 
-* Turn off commenting on current user posts
+- Turn off commenting on current user posts
 
-* Allow commenting on posts
+- Allow commenting on posts
 
-* Share post to other mobile apps
+- Share post to other mobile apps
 
-* Search for users
+- Search for users
 
-* Profile Pages
+- Profile Pages
 
-* Follow / Unfollow Users
+- Follow / Unfollow Users
 
-* View user's followers / following
+- View user's followers / following
 
-* Change image view from grid layout to feed layout
+- Change image view from grid layout to feed layout
 
-* Message other users
+- Message other users
 
-* Edit current user profile image / name / add your bio
+- Edit current user profile image / name / add your bio
 
-* Activity Feed showing recent likes / comments of your posts + new followers
+- Activity Feed showing recent likes / comments of your posts + new followers
 
-* Archived Post screen
+- Archived Post screen
 
-* Deleted Post screen
+- Deleted Post screen
 
-* Dark / Light Mode
+- Dark / Light Mode
 
-* Direct Messaging screen stream current user chats
+- Direct Messaging screen stream current user chats
 
-* Chat Screen stream messages + upload images
+- Chat Screen stream messages + upload images
 
-* Push notifications - For Comments on posts, Likes on post, Direct messages, New followers and more..
+- Push notifications - For Comments on posts, Likes on post, Direct messages, New followers and more..
 
-* Add Filters to Posts + Stories
+- Add Filters to Posts + Stories
 
-* Custom Camera Screen
+- Custom Camera Screen
 
-* Stories with filters, text, links and duration settings
+- Stories with filters, text, links and duration settings
 
-* Verified Users
+- Verified Users
 
-* Admin Users
+- Admin Users
 
-* Zoom IN & OUT on posts images.
+- Zoom IN & OUT on posts images.
 
-* Share Images from create stories screen to messages.
-  
+- Share Images from create stories screen to messages.
 
 ## Screenshots
+
 <p align="center">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Login%20Screen%20+%20Error%20Handling.gif?raw=true" alt="Login Screen + Error Handling" width="250">
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Signup%20Screen.gif?raw=true" alt="Signup  Screen" width="250">
@@ -122,76 +112,63 @@ Latest Update : 28/11/20
 <img src="https://github.com/Edenik/Flutter-Instagram-Clone/blob/main/media/Activity%20Screen.gif?raw=true" alt="Activity Screen" width="250">
 </p>
 
-  
-  
-
 ## Dependencies
 
-* [Flutter](https://flutter.dev/)
-* [Cloud Firestore](https://github.com/flutter/plugins/tree/master/packages/cloud_firestore)
-* [Firebase Core](https://github.com/FirebaseExtended/flutterfire)
-* [Firebase Auth](https://github.com/flutter/plugins/tree/master/packages/firebase_auth)
-* [Firebase Storage](https://github.com/FirebaseExtended/flutterfire)
-* [Image Picker](https://github.com/flutter/plugins/tree/master/packages/image_picker)
-* [Google Sign In](https://github.com/flutter/plugins/tree/master/packages/google_sign_in)
-* [UUID](https://github.com/Daegalus/dart-uuid)
-* [Path Provider](https://github.com/flutter/plugins/tree/master/packages/path_provider)
-* [Shared Preferences](https://github.com/flutter/plugins/blob/master/packages/shared_preferences)
-* [Cached Network Image](https://github.com/renefloor/flutter_cached_network_image)
-* [Animator](https://github.com/GIfatahTH/animator)
-* [Camera](https://github.com/flutter/plugins/blob/master/packages/camera)
-* [Flutter Image Compress](https://github.com/OpenFlutter/flutter_image_compress)
-* [Provider](https://github.com/rrousselGit/provider)
-* [Geocoder](https://github.com/aloisdeniel/flutter_geocoder)
-* [Image Cropper](https://github.com/hnvn/flutter_image_cropper)
-* [Image Downloader](https://github.com/ko2ic/image_downloader)
-* [Intl](https://github.com/dart-lang/intl)
-* [Location](https://github.com/Lyokone/flutterlocation)
-* [Timeago](https://github.com/andresaraujo/timeago.dart)
-* [Url Launcer](https://github.com/flutter/plugins/tree/master/packages/url_launcher)
-* [Share](https://github.com/flutter/plugins/blob/master/packages/share)
-* [Auto Direction](https://github.com/AhmedAlYousef/auto_direction)
-* [Giphy Get](https://github.com/bazospa/giphy_get)
-
-  
-  
+- [Flutter](https://flutter.dev/)
+- [Cloud Firestore](https://github.com/flutter/plugins/tree/master/packages/cloud_firestore)
+- [Firebase Core](https://github.com/FirebaseExtended/flutterfire)
+- [Firebase Auth](https://github.com/flutter/plugins/tree/master/packages/firebase_auth)
+- [Firebase Storage](https://github.com/FirebaseExtended/flutterfire)
+- [Image Picker](https://github.com/flutter/plugins/tree/master/packages/image_picker)
+- [Google Sign In](https://github.com/flutter/plugins/tree/master/packages/google_sign_in)
+- [UUID](https://github.com/Daegalus/dart-uuid)
+- [Path Provider](https://github.com/flutter/plugins/tree/master/packages/path_provider)
+- [Shared Preferences](https://github.com/flutter/plugins/blob/master/packages/shared_preferences)
+- [Cached Network Image](https://github.com/renefloor/flutter_cached_network_image)
+- [Animator](https://github.com/GIfatahTH/animator)
+- [Camera](https://github.com/flutter/plugins/blob/master/packages/camera)
+- [Flutter Image Compress](https://github.com/OpenFlutter/flutter_image_compress)
+- [Provider](https://github.com/rrousselGit/provider)
+- [Geocoder](https://github.com/aloisdeniel/flutter_geocoder)
+- [Image Cropper](https://github.com/hnvn/flutter_image_cropper)
+- [Image Downloader](https://github.com/ko2ic/image_downloader)
+- [Intl](https://github.com/dart-lang/intl)
+- [Location](https://github.com/Lyokone/flutterlocation)
+- [Timeago](https://github.com/andresaraujo/timeago.dart)
+- [Url Launcer](https://github.com/flutter/plugins/tree/master/packages/url_launcher)
+- [Share](https://github.com/flutter/plugins/blob/master/packages/share)
+- [Auto Direction](https://github.com/AhmedAlYousef/auto_direction)
+- [Giphy Get](https://github.com/bazospa/giphy_get)
 
 ## What's Next?
 
-- [X] Edit Posts
-- [X] Dark / Light Theme Mode
-- [X] Splash Screen
-- [X] Delete / Archive Posts
-- [X] Turn on / off Comments on Posts
-- [X] Login + Signup - Show Auth indication + Error Handling
-- [X] Share Posts to external Apps
-- [X] Notificaitons for likes, comments, follows, messages, etc
-- [X] Delete Posts Firebase Function
-- [X] Direct Messaging
-- [X] Upgrade PageView + NavigationBar on HomeScreen
+- [x] Edit Posts
+- [x] Dark / Light Theme Mode
+- [x] Splash Screen
+- [x] Delete / Archive Posts
+- [x] Turn on / off Comments on Posts
+- [x] Login + Signup - Show Auth indication + Error Handling
+- [x] Share Posts to external Apps
+- [x] Notificaitons for likes, comments, follows, messages, etc
+- [x] Delete Posts Firebase Function
+- [x] Direct Messaging
+- [x] Upgrade PageView + NavigationBar on HomeScreen
 - [ ] Error handling
-- [X] Custom Camera Screen
-- [X] Add filters to Post + Stories
+- [x] Custom Camera Screen
+- [x] Add filters to Post + Stories
 - [ ] Improve Caching of Profiles, Images, Etc.
 - [ ] Firebase Security Rules
 - [ ] Upgrade Messaging with new Features - send audio
-- [X] Stories - Works :) ...
-- [X] Verified Users - on Progress
-- [X] User Roles - on Progress
-- [X] Stories Screen - Share Image to Direct Messaging
+- [x] Stories - Works :) ...
+- [x] Verified Users - on Progress
+- [x] User Roles - on Progress
+- [x] Stories Screen - Share Image to Direct Messaging
 - [ ] Clean up code - on Progress
 - [ ] Save Favorite Posts
 - [ ] Save recent search
-- [X] Better Navigation Transitions
+- [x] Better Navigation Transitions
 - [ ] iOS Support
 - [ ] Add Multi Stories pageview with transition effect
-
-  
-
-
-
-
-
 
 This app based on a tutorial by -
 [MarcusNG](https://marcusng.com/)
